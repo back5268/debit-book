@@ -1,11 +1,9 @@
+require('./config/db');
 const express = require('express');
 const morgan = require('morgan');
 const { engine } = require('express-handlebars');
 const path = require('path');
-
-require('./config/db');
 const route = require('./routes')
-
 const app = express();
 const port = process.env.port || 3000;
 
@@ -19,7 +17,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //HTTP logger
-// app.use(morgan('combined'));
+app.use(morgan('combined'));
 
 //Template engine
 app.engine('hbs', engine({
