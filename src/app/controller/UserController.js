@@ -4,6 +4,7 @@ require('dotenv').config();
 // MongoDB user
 const User = require('../models/User');
 const UserVertifycation = require('../models/UserVertifycation');
+const PasswordReset = require('../models/PasswordReset');
 
 // Password handle
 const bcrypt = require('bcrypt');
@@ -89,7 +90,211 @@ const sendVertifycationEmail = ({ _id, email }, res) => {
     })
 }
 
+// Sent password reset email
+const senResetEmail = ({ _id, email }, redirectUrl, res) => {
+    const resetString = uuidv4() + _id;
+
+    // First we clear all existing records
+    PasswordReset.deleteMany({ userId: _id })
+        .then(data => {
+            const mailOptions = {
+                from: process.env.AUTH_EMAIL,
+                to: email,
+                subject: 'Password reset',
+                html: `<p>Vertifycation your email to sign up and login</p>
+                        <p>This link <b>expires in a 30 minutes.</b></p>
+                        <p><a href=${redirectUrl + "/" + _id + "/" + resetString}>here</a>
+                        to proceed </p>`
+            };
+
+            // hash the reset String
+            const saltRounds = 10;
+            bcrypt.hash(resetString, saltRounds)
+                .then(data => {
+                    const newPasswordReset = new PasswordReset({
+                        userId: _id,
+                        resetString: data,
+                        createAt: Date.now,
+                        expires: Date.now + 1800000,
+                    })
+
+                    newPasswordReset.save()
+                        .then(() => {
+                            transporter.sendMail(mailOptions)
+                                .then(() => {
+                                    res.json({
+                                        status: "PENDING",
+                                        message: "Password reset email sent!"
+                                    })
+                                })
+                                .catch(err => {
+                                    console.log(err)
+                                    res.json({
+                                        status: "FAILED",
+                                        message: "Password reset email fail!"
+                                    })
+                                })
+                        })
+                        .catch(err => {
+                            console.log(err)
+                            res.json({
+                                status: "FAILED",
+                                message: "Couldn't save password reset data!"
+                            })
+                        })
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.json({
+                        status: "FAILED",
+                        message: "Error while hashing the password reset data!"
+                    })
+                })
+        })
+        .catch(err => {
+            // Error while clearing existing records
+            res.json({
+                status: "FAILED",
+                message: "Error while clearing existing records!"
+            })
+        })
+}
+
 class UserController {
+
+    resetPassword(req, res) {
+        let { userId, resetString, newPassword } = req.body;
+
+        PasswordReset.find({ userId })
+            .then(data => {
+                if (data.length > 0) {
+                    // password reset record exist so we proceed
+
+                    const { expiresAt } = data[0];
+                    const hashedResetString = data[0].resetString;
+
+                    if (expiresAt < Date.now) {
+                        PasswordReset.deleteOne({ userId })
+                            .then(() => {
+                                // Reset record deleted successfully
+                                res.json({
+                                    status: "FAILED",
+                                    message: "Password reset link has expired!"
+                                })
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                res.json({
+                                    status: "FAILED",
+                                    message: "Clearing password reset failed!"
+                                })
+                            })
+                    } else {
+                        // Valid reset record exist so we validate the reset String
+                        bcrypt.compare(resetString, hashedResetString)
+                            .then(data => {
+                                if (data) {
+                                    // hash password again
+                                    const saltRounds = 10;
+                                    bcrypt.hash(newPassword, saltRounds)
+                                        .then(data => {
+                                            // update user password
+                                            User.updateOne({ _id: userId }, { password: data })
+                                                .then(() => {
+                                                    // Update complete 
+                                                    PasswordReset.deleteOne({ userId })
+                                                        .then(() => {
+                                                            // both user record and reset password updated 
+                                                            res.json({
+                                                                status: 'SUCCESS',
+                                                                message: 'cmm'
+                                                            })
+                                                        })
+                                                        .catch(err => {
+                                                            console.log(err);
+                                                            res.json({
+                                                                status: "FAILED",
+                                                                message: "Hashing password failed!"
+                                                            })
+                                                        })
+                                                })
+                                                .catch(err => {
+                                                    console.log(err);
+                                                    res.json({
+                                                        status: "FAILED",
+                                                        message: "Hashing password failed!"
+                                                    })
+                                                })
+                                        })
+                                        .catch(err => {
+                                            console.log(err);
+                                            res.json({
+                                                status: "FAILED",
+                                                message: "Hashing password failed!"
+                                            })
+                                        })
+                                } else {
+                                    // Existing record but incorrect reset strign password
+                                    res.json({
+                                        status: "FAILED",
+                                        message: "Invalid password reset detail passed!"
+                                    })
+                                }
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                res.json({
+                                    status: "FAILED",
+                                    message: "Comparing password reset string failed!"
+                                })
+                            })
+                    }
+                } else {
+                    res.json({
+                        status: "FAILED",
+                        message: "Password reset request not found!"
+                    })
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                res.json({
+                    status: "FAILED",
+                    message: "Check for existing password reset record failed!"
+                })
+            })
+    }
+
+    passwordReset(req, res) {
+        const { email, redirectUrl } = req.body;
+
+        User.find({ email })
+            .then(data => {
+                if (data.length) {
+                    if (!data[0].verified) {
+                        res.json({
+                            status: "FAILED",
+                            message: "Email hasn't been verified yet!"
+                        })
+                    } else {
+                        senResetEmail(data[0], redirectUrl, res);
+                    }
+                } else {
+                    res.json({
+                        status: "FAILED",
+                        message: "No account with email!"
+                    })
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                res.json({
+                    status: "FAILED",
+                    message: "An error occurred while checking for existing user!"
+                })
+            })
+    }
+
     verify(req, res) {
         let { userId, uniqueString } = req.params;
         console.log(userId);
