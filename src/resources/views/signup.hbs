@@ -1,5 +1,5 @@
 <div class="main">
-  <form action="" method="POST" class="form" id="form-1">
+  <form action="/signup" method="POST" class="form" id="signup-form">
     <h3 class="heading">Đăng ký</h3>
     <p class="desc">đăng ký thành viên</p>
 
@@ -8,8 +8,8 @@
     <div class="form-group">
       <label for="fullname" class="form-label">Tên đầy đủ</label>
       <input
-        id="fullname"
-        name="fullname"
+        id="name"
+        name="name"
         type="text"
         placeholder="VD: Lê Trần Tiến Đông"
         class="form-control"
@@ -67,3 +67,23 @@
     <button class="form-submit">Đăng ký</button>
   </form>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    {{!-- Validator({
+      form: '#signup-form',
+      formGroupSelector: '.form-group',
+      errorSelector: '.form-message',
+      rules: [
+          Validator.isRequired('#fullname', 'Vui lòng nhập tên đầy đủ của bạn'),
+          Validator.isEmail('#email'),
+          Validator.minLength('#password', 6),
+          Validator.isRequired('#password_confirmation'),
+          Validator.isConfirmed('#password_confirmation', function () {
+            return document.querySelector('#signup-form #password').value;
+          }, 'Mật khẩu nhập lại không chính xác')
+      ],
+    }); --}}
+    changeCaptcha();
+  });
+</script>
