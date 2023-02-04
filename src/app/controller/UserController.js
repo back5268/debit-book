@@ -15,7 +15,7 @@ const nodemailer = require('nodemailer');
 // Unique string
 const { v4: uuidv4 } = require('uuid');
 
-// Nodemailer stuff
+// Nodemailer
 let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -24,98 +24,112 @@ let transporter = nodemailer.createTransport({
     }
 })
 
-// Testing success
-transporter.verify((error, sucess) => {
-    if (error) {
-        console.log(error);
+// Test nodemailer
+transporter.verify((err, success) => {
+    if (err) {
+        console.log('Connect to nodemailer Failed!');
     } else {
-        console.log('Ready for message!');
+        console.log('Connect to nodemailer successfully!');
     }
 })
 
 const sendVertifycationEmail = ({ _id, email }, res) => {
-    // url to be used in the email
+
+    // Url to be used in the email
     const currentUrl = 'http://localhost:3000/';
     const uniqueString = uuidv4() + _id;
 
-    // Mail options
+    // Mail content
     const mailOptions = {
         from: process.env.AUTH_EMAIL,
         to: email,
-        subject: 'Vertifycation email',
-        html: `<p>Vertifycation your email to sign up and login</p>
-                <p>This link <b>expires in a 30 minutes.</b></p>
-                <p><a href=${currentUrl + "verify/" + _id + "/" + uniqueString}>here</a>
-                to proceed </p>`
+        subject: '[Thông báo] - Kích hoạt tài khoản!',
+        html: `<p>Bạn hoặc ai đó đã sử dụng email: <h5>${email}</h5> để tạo tài khoản!</p> <br/>
+            <p>Vui lòng truy cập đường dẫn: <a href=${currentUrl + "verify/" + _id + "/" + uniqueString}>
+            ${currentUrl + "verify/" + _id + "/" + uniqueString}</a> để kích hoạt tài khoản.</p> <br/>
+            <p> Lưu ý: Đường link chỉ được sử dụng 01 lần và có <h5>thời hạn trong 24 giờ</h5>.</p>
+            <p>Sau thời gian trên hãy sử dụng chức năng quên mật khẩu để tiến hành tạo mới mật khẩu và kích hoạt tài khoản.</p>
+            <p>Trân trọng cảm ơn,</p> <br/> <br/> <h5>------------------------------</h5> <br/>
+            <span>Thanks and best regards, <br/>Development</span>`
     };
 
     // Hash the uniqueString
     const saltRounds = 10;
-    bcrypt.hash(uniqueString, saltRounds).then(data => {
-        // set value in userVertifycation collection
-        const newVertifycation = UserVertifycation({
-            userId: _id,
-            uniqueString: data,
-            createAt: Date.now(),
-            expiresAt: Date.now() + 1800000,
-        })
+    bcrypt.hash(uniqueString, saltRounds)
+        .then(data => {
 
-        newVertifycation.save().then(() => {
-            transporter.sendMail(mailOptions).then(() => {
-                // Email sent and vertifycation record saved
-                res.json({
-                    status: "PENDING",
-                    message: "Vertifycation email sent!"
-                })
-            }).catch(err => {
-                console.log(err);
-                res.json({
-                    status: "FAILED",
-                    message: "Vertifycation failed!"
-                })
+            // Crate newVertifycation
+            const newVertifycation = UserVertifycation({
+                userId: _id,
+                uniqueString: data,
+                createAt: Date.now(),
+                expiresAt: Date.now() + 86400000,
             })
-        }).catch(err => {
+
+            // Save newVertifycation at DB
+            newVertifycation.save()
+                .then(() => {
+                    transporter.sendMail(mailOptions)
+                        .then(() => {
+                            res.json({
+                                status: "Email đã được gửi",
+                                message: "Vui lòng kiểm tra hộp thư để xác nhận tài khoản!"
+                            })
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            res.json({
+                                status: "Error",
+                                message: "Gửi mail không thành công!"
+                            })
+                        })
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.json({
+                        status: "Error",
+                        message: "Không thể lưu xác nhận email!"
+                    })
+                })
+        })
+        .catch((err) => {
             console.log(err);
             res.json({
-                status: "FAILED",
-                message: "Couldn't save vertifycation email data!"
+                status: "Error",
+                message: "Có lỗi khi hash uniqueString!"
             })
         })
-    }).catch((err) => {
-        console.log(err);
-        res.json({
-            status: "FAILED",
-            message: "An error occurred while hashing email data!"
-        })
-    })
 }
 
 // Sent password reset email
 const senResetEmail = ({ _id, email }, redirectUrl, res) => {
     const resetString = uuidv4() + _id;
 
-    // First we clear all existing records
+    // Clear all existing records
     PasswordReset.deleteMany({ userId: _id })
-        .then(data => {
+        .then(() => {
             const mailOptions = {
                 from: process.env.AUTH_EMAIL,
                 to: email,
-                subject: 'Password reset',
-                html: `<p>Vertifycation your email to sign up and login</p>
-                        <p>This link <b>expires in a 30 minutes.</b></p>
-                        <p><a href=${redirectUrl + "/" + _id + "/" + resetString}>here</a>
-                        to proceed </p>`
+                subject: '[Thông báo] - Lấy lại mật khẩu!',
+                html: `<p>Bạn hoặc ai đó đã sử dụng email: <h5>${email}</h5> để gửi yêu cầu lấy lại mật khẩu đăng nhập!</p> <br/>
+                    <p>Vui lòng truy cập đường dẫn: <a href=${redirectUrl + "/" + _id + "/" + resetString}>
+                    ${redirectUrl + "/" + _id + "/" + resetString}</a> để xác nhận yêu cầu.</p> <br/>
+                    <p> Lưu ý: Đường link chỉ được sử dụng 01 lần và có <h5>thời hạn trong 24 giờ</h5>.</p>
+                    <p>Sau thời gian trên yêu cầu sẽ bị xóa và bạn không thể truy cập để lấy lại mật khẩu</p>
+                    <p>Trân trọng cảm ơn,</p> <br/> <br/> <h5>------------------------------</h5> <br/>
+                    <span>Thanks and best regards, <br/>Development</span>`
             };
 
-            // hash the reset String
+            // Hash the reset String
             const saltRounds = 10;
             bcrypt.hash(resetString, saltRounds)
                 .then(data => {
                     const newPasswordReset = new PasswordReset({
                         userId: _id,
                         resetString: data,
-                        createAt: Date.now,
-                        expires: Date.now + 1800000,
+                        createAt: Date.now(),
+                        expiresAt: Date.now() + 86400000,
                     })
 
                     newPasswordReset.save()
@@ -123,39 +137,39 @@ const senResetEmail = ({ _id, email }, redirectUrl, res) => {
                             transporter.sendMail(mailOptions)
                                 .then(() => {
                                     res.json({
-                                        status: "PENDING",
-                                        message: "Password reset email sent!"
+                                        status: "Email đã được gửi!",
+                                        message: "Vui lòng kiểm tra hộp thư để xác nhận yêu cầu!"
                                     })
                                 })
                                 .catch(err => {
                                     console.log(err)
                                     res.json({
-                                        status: "FAILED",
-                                        message: "Password reset email fail!"
+                                        status: "Error",
+                                        message: "Gửi mail xác nhận không thành công!"
                                     })
                                 })
                         })
                         .catch(err => {
                             console.log(err)
                             res.json({
-                                status: "FAILED",
-                                message: "Couldn't save password reset data!"
+                                status: "Error",
+                                message: "Không thể lưu dữ liệu lấy lại mật khẩu!"
                             })
                         })
                 })
                 .catch(err => {
                     console.log(err);
                     res.json({
-                        status: "FAILED",
-                        message: "Error while hashing the password reset data!"
+                        status: "Error",
+                        message: "Có lỗi khi hash resetString!"
                     })
                 })
         })
         .catch(err => {
-            // Error while clearing existing records
+            console.log(err);
             res.json({
-                status: "FAILED",
-                message: "Error while clearing existing records!"
+                status: "Error",
+                message: "Có lỗi khi xóa yêu cầu lấy lại mật khẩu hết hạn!"
             })
         })
 }
@@ -164,175 +178,165 @@ class UserController {
 
     resetPassword(req, res) {
         let { userId, resetString, newPassword } = req.body;
-
         PasswordReset.find({ userId })
             .then(data => {
                 if (data.length > 0) {
-                    // password reset record exist so we proceed
 
+                    // password reset record exist so we proceed
                     const { expiresAt } = data[0];
                     const hashedResetString = data[0].resetString;
 
-                    if (expiresAt < Date.now) {
+                    if (expiresAt < Date.now()) {
                         PasswordReset.deleteOne({ userId })
                             .then(() => {
-                                // Reset record deleted successfully
                                 res.json({
-                                    status: "FAILED",
-                                    message: "Password reset link has expired!"
+                                    status: "Error",
+                                    message: "Yêu cầu lấy lại mật khẩu đã hết hạn!"
                                 })
                             })
                             .catch(err => {
                                 console.log(err);
                                 res.json({
-                                    status: "FAILED",
-                                    message: "Clearing password reset failed!"
+                                    status: "Error",
+                                    message: "Xóa dữ liệu trong PasswordReset không thành công!"
                                 })
                             })
                     } else {
-                        // Valid reset record exist so we validate the reset String
+                        // Compare resetString
                         bcrypt.compare(resetString, hashedResetString)
                             .then(data => {
                                 if (data) {
-                                    // hash password again
+                                    // Hash password again
                                     const saltRounds = 10;
                                     bcrypt.hash(newPassword, saltRounds)
                                         .then(data => {
-                                            // update user password
+                                            // Update user password
                                             User.updateOne({ _id: userId }, { password: data })
                                                 .then(() => {
                                                     // Update complete 
                                                     PasswordReset.deleteOne({ userId })
                                                         .then(() => {
-                                                            // both user record and reset password updated 
                                                             res.json({
                                                                 status: 'SUCCESS',
-                                                                message: 'cmm'
+                                                                message: 'ok'
                                                             })
                                                         })
                                                         .catch(err => {
                                                             console.log(err);
                                                             res.json({
-                                                                status: "FAILED",
-                                                                message: "Hashing password failed!"
+                                                                status: "Error",
+                                                                message: "Xóa dữ liệu trong PasswordReset không thành công!"
                                                             })
                                                         })
                                                 })
                                                 .catch(err => {
                                                     console.log(err);
                                                     res.json({
-                                                        status: "FAILED",
-                                                        message: "Hashing password failed!"
+                                                        status: "Error",
+                                                        message: "Cập nhật mật khẩu mới không thành công!"
                                                     })
                                                 })
                                         })
                                         .catch(err => {
                                             console.log(err);
                                             res.json({
-                                                status: "FAILED",
-                                                message: "Hashing password failed!"
+                                                status: "Error",
+                                                message: "Hash password không thành công!"
                                             })
                                         })
                                 } else {
-                                    // Existing record but incorrect reset strign password
                                     res.json({
-                                        status: "FAILED",
-                                        message: "Invalid password reset detail passed!"
+                                        status: "Error",
+                                        message: "ResetString không hợp lệ!"
                                     })
                                 }
                             })
                             .catch(err => {
                                 console.log(err);
                                 res.json({
-                                    status: "FAILED",
-                                    message: "Comparing password reset string failed!"
+                                    status: "Error",
+                                    message: "ResetString không hợp lệ!"
                                 })
                             })
                     }
                 } else {
                     res.json({
-                        status: "FAILED",
-                        message: "Password reset request not found!"
+                        status: "Error",
+                        message: "Không tìm thấy userId!"
                     })
                 }
             })
             .catch(err => {
                 console.log(err);
                 res.json({
-                    status: "FAILED",
-                    message: "Check for existing password reset record failed!"
+                    status: "Error",
+                    message: "Có lỗi khi tìm thông tin người dùng trong DB!"
                 })
             })
     }
 
     passwordReset(req, res) {
         const { email, redirectUrl } = req.body;
-
         User.find({ email })
             .then(data => {
                 if (data.length) {
                     if (!data[0].verified) {
                         res.json({
-                            status: "FAILED",
-                            message: "Email hasn't been verified yet!"
+                            status: "Error",
+                            message: "Tài khoản chưa được xác nhận!"
                         })
                     } else {
                         senResetEmail(data[0], redirectUrl, res);
                     }
                 } else {
                     res.json({
-                        status: "FAILED",
-                        message: "No account with email!"
+                        status: "Error",
+                        message: "Tài khoản không tồn tại!"
                     })
                 }
             })
             .catch(err => {
                 console.log(err);
                 res.json({
-                    status: "FAILED",
-                    message: "An error occurred while checking for existing user!"
+                    status: "Error",
+                    message: "Có lỗi khi tìm thông tin người dùng trong DB!"
                 })
             })
     }
 
     verify(req, res) {
         let { userId, uniqueString } = req.params;
-        console.log(userId);
         UserVertifycation.find({ userId })
             .then(data => {
-                console.log(data);
                 if (data.length) {
-                    // User verifycation record exist so we process
                     const { expiresAt } = data[0];
                     const hashedUniqueString = data[0].uniqueString;
+
                     // Checking for expires uniqueString 
                     if (expiresAt < Date.now()) {
-                        // Record has expired so we delete it 
                         UserVertifycation.deleteOne({ userId })
                             .then(() => {
                                 User.deleteOne({ _id: userId })
                                     .then(() => {
-                                        let message = 'Link has expired!';
+                                        let message = 'Liên kết đã hết hạn!';
                                         res.redirect(`/user/verified/error=true&message=${message}`);
                                     })
                                     .catch(err => {
                                         console.log(err);
-                                        let message = 'Clearing user with expires unique string failed!';
+                                        let message = 'Có lỗi khi xóa dữ liệu trong UserDB!';
                                         res.redirect(`/user/verified/error=true&message=${message}`);
                                     })
                             })
                             .catch(err => {
                                 console.log(err);
-                                let message = 'An error occured while clearing expires user vertification record!';
+                                let message = 'Có lỗi khi xóa dữ liệu trong UserVertifycationDB!';
                                 res.redirect(`/user/verified/error=true&message=${message}`);
                             })
                     } else {
-                        // Valid record exists so we validate the user string
-                        // First compare the hashed unique string
+                        // Compare the hashed unique string
                         bcrypt.hash(uniqueString, hashedUniqueString)
                             .then(data => {
                                 if (data) {
-                                    // UniqueString match
                                     User.updateOne({ _id: userId }, { verified: true })
                                         .then(() => {
                                             UserVertifycation.deleteOne({ userId })
@@ -341,34 +345,34 @@ class UserController {
                                                 })
                                                 .catch(err => {
                                                     console.log(err);
-                                                    let message = 'An error occured while finalizing successful verification!';
+                                                    let message = 'Có lỗi khi xóa dữ liệu trong UserVertifycationDB!';
                                                     res.redirect(`/user/verified/error=true&message=${message}`);
                                                 })
                                         })
                                         .catch(err => {
                                             console.log(err);
-                                            let message = 'An error occured while updating account!';
+                                            let message = 'Có lỗi khi cập nhật dữ liệu trong UserDB!';
                                             res.redirect(`/user/verified/error=true&message=${message}`);
                                         })
                                 } else {
-                                    // Existing record but incorrect verifycation detail passed
-                                    let message = 'Invalid verification detail passed. Check your inbox!';
+                                    let message = 'UniqueString không hợp lệ!';
                                     res.redirect(`/user/verified/error=true&message=${message}`);
                                 }
-                            }).catch(err => {
-                                let message = 'An error occured while comparing unique string!';
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                let message = 'Có lỗi khi hash uniqueString!';
                                 res.redirect(`/user/verified/error=true&message=${message}`);
                             })
                     }
                 } else {
-                    // User verifycation record doesn't exist
-                    let message = 'Account record does not exist or has been verified already!';
+                    let message = 'Không tìm thấy dữ liệu người dùng cần xác minh!';
                     res.redirect(`/user/verified/error=true&message=${message}`);
                 }
             })
             .catch(err => {
                 console.log(err);
-                let message = 'An error occurred while checking for existing user verification record!';
+                let message = 'Có lỗi khi tìm kiếm thông tin người dùng cần xác minh!';
                 res.redirect(`/user/verified/error=true&message=${message}`);
             })
     }
@@ -385,16 +389,16 @@ class UserController {
 
         if (name == "" || email == "" || password == "") {
             res.json({
-                status: "FAILED",
-                message: "Empty input!"
+                status: "Error",
+                message: "Không có thông tin được nhập!"
             })
         } else {
             User.find({ email })
                 .then(data => {
                     if (data.length) {
                         res.json({
-                            status: "FAILED",
-                            message: "Email already exists!"
+                            status: "Error",
+                            message: "Tài khoản đã tồn tại!"
                         })
                     } else {
                         const saltRounds = 10;
@@ -412,23 +416,23 @@ class UserController {
                                     })
                                     .catch(() => {
                                         res.json({
-                                            status: "FAILED",
-                                            message: "An error occurred while saving acount!"
+                                            status: "Error",
+                                            message: "Có lỗi khi lưu tài khoản mới!"
                                         })
                                     })
                             })
                             .catch(() => {
                                 res.json({
-                                    status: "FAILED",
-                                    message: "An error occurred while hashing password!"
+                                    status: "Error",
+                                    message: "Có lỗi khi hash mật khẩu!"
                                 })
                             })
                     }
                 })
                 .catch(() => {
                     res.json({
-                        status: "FAILED",
-                        message: "An error occurred while checking for acount!"
+                        status: "Error",
+                        message: "Có lỗi khi tìm kiếm email người dùng!"
                     })
                 })
         }
@@ -442,8 +446,8 @@ class UserController {
 
         if (email == "" || password == "") {
             res.json({
-                status: "FAILED",
-                message: "Empty input!"
+                status: "Error",
+                message: "Không có thông tin được nhập!"
             })
         } else {
             User.find({ email })
@@ -451,8 +455,8 @@ class UserController {
                     if (data.length) {
                         if (!data[0].verified) {
                             res.json({
-                                status: "FAILED",
-                                message: "Email hasn't been verified yet. Check your inbox!"
+                                status: "Error",
+                                message: "Tài khoản chưa được xác minh. Vui lòng kiểm tra email!"
                             })
                         } else {
                             const hashedPassword = data[0].password;
@@ -461,34 +465,35 @@ class UserController {
                                     if (data) {
                                         res.json({
                                             status: "SUCCESS",
-                                            message: "Login successful!",
+                                            message: "Đăng nhập thành công!",
                                             data: data
                                         })
                                     } else {
                                         res.json({
-                                            status: "FAILED",
-                                            message: "Incorrect password!"
+                                            status: "Error",
+                                            message: "Mật khẩu không chính xác!"
                                         })
                                     }
                                 })
                                 .catch(err => {
+                                    console.log(err);
                                     res.json({
-                                        status: "FAILED",
-                                        message: "An error occurred while comparing password!"
+                                        status: "Error",
+                                        message: "Có lỗi khi kiểm tra mật khẩu!"
                                     })
                                 })
                         }
                     } else {
                         res.json({
-                            status: "FAILED",
-                            message: "Account does not exist!"
+                            status: "Error",
+                            message: "Tài khoản không tồn tại!"
                         })
                     }
                 })
                 .catch(() => {
                     res.json({
-                        status: "FAILED",
-                        message: "An error occurred while checking for existing user!"
+                        status: "Error",
+                        message: "Có lỗi khi tìm kiếm email người dùng!"
                     })
                 })
         }
