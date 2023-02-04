@@ -7,10 +7,13 @@ const route = require('./routes')
 const app = express();
 const port = process.env.port || 3000;
 
+const session = require("express-session");
+app.use(session({ secret: "keyboard cat", resave: false, saveUninitialized: true }));
+
 // body parser 
 app.use(express.urlencoded({
     extended: true
-})); 
+}));
 app.use(express.json());
 
 // image, static public
