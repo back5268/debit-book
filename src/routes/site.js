@@ -5,7 +5,7 @@ const userController = require('../app/controller/UserController');
 
 router.post('/login', userController.login);
 router.post('/signup', userController.signup);
-router.post('/passwordReset', userController.passwordReset);
+router.post('/passwordResetRequest', userController.passwordResetRequest);
 router.post('/resetPassword', userController.resetPassword);
 router.get('/verify/:userId/:uniqueString', userController.verify);
 router.get('/verified', userController.verified);

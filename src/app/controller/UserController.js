@@ -44,13 +44,13 @@ const sendVertifycationEmail = ({ _id, email }, res) => {
         from: process.env.AUTH_EMAIL,
         to: email,
         subject: '[Thông báo] - Kích hoạt tài khoản!',
-        html: `<p>Bạn hoặc ai đó đã sử dụng email: <h5>${email}</h5> để tạo tài khoản!</p> <br/>
-            <p>Vui lòng truy cập đường dẫn: <a href=${currentUrl + "verify/" + _id + "/" + uniqueString}>
-            ${currentUrl + "verify/" + _id + "/" + uniqueString}</a> để kích hoạt tài khoản.</p> <br/>
-            <p> Lưu ý: Đường link chỉ được sử dụng 01 lần và có <h5>thời hạn trong 24 giờ</h5>.</p>
+        html: `<p>Bạn hoặc ai đó đã sử dụng email: <b>${email}</b> để tạo tài khoản!</p>
+            <p>Vui lòng truy cập vào đường dẫn: <a href=${currentUrl + "verify/" + _id + "/" + uniqueString}>
+            ${currentUrl + "verify/" + _id + "/" + uniqueString}</a> để kích hoạt.</p>
+            <p>Lưu ý: Đường link chỉ được sử dụng 01 lần và có <b>thời hạn trong 24 giờ.</b></p>
             <p>Sau thời gian trên hãy sử dụng chức năng quên mật khẩu để tiến hành tạo mới mật khẩu và kích hoạt tài khoản.</p>
-            <p>Trân trọng cảm ơn,</p> <br/> <br/> <h5>------------------------------</h5> <br/>
-            <span>Thanks and best regards, <br/>Development</span>`
+            <p>Trân trọng cảm ơn,</p> <br/> <p>------------------------------------------------------------</p>
+            <p>Thanks and best regards,</p> <p><i>Development</i></p>`
     };
 
     // Hash the uniqueString
@@ -112,13 +112,13 @@ const senResetEmail = ({ _id, email }, redirectUrl, res) => {
                 from: process.env.AUTH_EMAIL,
                 to: email,
                 subject: '[Thông báo] - Lấy lại mật khẩu!',
-                html: `<p>Bạn hoặc ai đó đã sử dụng email: <h5>${email}</h5> để gửi yêu cầu lấy lại mật khẩu đăng nhập!</p> <br/>
+                html: `<p>Bạn hoặc ai đó đã sử dụng email: <b>${email}</b> để gửi yêu cầu lấy lại mật khẩu đăng nhập!</p>
                     <p>Vui lòng truy cập đường dẫn: <a href=${redirectUrl + "/" + _id + "/" + resetString}>
                     ${redirectUrl + "/" + _id + "/" + resetString}</a> để xác nhận yêu cầu.</p> <br/>
-                    <p> Lưu ý: Đường link chỉ được sử dụng 01 lần và có <h5>thời hạn trong 24 giờ</h5>.</p>
-                    <p>Sau thời gian trên yêu cầu sẽ bị xóa và bạn không thể truy cập để lấy lại mật khẩu</p>
-                    <p>Trân trọng cảm ơn,</p> <br/> <br/> <h5>------------------------------</h5> <br/>
-                    <span>Thanks and best regards, <br/>Development</span>`
+                    <p>Lưu ý: Đường link chỉ được sử dụng 01 lần và có <b>thời hạn trong 24 giờ.</b></p>
+                    <p>Sau thời gian trên sẽ không thể truy cập để thực hiện yêu cầu lấy lại mật khẩu.</p>
+                    <p>Trân trọng cảm ơn,</p> <br/> <p>------------------------------------------------------------</p>
+                    <p>Thanks and best regards,</p> <p><i>Development</i></p>`
             };
 
             // Hash the reset String
@@ -275,7 +275,7 @@ class UserController {
             })
     }
 
-    passwordReset(req, res) {
+    passwordResetRequest(req, res) {
         const { email, redirectUrl } = req.body;
         User.find({ email })
             .then(data => {
@@ -440,7 +440,7 @@ class UserController {
 
     // Login
     login(req, res) {
-        let { email, password } = req.body;
+        let { email, password, captcha } = req.body;
         email = email.trim();
         password = password.trim();
 

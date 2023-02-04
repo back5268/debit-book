@@ -6,22 +6,13 @@ class SiteController {
     }
 
     login(req, res) {
-        res.send(`<form action="" method="post">
-    <input type="text" name="email"> <br>
-    <input type="text" name="password"> <br>
-    <button type="submit">Signup</button>
-</form>
-    `);
+        const captchaURL = `/captcha`;
+        res.render('login', { captchaURL });
     }
 
     signup(req, res) {
-        res.send(`<form action="" method="post">
-    <input type="text" name="name"> <br>
-    <input type="text" name="email"> <br>
-    <input type="text" name="password"> <br>
-    <button type="submit">Signup</button>
-</form>
-    `);
+        const captchaURL = `/captcha`;
+        res.render('signup', { captchaURL });
     }
 
 }

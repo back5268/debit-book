@@ -1,0 +1,49 @@
+<form id="login-form" action="/login" method="post">
+  <h3 class="heading">Đăng nhập</h3>
+  <p class="desc">đăng nhập sổ ghi nợ</p>
+  <div class="spacer"></div>
+  <div class="form-group">
+    <label for="email" class="form-label">Email</label>
+    <input
+      id="email"
+      name="email"
+      type="text"
+      placeholder="VD: email@domain.com"
+      class="form-control"
+    />
+    <span class="form-message"></span>
+  </div>
+
+  <div class="form-group">
+    <label for="password" class="form-label">Mật khẩu</label>
+    <input
+      id="password"
+      name="password"
+      type="password"
+      placeholder="Nhập mật khẩu"
+      class="form-control"
+    />
+    <span class="form-message"></span>
+  </div>
+
+  <div class="form-group">
+    <label for="captcha" class="form-label">Captcha:</label>
+    <input
+      id="captcha"
+      name="captcha"
+      type="text"
+      placeholder="Nhập mã captcha"
+    />
+    <img src="{{captchaURL}}" id="captcha-img" />
+    <button type="button" id="change-captcha">Đổi</button>
+  </div>
+  <button type="submit" class="form-submit">Submit</button>
+</form>
+
+<script>
+  document.getElementById("change-captcha").addEventListener("click", function()
+  { const xhr = new XMLHttpRequest(); xhr.open("GET", "/newCaptcha", true);
+  xhr.onload = function() { const response = JSON.parse(xhr.responseText);
+  document.getElementById("captcha-img").src =
+  `/captcha?text=${response.captcha}`; }; xhr.send(); });
+</script>
