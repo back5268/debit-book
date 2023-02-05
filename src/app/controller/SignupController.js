@@ -52,7 +52,7 @@ const sendVertifycationEmail = ({ _id, email }, res) => {
                 .then(() => {
                     transporter.sendMail(mailOptions)
                         .then(() => {
-                            let message = 'Xác nhận gửi yêu cầu đăng ký thành công, kiểm tra email để xác nhận!';
+                            let message = 'Yêu cầu xác thực tài khoản đã được gửi. Vui lòng kiểm tra email!';
                             res.render('verified', { message });
                         })
                         .catch(err => {
