@@ -41,7 +41,8 @@ class VerifycationController {
                                         .then(() => {
                                             UserVertifycation.deleteOne({ userId })
                                                 .then(() => {
-                                                    res.send('ok');
+                                                    let message = 'Tài khoản của bạn đã được kích hoạt thành công!';
+                                                    res.render('verified', { message });
                                                 })
                                                 .catch(err => {
                                                     console.log(err);
@@ -78,7 +79,7 @@ class VerifycationController {
     }
 
     verified(req, res) {
-        res.sendFile();
+        res.render('verified', { message });
     }
 
 }

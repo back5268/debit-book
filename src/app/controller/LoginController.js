@@ -33,11 +33,7 @@ class LoginController {
                                 bcrypt.compare(password, hashedPassword)
                                     .then(data => {
                                         if (data) {
-                                            res.json({
-                                                status: "SUCCESS",
-                                                message: "Đăng nhập thành công!",
-                                                data: data
-                                            })
+                                            res.render('home');
                                         } else {
                                             res.json({
                                                 status: "Error",

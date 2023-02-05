@@ -44,7 +44,7 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    {{!-- Validator({
+    Validator({
       form: '#login-form',
       formGroupSelector: '.form-group',
       errorSelector: '.form-message',
@@ -52,7 +52,7 @@
           Validator.isEmail('#email'),
           Validator.minLength('#password', 6),
       ],
-    }); --}}
+    });
     changeCaptcha();
   })
           

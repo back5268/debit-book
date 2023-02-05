@@ -6,7 +6,7 @@
     <div class="spacer"></div>
 
     <div class="form-group">
-      <label for="fullname" class="form-label">Tên đầy đủ</label>
+      <label for="name" class="form-label">Tên đầy đủ</label>
       <input
         id="name"
         name="name"
@@ -70,12 +70,12 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    {{!-- Validator({
+    Validator({
       form: '#signup-form',
       formGroupSelector: '.form-group',
       errorSelector: '.form-message',
       rules: [
-          Validator.isRequired('#fullname', 'Vui lòng nhập tên đầy đủ của bạn'),
+          Validator.isRequired('#name', 'Vui lòng nhập tên đầy đủ của bạn'),
           Validator.isEmail('#email'),
           Validator.minLength('#password', 6),
           Validator.isRequired('#password_confirmation'),
@@ -83,7 +83,7 @@
             return document.querySelector('#signup-form #password').value;
           }, 'Mật khẩu nhập lại không chính xác')
       ],
-    }); --}}
+    });
     changeCaptcha();
   });
 </script>

@@ -52,10 +52,8 @@ const sendVertifycationEmail = ({ _id, email }, res) => {
                 .then(() => {
                     transporter.sendMail(mailOptions)
                         .then(() => {
-                            res.json({
-                                status: "Email đã được gửi",
-                                message: "Vui lòng kiểm tra hộp thư để xác nhận tài khoản!"
-                            })
+                            let message = 'Xác nhận gửi yêu cầu đăng ký thành công, kiểm tra email để xác nhận!';
+                            res.render('verified', { message });
                         })
                         .catch(err => {
                             console.log(err);

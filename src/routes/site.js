@@ -28,6 +28,6 @@ router.post('/resetPassword', passwordResetController.resetPassword);
 router.get('/captcha', captchaController.captcha);
 router.get('/newCaptcha', captchaController.newCaptcha);
 
-router.get('/', siteController.index);
+router.get('/home', siteController.index);
 
 module.exports = router;
