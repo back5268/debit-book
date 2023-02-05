@@ -64,8 +64,7 @@ class LoginController {
                     })
             }
         } else {
-            const captchaURL = `/captcha`;
-            res.render('login', { captchaURL });
+            res.render('login');
         }
     }
 

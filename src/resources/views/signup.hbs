@@ -1,12 +1,12 @@
 <div class="main">
   <form action="/signup" method="POST" class="form" id="form">
     <h3 class="heading">Đăng ký</h3>
-    <p class="desc">đăng ký thành viên</p>
+    <p class="desc">Đăng ký thành viên</p>
 
     <div class="spacer"></div>
 
     <div class="form-group">
-      <label for="name" class="form-label">Tên đầy đủ</label>
+      <label for="name" class="form-label">Tên đầy đủ (*)</label>
       <input
         id="name"
         name="name"
@@ -18,7 +18,7 @@
     </div>
 
     <div class="form-group">
-      <label for="email" class="form-label">Email</label>
+      <label for="email" class="form-label">Email (*)</label>
       <input
         id="email"
         name="email"
@@ -30,7 +30,7 @@
     </div>
 
     <div class="form-group">
-      <label for="password" class="form-label">Mật khẩu</label>
+      <label for="password" class="form-label">Mật khẩu (*)</label>
       <input
         id="password"
         name="password"
@@ -42,29 +42,29 @@
     </div>
 
     <div class="form-group">
-      <label for="password_confirmation" class="form-label">Nhập lại mật khẩu</label>
-      <input
-        id="password_confirmation"
-        name="password_confirmation"
-        placeholder="Nhập lại mật khẩu"
-        type="password"
-        class="form-control"
-      />
-      <span class="form-message"></span>
-    </div>
-
-    <div class="form-group">
-      <label for="captcha" class="form-label">Captcha:</label>
-      <input
-        id="captcha"
-        name="captcha"
-        type="text"
-        placeholder="Nhập mã captcha"
-      />
-      <img src="{{captchaURL}}" id="captcha-img" />
-      <button type="button" id="change-captcha">Đổi</button>
+      <div class="svg-captcha">
+        <img src="{{ captchaURL }}" id="captcha-img" />
+        <div>
+          <div>
+            <input
+            id="captcha"
+            name="captcha"
+            type="text"
+            placeholder="Captcha"
+            class="captcha"
+            />
+            <button type="button" id="change-captcha">Đổi</button>
+          </div>
+          <span class="form-message"></span>
+        </div>
+      </div>
     </div>
     <button class="form-submit">Đăng ký</button>
+
+    <div class="spacer mt-4"></div>
+    <div class="row">
+      <div class="col-12"><a href="/login">Quay lại đăng nhập</a></div>
+    </div>
   </form>
 </div>
 
@@ -78,10 +78,6 @@
           Validator.isRequired('#name', 'Vui lòng nhập tên đầy đủ của bạn'),
           Validator.isEmail('#email'),
           Validator.minLength('#password', 6),
-          Validator.isRequired('#password_confirmation'),
-          Validator.isConfirmed('#password_confirmation', function () {
-            return document.querySelector('#form #password').value;
-          }, 'Mật khẩu nhập lại không chính xác')
       ],
     });
     changeCaptcha();

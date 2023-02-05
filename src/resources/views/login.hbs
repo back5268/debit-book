@@ -1,10 +1,11 @@
 <div class="main">
-  <form class="form" id="login-form" action="/login" method="post">
+  <form id="form" action="/login" method="post" class="form">
+
     <h3 class="heading">Đăng nhập</h3>
-    <p class="desc">đăng nhập sổ ghi nợ</p>
-    <div class="spacer"></div>
+    <p class="desc">Đăng nhập sổ ghi nợ</p>
+
     <div class="form-group">
-      <label for="email" class="form-label">Email</label>
+      <label for="email" class="form-label">Email (*)</label>
       <input
         id="email"
         name="email"
@@ -16,7 +17,7 @@
     </div>
 
     <div class="form-group">
-      <label for="password" class="form-label">Mật khẩu</label>
+      <label for="password" class="form-label">Mật khẩu (*)</label>
       <input
         id="password"
         name="password"
@@ -28,30 +29,47 @@
     </div>
 
     <div class="form-group">
-      <label for="captcha" class="form-label">Captcha:</label>
-      <input
-        id="captcha"
-        name="captcha"
-        type="text"
-        placeholder="Nhập mã captcha"
-      />
-      <img src="{{captchaURL}}" id="captcha-img" />
-      <button type="button" id="change-captcha">Đổi</button>
+      <div class="svg-captcha">
+        <img src="{{ captchaURL }}" id="captcha-img" />
+        <div>
+          <div>
+            <input
+            id="captcha"
+            name="captcha"
+            type="text"
+            placeholder="Captcha"
+            class="captcha"
+            />
+            <button type="button" id="change-captcha">Đổi</button>
+          </div>
+          <span class="form-message"></span>
+        </div>
+      </div>
     </div>
-    <button type="submit" class="form-submit">Submit</button>
-    <a href="/passwordrr">Quên mật khẩu</a>
-    <a href="/signup">Đăng ký</a>
+    <button type="submit" class="form-submit">Đăng nhập</button>
+    
+    <div class="spacer mt-4"></div>
+    <div class="row">
+      <div class="col-6 col-lg-6">
+        <a href="/passwordrr">Quên mật khẩu</a>
+      </div>
+      <div class="col-6 col-lg-6">
+        <a href="/signup">Đăng ký</a>
+      </div>
+    </div>
   </form>
 </div>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     Validator({
-      form: '#login-form',
+      form: '#form',
       formGroupSelector: '.form-group',
       errorSelector: '.form-message',
       rules: [
+          Validator.isRequired('#email', 'Vui lòng nhập email'),
           Validator.isEmail('#email'),
+          Validator.isRequired('#password', 'Vui lòng nhập mật khẩu'),
           Validator.minLength('#password', 6),
       ],
     });
