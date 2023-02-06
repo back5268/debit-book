@@ -11,6 +11,7 @@ const signupController = require('../app/controller/SignupController');
 // Login
 router.post('/login', loginController.loginPost);
 router.get('/login', loginController.loginGet);
+router.get('/logout', loginController.logout);
 
 // Signup
 router.post('/signup', signupController.signupPost);
@@ -30,6 +31,7 @@ router.get('/captcha', captchaController.captcha);
 router.get('/newCaptcha', captchaController.newCaptcha);
 
 router.get('/notification', siteController.notification);
-router.get('/home', siteController.index);
+router.get('/home', siteController.home);
+router.get('/', siteController.index);
 
 module.exports = router;

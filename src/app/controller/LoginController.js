@@ -15,6 +15,7 @@ class LoginController {
             password = password.trim();
             User.find({ email })
                 .then(data => {
+                    const user = data[0];
                     if (data.length) {
                         if (!data[0].verified) {
                             const error = 'Tài khoản chưa được xác minh. Vui lòng kiểm tra emai!';
@@ -24,7 +25,9 @@ class LoginController {
                             bcrypt.compare(password, hashedPassword)
                                 .then(data => {
                                     if (data) {
-                                        res.render('home');
+                                        req.session.user = user;
+                                        const { name } = user;
+                                        res.render('home', { name });
                                     } else {
                                         const error = 'Mật khẩu không chính xác!';
                                         res.render('login', { error, captchaURL });
@@ -52,7 +55,17 @@ class LoginController {
             res.render('login', { error, captchaURL });
         }
     }
-    
+
+    logout(req, res) {
+        req.session.destroy(err => {
+            if (err) {
+                res.status(500).send('Error while logging out');
+            } else {
+                res.send('Logout successful');
+            }
+        });
+    }
+
 }
 
 module.exports = new LoginController;

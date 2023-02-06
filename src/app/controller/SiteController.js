@@ -1,12 +1,20 @@
 class SiteController {
 
     // [GET] /home
-    index(req, res) {
+    home(req, res) {
         res.render('home');
     }
 
     notification(req, res) {
         res.render('notification', { message });
+    }
+
+    index(req, res) {
+        if (req.session.user) {
+            res.render('home');
+        } else {
+            res.render('introduction');
+        }
     }
 
 }

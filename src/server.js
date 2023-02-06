@@ -7,8 +7,15 @@ const route = require('./routes')
 const app = express();
 const port = process.env.port || 3000;
 
-const session = require("express-session");
-app.use(session({ secret: "keyboard cat", resave: false, saveUninitialized: true }));
+const session = require('express-session');
+app.use(session({ 
+    secret: 'secret-key', 
+    resave: false, 
+    saveUninitialized: true,
+    cookie: { 
+        maxAge: 30 * 60 * 1000 // 30 minute
+    }
+}));
 
 // body parser 
 app.use(express.urlencoded({
