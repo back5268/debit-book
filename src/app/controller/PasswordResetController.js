@@ -47,8 +47,8 @@ const senResetEmail = ({ _id, email }, res) => {
                 to: email,
                 subject: '[Thông báo] - Lấy lại mật khẩu!',
                 html: `<p>Bạn hoặc ai đó đã sử dụng email: <b>${email}</b> để gửi yêu cầu lấy lại mật khẩu đăng nhập!</p>
-                    <p>Vui lòng truy cập đường dẫn: <a href=${currentUrl + "resetPassword/" + _id + "/" + resetString}>
-                    ${currentUrl + "resetPassword/" + _id + "/" + resetString}</a> để xác nhận yêu cầu.</p> <br/>
+                    <p>Vui lòng truy cập đường dẫn: <a href=${currentUrl + "resetPassword/" + _id + "/" + resetString + "/" + email}>
+                    ${currentUrl + "resetPassword/" + _id + "/" + resetString + "/"}</a> để xác nhận yêu cầu.</p> <br/>
                     <p>Lưu ý: Đường link chỉ được sử dụng 01 lần và có <b>thời hạn trong 24 giờ.</b></p>
                     <p>Sau thời gian trên sẽ không thể truy cập để thực hiện yêu cầu lấy lại mật khẩu.</p>
                     <p>Trân trọng cảm ơn,</p> <br/> <p>------------------------------------------------------------</p>
@@ -205,15 +205,15 @@ class PasswordResetController {
                     })
                 })
         } else {
-            res.redirect(`${currentUrl + "resetPassword/" + userId + "/" + resetString}`);
+            res.redirect(`${currentUrl + "resetPassword/" + userId + "/" + resetString + "/" + email}`);
         }
 
     }
 
     getReset(req, res) {
-        let { userId, resetString } = req.params;
+        let { userId, resetString, email } = req.params;
         const captchaURL = `/captcha`;
-        res.render('resetPassword', { captchaURL, userId, resetString });
+        res.render('resetPassword', { captchaURL, userId, resetString, email });
     }
 
     passwordrr(req, res) {

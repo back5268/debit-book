@@ -13,61 +13,42 @@ class LoginController {
         if (captcha === req.session.captcha) {
             email = email.trim();
             password = password.trim();
-
-            if (email == "" || password == "") {
-                res.json({
-                    status: "Error",
-                    message: "Không có thông tin được nhập!"
-                })
-            } else {
-                User.find({ email })
-                    .then(data => {
-                        if (data.length) {
-                            if (!data[0].verified) {
-                                res.json({
-                                    status: "Error",
-                                    message: "Tài khoản chưa được xác minh. Vui lòng kiểm tra email!"
-                                })
-                            } else {
-                                const hashedPassword = data[0].password;
-                                bcrypt.compare(password, hashedPassword)
-                                    .then(data => {
-                                        if (data) {
-                                            res.render('home');
-                                        } else {
-                                            res.json({
-                                                status: "Error",
-                                                message: "Mật khẩu không chính xác!"
-                                            })
-                                        }
-                                    })
-                                    .catch(err => {
-                                        console.log(err);
-                                        res.json({
-                                            status: "Error",
-                                            message: "Có lỗi khi kiểm tra mật khẩu!"
-                                        })
-                                    })
-                            }
+            User.find({ email })
+                .then(data => {
+                    if (data.length) {
+                        if (!data[0].verified) {
+                            let message = 'Tài khoản chưa được xác minh. Vui lòng kiểm tra emai!';
+                            res.render('verified', { message });
                         } else {
-                            res.json({
-                                status: "Error",
-                                message: "Tài khoản không tồn tại!"
-                            })
+                            const hashedPassword = data[0].password;
+                            bcrypt.compare(password, hashedPassword)
+                                .then(data => {
+                                    if (data) {
+                                        res.render('home');
+                                    } else {
+                                        let message = 'Mật khẩu không chính xác!';
+                                        res.render('verified', { message });
+                                    }
+                                })
+                                .catch(err => {
+                                    console.log('Có lỗi khi kiểm tra mật khẩu!')
+                                    console.log(err);
+                                })
                         }
-                    })
-                    .catch(() => {
-                        res.json({
-                            status: "Error",
-                            message: "Có lỗi khi tìm kiếm email người dùng!"
-                        })
-                    })
-            }
+                    } else {
+                        let message = 'Tài khoản không tồn tại!';
+                        res.render('verified', { message });
+                    }
+                })
+                .catch((err) => {
+                    console.log('Có lỗi khi kiểm tra email!');
+                    console.log(err);
+                })
+
         } else {
             res.render('login');
         }
     }
-
 }
 
 module.exports = new LoginController;
