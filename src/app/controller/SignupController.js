@@ -1,12 +1,14 @@
 require('dotenv').config();
 const User = require('../models/User');
-const UserVertifycation = require('../models/UserVertifycation');
+const UserVertification = require('../models/UserVertification');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const { v4: uuidv4 } = require('uuid');
+const currentUrl = 'http://localhost:3000/';
+const captchaURL = `/captcha`;
 
 // Nodemailer
-let transporter = nodemailer.createTransport({
+const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
         user: process.env.AUTH_EMAIL,
@@ -14,10 +16,7 @@ let transporter = nodemailer.createTransport({
     }
 })
 
-const sendVertifycationEmail = ({ _id, email }, res) => {
-
-    // Url to be used in the email
-    const currentUrl = 'http://localhost:3000/';
+const sendVerification = ({ _id, email }, res) => {
     const uniqueString = uuidv4() + _id;
 
     // Mail content
@@ -39,51 +38,44 @@ const sendVertifycationEmail = ({ _id, email }, res) => {
     bcrypt.hash(uniqueString, saltRounds)
         .then(data => {
 
-            // Crate newVertifycation
-            const newVertifycation = UserVertifycation({
+            // Crate newVertification
+            const newVertification = UserVertification({
                 userId: _id,
                 uniqueString: data,
                 createAt: Date.now(),
                 expiresAt: Date.now() + 86400000,
             })
 
-            // Save newVertifycation at DB
-            newVertifycation.save()
+            // Save newVertification at DB
+            newVertification.save()
                 .then(() => {
                     transporter.sendMail(mailOptions)
                         .then(() => {
-                            let message = 'Yêu cầu xác thực tài khoản đã được gửi. Vui lòng kiểm tra email!';
-                            res.render('verified', { message });
+                            const message = 'Yêu cầu xác thực tài khoản đã được gửi. Vui lòng kiểm tra email!';
+                            res.render('notification', { message });
                         })
                         .catch(err => {
                             console.log(err);
-                            res.json({
-                                status: "Error",
-                                message: "Gửi mail không thành công!"
-                            })
+                            const message = 'Gửi mail không thành công!';
+                            res.render('notification', { message });
                         })
                 })
                 .catch(err => {
                     console.log(err);
-                    res.json({
-                        status: "Error",
-                        message: "Không thể lưu xác nhận email!"
-                    })
+                    const message = 'Không thể lưu xác nhận mail!';
+                    res.render('notification', { message });
                 })
         })
-        .catch((err) => {
+        .catch(err => {
             console.log(err);
-            res.json({
-                status: "Error",
-                message: "Có lỗi khi hash uniqueString!"
-            })
+            const message = 'Có lỗi xảy ra khi hash uniqueString!';
+            res.render('notification', { message });
         })
 }
 
 class SignupController {
 
     signupGet(req, res) {
-        const captchaURL = `/captcha`;
         res.render('signup', { captchaURL });
     }
 
@@ -94,58 +86,46 @@ class SignupController {
             email = email.trim();
             password = password.trim();
 
-            if (name == "" || email == "" || password == "") {
-                res.json({
-                    status: "Error",
-                    message: "Không có thông tin được nhập!"
-                })
-            } else {
-                User.find({ email })
-                    .then(data => {
-                        if (data.length) {
-                            res.json({
-                                status: "Error",
-                                message: "Tài khoản đã tồn tại!"
-                            })
-                        } else {
-                            const saltRounds = 10;
-                            bcrypt.hash(password, saltRounds)
-                                .then(data => {
-                                    const newUser = new User({
-                                        name,
-                                        email,
-                                        password: data,
-                                        verified: false,
-                                    });
-                                    newUser.save()
-                                        .then(data => {
-                                            sendVertifycationEmail(data, res);
-                                        })
-                                        .catch(() => {
-                                            res.json({
-                                                status: "Error",
-                                                message: "Có lỗi khi lưu tài khoản mới!"
-                                            })
-                                        })
-                                })
-                                .catch(() => {
-                                    res.json({
-                                        status: "Error",
-                                        message: "Có lỗi khi hash mật khẩu!"
+            User.find({ email })
+                .then(data => {
+                    if (data.length) {
+                        const error = 'Tài khoản đã tồn tại!';
+                        res.render('signup', { error, captchaURL });
+                    } else {
+                        const saltRounds = 10;
+                        bcrypt.hash(password, saltRounds)
+                            .then(data => {
+                                const newUser = new User({
+                                    name,
+                                    email,
+                                    password: data,
+                                    verified: false,
+                                });
+                                newUser.save()
+                                    .then(data => {
+                                        sendVerification(data, res);
                                     })
-                                })
-                        }
-                    })
-                    .catch(() => {
-                        res.json({
-                            status: "Error",
-                            message: "Có lỗi khi tìm kiếm email người dùng!"
-                        })
-                    })
-            }
+                                    .catch(err => {
+                                        console.log(err);
+                                        const error = 'Tài khoản của bạn không thể xác nhận!';
+                                        res.render('signup', { error, captchaURL });
+                                    })
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                const error = 'Tài khoản của bạn không thể xác nhận!';
+                                res.render('signup', { error, captchaURL });
+                            })
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                    const error = 'Tài khoản của bạn không thể xác nhận!';
+                    res.render('signup', { error, captchaURL });
+                })
         } else {
-            const captchaURL = `/captcha`;
-            res.render('signup', { captchaURL });
+            const error = 'Mã captcha không đúng!';
+            res.render('signup', { error, captchaURL });
         }
     }
 

@@ -3,7 +3,7 @@
 
     <h3 class="heading">Đăng nhập</h3>
     <p class="desc">Đăng nhập sổ ghi nợ</p>
-    <span class="err">{{ err }}</span>
+    <span class="err">{{ error }}</span>
 
     <div class="form-group mt-4">
       <label for="email" class="form-label">Email (*)</label>
@@ -33,7 +33,6 @@
       <div class="svg-captcha">
         <img src="{{ captchaURL }}" id="captcha-img" />
         <div>
-          <div>
             <input
             id="captcha"
             name="captcha"
@@ -43,8 +42,6 @@
             />
             <button type="button" id="change-captcha">Đổi</button>
           </div>
-          <span class="form-message"></span>
-        </div>
       </div>
     </div>
     <button type="submit" class="form-submit">Đăng nhập</button>

@@ -1,23 +1,13 @@
-// env variables
 require('dotenv').config();
-
-// MongoDB user
 const User = require('../models/User');
 const PasswordReset = require('../models/PasswordReset');
-
-// Password handle
 const bcrypt = require('bcrypt');
-
-// Email handler
 const nodemailer = require('nodemailer');
-
-// Unique string
 const { v4: uuidv4 } = require('uuid');
-
 const currentUrl = 'http://localhost:3000/';
+const captchaURL = `/captcha`;
 
-// Nodemailer
-let transporter = nodemailer.createTransport({
+const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
         user: process.env.AUTH_EMAIL,
@@ -36,8 +26,8 @@ transporter.verify((err, success) => {
 
 // Sent password reset email
 const senResetEmail = ({ _id, email }, res) => {
-
     const resetString = uuidv4() + _id;
+    const error = 'noError';
 
     // Clear all existing records
     PasswordReset.deleteMany({ userId: _id })
@@ -47,7 +37,7 @@ const senResetEmail = ({ _id, email }, res) => {
                 to: email,
                 subject: '[Thông báo] - Lấy lại mật khẩu!',
                 html: `<p>Bạn hoặc ai đó đã sử dụng email: <b>${email}</b> để gửi yêu cầu lấy lại mật khẩu đăng nhập!</p>
-                    <p>Vui lòng truy cập đường dẫn: <a href=${currentUrl + "resetPassword/" + _id + "/" + resetString + "/" + email}>
+                    <p>Vui lòng truy cập đường dẫn: <a href=${currentUrl + "resetPassword/" + _id + "/" + resetString + "/" + email + "/" + error}>
                     ${currentUrl + "resetPassword/" + _id + "/" + resetString + "/"}</a> để xác nhận yêu cầu.</p> <br/>
                     <p>Lưu ý: Đường link chỉ được sử dụng 01 lần và có <b>thời hạn trong 24 giờ.</b></p>
                     <p>Sau thời gian trên sẽ không thể truy cập để thực hiện yêu cầu lấy lại mật khẩu.</p>
@@ -70,46 +60,39 @@ const senResetEmail = ({ _id, email }, res) => {
                         .then(() => {
                             transporter.sendMail(mailOptions)
                                 .then(() => {
-                                    let message = 'Yêu cầu lấy lại mật khẩu đã được gửi. Vui lòng kiểm tra email để xác nhận!';
-                                    res.render('verified', { message });
+                                    const message = 'Yêu cầu lấy lại mật khẩu đã được gửi. Vui lòng kiểm tra email để xác nhận!';
+                                    res.render('notification', { message });
                                 })
                                 .catch(err => {
                                     console.log(err)
-                                    res.json({
-                                        status: "Error",
-                                        message: "Gửi mail xác nhận không thành công!"
-                                    })
+                                    const message = 'Gửi mail xác nhận không thành công!';
+                                    res.render('notification', { message });
                                 })
                         })
                         .catch(err => {
                             console.log(err)
-                            res.json({
-                                status: "Error",
-                                message: "Không thể lưu dữ liệu lấy lại mật khẩu!"
-                            })
+                            const message = 'Không thể lưu dữ liệu!';
+                            res.render('notification', { message });
                         })
                 })
                 .catch(err => {
                     console.log(err);
-                    res.json({
-                        status: "Error",
-                        message: "Có lỗi khi hash resetString!"
-                    })
+                    const message = 'Có lỗi xảy ra khi hash resetString!';
+                    res.render('notification', { message });
                 })
         })
         .catch(err => {
             console.log(err);
-            res.json({
-                status: "Error",
-                message: "Có lỗi khi xóa yêu cầu lấy lại mật khẩu hết hạn!"
-            })
+            const message = 'Có lỗi xảy ra khi xóa dữ liệu PasswordResetDB!';
+            res.render('notification', { message });
         })
 }
 
 class PasswordResetController {
 
     resetPassword(req, res) {
-        let { userId, resetString, password, captcha } = req.body;
+        let { userId, resetString, password, captcha, email } = req.body;
+        console.log('Email' + email);
         if (captcha === req.session.captcha) {
             PasswordReset.find({ userId })
                 .then(data => {
@@ -122,17 +105,13 @@ class PasswordResetController {
                         if (expiresAt < Date.now()) {
                             PasswordReset.deleteOne({ userId })
                                 .then(() => {
-                                    res.json({
-                                        status: "Error",
-                                        message: "Yêu cầu lấy lại mật khẩu đã hết hạn!"
-                                    })
+                                    const message = 'Yêu cầu lấy lại mật khẩu đã hết hạn!';
+                                    res.render('notification', { message });
                                 })
                                 .catch(err => {
                                     console.log(err);
-                                    res.json({
-                                        status: "Error",
-                                        message: "Xóa dữ liệu trong PasswordReset không thành công!"
-                                    })
+                                    const message = 'Xóa dữ liệu không thành công!';
+                                    res.render('notification', { message });
                                 })
                         } else {
                             // Compare resetString
@@ -149,71 +128,58 @@ class PasswordResetController {
                                                         // Update complete 
                                                         PasswordReset.deleteOne({ userId })
                                                             .then(() => {
-                                                                let message = 'Đổi mật khẩu thành công!';
-                                                                res.render('verified', { message });
+                                                                const message = 'Đổi mật khẩu thành công!';
+                                                                res.render('notification', { message });
                                                             })
                                                             .catch(err => {
                                                                 console.log(err);
-                                                                res.json({
-                                                                    status: "Error",
-                                                                    message: "Xóa dữ liệu trong PasswordReset không thành công!"
-                                                                })
+                                                                const message = 'Xóa dữ liệu không thành công!';
+                                                                res.render('notification', { message });
                                                             })
                                                     })
                                                     .catch(err => {
                                                         console.log(err);
-                                                        res.json({
-                                                            status: "Error",
-                                                            message: "Cập nhật mật khẩu mới không thành công!"
-                                                        })
+                                                        const message = 'Cập nhật mật khẩu mới không thành công!';
+                                                        res.render('notification', { message });
                                                     })
                                             })
                                             .catch(err => {
                                                 console.log(err);
-                                                res.json({
-                                                    status: "Error",
-                                                    message: "Hash password không thành công!"
-                                                })
+                                                const message = 'Hash pasword không thành công!';
+                                                res.render('notification', { message });
                                             })
                                     } else {
-                                        res.json({
-                                            status: "Error",
-                                            message: "ResetString không hợp lệ!"
-                                        })
+                                        const message = 'ResetString không đúng!';
+                                        res.render('notification', { message });
                                     }
                                 })
                                 .catch(err => {
                                     console.log(err);
-                                    res.json({
-                                        status: "Error",
-                                        message: "ResetString không hợp lệ!"
-                                    })
+                                    const message = 'ResetString không đúng!';
+                                    res.render('notification', { message });
                                 })
                         }
                     } else {
-                        res.json({
-                            status: "Error",
-                            message: "Không tìm thấy userId!"
-                        })
+                        const message = 'Không tìm thấy userId!';
+                        res.render('notification', { message });
                     }
                 })
                 .catch(err => {
                     console.log(err);
-                    res.json({
-                        status: "Error",
-                        message: "Có lỗi khi tìm thông tin người dùng trong DB!"
-                    })
+                    const message = 'Có lỗi xảy ra khi tìm kiếm thông tin người dùng!';
+                    res.render('notification', { message });
                 })
         } else {
-            res.redirect(`${currentUrl + "resetPassword/" + userId + "/" + resetString + "/" + email}`);
+            const error = 'Mã captcha không đúng!';
+            res.redirect(`${currentUrl + "resetPassword/" + userId + "/" + resetString + "/" + email + "/" + error}`);
         }
 
     }
 
     getReset(req, res) {
-        let { userId, resetString, email } = req.params;
-        const captchaURL = `/captcha`;
-        res.render('resetPassword', { captchaURL, userId, resetString, email });
+        let { userId, resetString, email, error } = req.params;
+        if (error === 'noError') error = '';
+        res.render('resetPassword', { userId, resetString, email, error, captchaURL });
     }
 
     passwordrr(req, res) {
@@ -223,36 +189,28 @@ class PasswordResetController {
                 .then(data => {
                     if (data.length) {
                         if (!data[0].verified) {
-                            res.json({
-                                status: "Error",
-                                message: "Tài khoản chưa được xác nhận!"
-                            })
+                            const error = 'Tài khoản chưa được xác nhận!';
+                            res.render('passwordrr', { error, captchaURL });
                         } else {
                             senResetEmail(data[0], res);
                         }
                     } else {
-                        res.json({
-                            status: "Error",
-                            message: "Tài khoản không tồn tại!"
-                        })
+                        const error = 'Tài khoản không tồn tại!';
+                        res.render('passwordrr', { error, captchaURL });
                     }
                 })
                 .catch(err => {
                     console.log(err);
-                    res.json({
-                        status: "Error",
-                        message: "Có lỗi khi tìm thông tin người dùng trong DB!"
-                    })
+                    const message = 'Có lỗi khi tìm kiếm thông tin người dùng!';
+                    res.render('notification', { message });
                 })
         } else {
-            const captchaURL = `/captcha`;
-            res.render('passwordrr', { captchaURL });
+            const error = 'Mã captcha không đúng!';
+            res.render('passwordrr', { error, captchaURL });
         }
-
     }
 
     getRequest(req, res) {
-        const captchaURL = `/captcha`;
         res.render('passwordrr', { captchaURL });
     }
 

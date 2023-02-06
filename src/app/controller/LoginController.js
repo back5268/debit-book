@@ -1,10 +1,10 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
+const captchaURL = `/captcha`;
 
 class LoginController {
 
     loginGet(req, res) {
-        const captchaURL = `/captcha`;
         res.render('login', { captchaURL });
     }
 
@@ -17,8 +17,8 @@ class LoginController {
                 .then(data => {
                     if (data.length) {
                         if (!data[0].verified) {
-                            let message = 'Tài khoản chưa được xác minh. Vui lòng kiểm tra emai!';
-                            res.render('verified', { message });
+                            const error = 'Tài khoản chưa được xác minh. Vui lòng kiểm tra emai!';
+                            res.render('login', { error, captchaURL });
                         } else {
                             const hashedPassword = data[0].password;
                             bcrypt.compare(password, hashedPassword)
@@ -26,29 +26,33 @@ class LoginController {
                                     if (data) {
                                         res.render('home');
                                     } else {
-                                        let message = 'Mật khẩu không chính xác!';
-                                        res.render('verified', { message });
+                                        const error = 'Mật khẩu không chính xác!';
+                                        res.render('login', { error, captchaURL });
                                     }
                                 })
                                 .catch(err => {
-                                    console.log('Có lỗi khi kiểm tra mật khẩu!')
                                     console.log(err);
+                                    const error = 'Tài khoản hoặc mật khẩu không chính xác!';
+                                    res.render('login', { error, captchaURL });
                                 })
                         }
                     } else {
-                        let message = 'Tài khoản không tồn tại!';
-                        res.render('verified', { message });
+                        const error = 'Tài khoản không tồn tại!';
+                        res.render('login', { error, captchaURL });
                     }
                 })
                 .catch((err) => {
-                    console.log('Có lỗi khi kiểm tra email!');
                     console.log(err);
+                    const error = 'Tài khoản hoặc mật khẩu không chính xác!';
+                    res.render('login', { error, captchaURL });
                 })
 
         } else {
-            res.render('login');
+            const error = 'Mã captcha không đúng!';
+            res.render('login', { error, captchaURL });
         }
     }
+    
 }
 
 module.exports = new LoginController;

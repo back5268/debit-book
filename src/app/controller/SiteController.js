@@ -5,6 +5,10 @@ class SiteController {
         res.render('home');
     }
 
+    notification(req, res) {
+        res.render('notification', { message });
+    }
+
 }
 
 module.exports = new SiteController;

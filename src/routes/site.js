@@ -4,7 +4,7 @@ const router = express.Router();
 const siteController = require('../app/controller/SiteController');
 const captchaController = require('../app/controller/CaptchaController');
 const passwordResetController = require('../app/controller/PasswordResetController');
-const verifycationController = require('../app/controller/VerifycationController');
+const verificationController = require('../app/controller/VerificationController');
 const loginController = require('../app/controller/LoginController');
 const signupController = require('../app/controller/SignupController');
 
@@ -16,20 +16,20 @@ router.get('/login', loginController.loginGet);
 router.post('/signup', signupController.signupPost);
 router.get('/signup', signupController.signupGet);
 
-// Verifycation
-router.get('/verify/:userId/:uniqueString', verifycationController.verify);
-router.get('/verified', verifycationController.verified);
+// Verification
+router.get('/verify/:userId/:uniqueString', verificationController.verify);
 
 // PasswordReset
 router.post('/passwordrr', passwordResetController.passwordrr);
 router.get('/passwordrr', passwordResetController.getRequest);
 router.post('/resetPassword', passwordResetController.resetPassword);
-router.get('/resetPassword/:userId/:resetString/:email', passwordResetController.getReset);
+router.get('/resetPassword/:userId/:resetString/:email/:error', passwordResetController.getReset);
 
 // Captcha
 router.get('/captcha', captchaController.captcha);
 router.get('/newCaptcha', captchaController.newCaptcha);
 
+router.get('/notification', siteController.notification);
 router.get('/home', siteController.index);
 
 module.exports = router;
