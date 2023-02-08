@@ -1,8 +1,16 @@
+const captchaURL = `/captcha`;
+
 class SiteController {
 
     // [GET] /home
     home(req, res) {
-        res.render('home');
+        if (req.session.userName) {
+            const userName = req.session.userName;
+            const userId = req.session.userId;
+            res.render('home', { userId, userName });
+        } else {
+            res.render('login', { captchaURL });
+        }
     }
 
     notification(req, res) {
@@ -10,10 +18,12 @@ class SiteController {
     }
 
     index(req, res) {
-        if (req.session.user) {
-            res.render('home');
+        if (req.session.userName) {
+            const userName = req.session.userName;
+            const userId = req.session.userId;
+            res.render('home', { userId, userName });
         } else {
-            res.render('introduction');
+            res.render('login', { captchaURL });
         }
     }
 

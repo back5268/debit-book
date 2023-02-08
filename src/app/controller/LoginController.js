@@ -25,9 +25,11 @@ class LoginController {
                             bcrypt.compare(password, hashedPassword)
                                 .then(data => {
                                     if (data) {
-                                        req.session.user = user;
-                                        const { name } = user;
-                                        res.render('home', { name });
+                                        req.session.userName = user.name;
+                                        req.session.userId = user._id;
+                                        const userName = req.session.userName;
+                                        const userId = req.session.userId;
+                                        res.render('home', { userName, userId });
                                     } else {
                                         const error = 'Mật khẩu không chính xác!';
                                         res.render('login', { error, captchaURL });
@@ -61,7 +63,7 @@ class LoginController {
             if (err) {
                 res.status(500).send('Error while logging out');
             } else {
-                res.send('Logout successful');
+                res.render('login', { captchaURL });
             }
         });
     }
