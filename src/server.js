@@ -7,6 +7,9 @@ const route = require('./routes')
 const app = express();
 const port = process.env.port || 3000;
 
+const db = require('./config/db.js');
+db.connect();
+
 const session = require('express-session');
 app.use(session({ 
     secret: 'secret-key', 

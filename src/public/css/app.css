@@ -12,6 +12,7 @@
     --danger-color: #f33a58;
 
     --tran-05: all 0.3s ease;
+    --tran-04: all 1s ease;
 } 
 
 * {
@@ -227,24 +228,13 @@ header form button {
     width: 208px;
     height: 100%;
     padding: 16px;
+    background-color: var(--bg-color);
     transition: var(--tran-05);
-    background-color: #343A40;
 }
 
 .sidebar.close {
     width: 56px;
-    background-color: #343A40;
-}
-
-.sidebar .toggle {
-    position: absolute;
-    top: 12px;
-    left: 78%;
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: var(--tran-05);
+    opacity: 1;
 }
 
 .sidebar.close .toggle {
@@ -252,8 +242,8 @@ header form button {
 }
 
 .sidebar .menu-sidebar {
-    height: calc(100% - 64px);
-    margin-top: 64px;
+    height: calc(100% - 56px);
+    margin-top: 56px;
 }
 
 .sidebar .menu-sidebar li {
@@ -261,7 +251,7 @@ header form button {
     list-style: none;
     align-items: center;
     display: flex;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .menu-sidebar li div {
@@ -270,12 +260,15 @@ header form button {
 
 .menu-sidebar li .text-icon {
     padding: 10px;
-    color: var(--text-color);
-    transition: var(--tran-05);
+    color: #f1f1f1;
+}
+
+.menu-sidebar .icon {
+    color: #f1f1f1;
 }
 
 .sidebar.close .text-icon {
-    display: none;
+    opacity: 0;
 }
 
 .sidebar.close .icon {
@@ -355,9 +348,23 @@ header form button {
     }
 }
 
-.content {
+.dropdown-menu {
+    width: 96px;
+}
+
+.nav-content {
+    position: absolute;
+    margin-top: 56px;
+    margin-left: 208px;
+    width: calc(100% - 13rem);
+    transition: var(--tran-05);
     min-height: 100vh;
     background-color: #f1f1f1;
-    padding-top: 80px;
-    padding-left: 240px;
+    padding: 16px 24px;
+}
+
+.sidebar.close~.nav-content {
+    margin-left: 56px;
+    height: 100vh;
+    width: calc(100% - 56px);
 }

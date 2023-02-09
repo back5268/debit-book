@@ -4,6 +4,7 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
+    "beauty": "prettier --single-quote --trailing-comma all --tab-width 4 --write 'src/**/*.{js, json, scss}  '",
     "start": "nodemon --inspect src/server.js",
     "watch": "node-sass --watch src/resources/scss/ --output src/public/css/",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -27,6 +28,7 @@
   "devDependencies": {
     "morgan": "^1.10.0",
     "node-sass": "^8.0.0",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "prettier": "^2.8.4"
   }
 }
