@@ -1,0 +1,26 @@
+.app-content {
+  position: relative;
+  background: #e4e9f7;
+  height: 100vh;
+  left: 208px;
+  width: calc(100% - 208px);
+  transition: all 0.5s ease;
+
+  .content {
+    height: 60px;
+    display: flex;
+    align-items: center;
+
+    .text {
+      font-size: 26px;
+      font-weight: 600;
+      color: #343a40;
+      font-size: 35px;
+    }
+  }
+}
+
+.sidebar.closes ~ .app-content {
+  left: 56px;
+  width: calc(100% - 56px);
+}

@@ -3,7 +3,7 @@
 
     <h3 class="heading">Đăng ký</h3>
     <p class="desc">Đăng ký thành viên</p>
-    <span class="err">{{ error }}</span>
+    <span class="err">{{error}}</span>
 
     <div class="form-group mt-4">
       <label for="name" class="form-label">Tên đầy đủ (*)</label>
@@ -43,16 +43,18 @@
 
     <div class="form-group">
       <div class="svg-captcha">
-        <img src="{{ captchaURL }}" id="captcha-img" />
+        <img src="{{captchaURL}}" id="captcha-img" />
         <div class="captchas">
-            <input
+          <input
             id="captcha"
             name="captcha"
             type="text"
             placeholder="Captcha"
             class="captcha"
-            />
-            <button type="button" id="change-captcha"><i class="fa-solid fa-rotate icon"></i></button>
+          />
+          <button type="button" id="change-captcha"><i
+              class="bx bx-rotate-left icon"
+            ></i></button>
         </div>
       </div>
     </div>

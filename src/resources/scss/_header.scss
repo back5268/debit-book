@@ -1,0 +1,41 @@
+.app-header {
+  position: fixed;
+  height: 56px;
+  display: flex;
+  align-items: center;
+
+  .toggle {
+    height: 40px;
+    align-items: center;
+    padding: 8px;
+    color: #e4e9f7;
+
+    i {
+      color: #e4e9f7;
+      font-size: 24px;
+      cursor: pointer;
+    }
+  }
+
+  .navbar-brand {
+    margin: 0 2rem;
+    color: #e4e9f7;
+  }
+
+  .dropdown {
+    text-align: right;
+    width: 100%;
+    height: 40px;
+
+    .dropdown-menu {
+      right: 0;
+      left: auto;
+      background-color: #e4e9f7;
+      width: 96px;
+    }
+
+    .btn {
+      color: #e4e9f7;
+    }
+  }
+}

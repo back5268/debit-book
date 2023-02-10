@@ -3,7 +3,7 @@
 
     <h3 class="heading">Đăng nhập</h3>
     <p class="desc">Đăng nhập sổ ghi nợ</p>
-    <span class="err">{{ error }}</span>
+    <span class="err">{{error}}</span>
 
     <div class="form-group mt-4">
       <label for="email" class="form-label">Email (*)</label>
@@ -31,22 +31,24 @@
 
     <div class="form-group">
       <div class="svg-captcha">
-        <img src="{{ captchaURL }}" id="captcha-img" />
+        <img src="{{captchaURL}}" id="captcha-img" />
         <div class="captchas">
-            <input
+          <input
             id="captcha"
             name="captcha"
             type="text"
             placeholder="Captcha"
             class="captcha"
-            />
-            <button type="button" id="change-captcha"><i class="fa-solid fa-rotate icon"></i></button>
+          />
+          <button type="button" id="change-captcha"><i
+              class="bx bx-rotate-left"
+            ></i></button>
         </div>
       </div>
     </div>
     <button type="submit" class="form-submit">Đăng nhập</button>
-    
-    <div class="spacer mt-4"></div>
+
+    <div class="mt-4"></div>
     <div class="row">
       <div class="col-6 col-lg-6">
         <a href="/passwordrr">Quên mật khẩu</a>
@@ -59,7 +61,7 @@
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
     Validator({
       form: '#form',
       formGroupSelector: '.form-group',
@@ -72,6 +74,5 @@
       ],
     });
     changeCaptcha();
-  })
-          
+  })     
 </script>

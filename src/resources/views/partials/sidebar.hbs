@@ -1,46 +1,49 @@
 <div class="sidebar">
-    <div class="menu-sidebar">
-            <ul>
-                <li>
-                    <a href="#">
-                        <div>
-                            <i class="fa-regular fa-user icon"></i>
-                            <span class="text-icon">Trang chủ</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <div>
-                            <i class="fa-regular fa-user icon"></i>
-                            <span class="text-icon">Người dùng</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <div>
-                            <i class="fa-regular fa-user icon"></i>
-                            <span class="text-icon">Sổ ghi nợ</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <div>
-                            <i class="fa-regular fa-bell icon"></i>
-                            <span class="text-icon">Thông báo</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="#nav-note">
-                        <div>
-                            <i class="fa-regular fa-pen-to-square icon"></i>
-                            <span class="text-icon">Ghi chú</span>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-        </div>
+  <ul class="nav-links">
+    <div>
+      <li>
+        <a href="#">
+          <i class="bx bx-home"></i>
+          <span class="link-name">Home</span>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class="bx bx-user"></i>
+          <span class="link-name">User</span>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class="bx bx-notepad"></i>
+          <span class="link-name">Finance</span>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class="bx bx-bell"></i>
+          <span class="link-name">Notification</span>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class="bx bx-cog"></i>
+          <span class="link-name">Setting</span>
+        </a>
+      </li>
+    </div>
+
+    <li>
+      <div class="toggle">
+        <i class="bx bx-chevron-left"></i>
+      </div>
+    </li>
+  </ul>
 </div>
+
+<script>
+  let sidebar = document.querySelector(".sidebar"); 
+  let sidebarBtn = document.querySelector(".bx-chevron-left");
+  sidebarBtn.addEventListener("click", () => {
+  sidebar.classList.toggle("closes"); });
+</script>
