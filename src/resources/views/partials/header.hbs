@@ -1,35 +1,16 @@
 <header class="app-header fixed-top">
-
-  {{#if userName}}
-    <div class="toggle">
-      {{! <i class="bx bx-menu menu-icon"></i> }}
+  <div class="dropdown">
+    <a
+      class="btn dropdown-toggle"
+      href="#"
+      id="dropdownMenuLink"
+      data-toggle="dropdown"
+    >
+      Nguyen
+    </a>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+      <a class="dropdown-item" href="#">User infomation</a>
+      <a class="dropdown-item" href="/logout">Logout</a>
     </div>
-  {{else}}
-    <div class="toggle"></div>
-  {{/if}}
-
-  <a class="navbar-brand" href="#">Debit Book</a>
-
-  {{#if userName}}
-    <div class="dropdown">
-      <a
-        class="btn dropdown-toggle"
-        href="#"
-        role="button"
-        id="dropdownMenuLink"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-      >
-        Nguyen
-      </a>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <a class="dropdown-item" href="#">User infomation</a>
-        <a class="dropdown-item" href="/logout">Logout</a>
-      </div>
-    </div>
-  {{else}}
-    <div class="dropdown"></div>
-  {{/if}}
-  
+  </div>
 </header>

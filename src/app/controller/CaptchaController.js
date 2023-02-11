@@ -8,7 +8,6 @@ function generateCaptcha(req) {
         noise: 2,
         color: true
     });
-    req.session.captcha = captcha.text;
     return captcha.data;
 }
 
@@ -23,7 +22,6 @@ class CaptchaController {
 
     newCaptcha(req, res) {
         const captcha = generateCaptcha(req);
-        req.session.captcha = captcha;
         res.json({ captcha });
     }
 

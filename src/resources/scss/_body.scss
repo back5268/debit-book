@@ -2,8 +2,8 @@
   position: relative;
   background: #e4e9f7;
   height: 100vh;
-  left: 208px;
-  width: calc(100% - 208px);
+  left: 224px;
+  width: calc(100% - 224px);
   transition: all 0.5s ease;
 
   .content {
@@ -21,6 +21,6 @@
 }
 
 .sidebar.closes ~ .app-content {
-  left: 56px;
-  width: calc(100% - 56px);
+  left: 60px;
+  width: calc(100% - 60px);
 }

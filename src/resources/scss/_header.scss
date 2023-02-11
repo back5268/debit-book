@@ -1,26 +1,12 @@
 .app-header {
   position: fixed;
-  height: 56px;
+  height: 48px;
   display: flex;
   align-items: center;
-
-  .toggle {
-    height: 40px;
-    align-items: center;
-    padding: 8px;
-    color: #e4e9f7;
-
-    i {
-      color: #e4e9f7;
-      font-size: 24px;
-      cursor: pointer;
-    }
-  }
-
-  .navbar-brand {
-    margin: 0 2rem;
-    color: #e4e9f7;
-  }
+  background-color: fff;
+  border: 1px solid #c7d5e6;
+  z-index: 500;
+  padding: 0 8px;
 
   .dropdown {
     text-align: right;
@@ -29,13 +15,19 @@
 
     .dropdown-menu {
       right: 0;
-      left: auto;
-      background-color: #e4e9f7;
+      margin-top: 6px;
+      background-color: #fff;
+      border: 1px solid #c7d5e6;
       width: 96px;
+      padding: 0;
+
+      .dropdown-item {
+        padding: 8px 16px;
+      }
     }
 
     .btn {
-      color: #e4e9f7;
+      color: #2f1c6a;
     }
   }
 }

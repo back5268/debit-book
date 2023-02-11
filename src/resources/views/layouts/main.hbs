@@ -18,10 +18,10 @@
     <link rel="stylesheet" href="/css/app.css" />
   </head>
   <body>
-    <div class="app">
-      {{> header}} 
+    <div class="app">      
       {{#if userName}}
         {{> sidebar}}
+        {{> header}}
       {{/if}}
         
       {{#if userName}}
@@ -31,9 +31,7 @@
           </div>
         </div>
       {{else}}
-        <div class="container">
-          {{{body}}}
-        </div>
+        {{{body}}}
       {{/if}}
     </div>
 

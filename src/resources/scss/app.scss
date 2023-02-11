@@ -28,26 +28,26 @@
 }
 
 @media (max-width: 600px) {
-  .sidebar.close .nav-links li .sub-menu {
-      display: none;
-  }
 
   .sidebar {
-      width: 56px;
-  }
+      width: 64px;
 
-  .sidebar.close {
-      width: 0;
+      .header-name {
+        opacity: 0;
+      }
+
+      .toggle {
+        display: none;
+      }
+
+      .link-name {
+        display: none;
+      }
   }
 
   .app-content {
-      left: 56px;
-      width: calc(100% - 56px);
+      left: 64px;
+      width: calc(100% - 64px);
       z-index: 100;
-  }
-
-  .sidebar.close~.app-content {
-      width: 100%;
-      left: 0;
   }
 }

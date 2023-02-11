@@ -2,15 +2,30 @@
   position: fixed;
   top: 0;
   left: 0;
-  padding-top: 56px;
   height: 100%;
-  width: 208px;
-  background: #343a40;
-  z-index: 100;
+  width: 224px;
+  background-color: #060848;
+  z-index: 1000;
   transition: all 0.5s ease;
 
+  .header-name {
+    width: 100%;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    height: 48px;
+    align-items: center;
+    transition: opacity 0.2s linear;
+
+    a {
+      text-decoration: none;
+    }
+  }
+
   .nav-links {
-    height: 100%;
+    height: calc(100% - 48px);
     padding: 30px 0 0;
     display: flex;
     flex-direction: column;
@@ -28,42 +43,69 @@
 
         i {
           height: 50px;
-          min-width: 56px;
+          min-width: 64px;
           text-align: center;
           line-height: 50px;
-          color: #fff;
+          color: #b4c2d4;
           font-size: 20px;
           cursor: pointer;
         }
 
         .link-name {
-          color: #fff;
+          color: #b4c2d4;
+          transition: opacity 0.2s linear;
         }
       }
 
       .toggle {
         text-align: right;
-        background-color: #1d1b31;
+        background-color: #1e1c61;
         height: 50px;
         padding: 9px 0;
 
         .bx-chevron-left {
           font-size: 32px !important;
-          color: #fff;
+          color: #b4c2d4;
           cursor: pointer;
         }
       }
     }
 
+    .active {
+      background-color: #2ca1c6 !important;
+
+      a {
+        .link-name {
+          color: #fff !important;
+        }
+
+        i {
+          color: #fff !important;
+        }
+      }
+    }
+
     li:hover {
-      background: #1d1b31;
+      background-color: #2ca1c6;
+
+      .link-name {
+        color: #fff;
+      }
+
+      i {
+        color: #fff;
+      }
     }
   }
 }
 
 .sidebar.closes {
-  width: 56px;
+  width: 64px;
   opacity: 1;
+
+  .header-name {
+    opacity: 0;
+  }
 
   .nav-links {
     overflow: visible;
@@ -74,7 +116,7 @@
       }
 
       .link-name {
-        opacity: 0;
+        display: none;
       }
 
       .toggle {

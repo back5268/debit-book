@@ -1,4 +1,5 @@
 <div class="sidebar">
+  <a class="header-name" href="#">WhySo.</a>
   <ul class="nav-links">
     <div>
       <li>
@@ -7,7 +8,7 @@
           <span class="link-name">Home</span>
         </a>
       </li>
-      <li>
+      <li class="active">
         <a href="#">
           <i class="bx bx-user"></i>
           <span class="link-name">User</span>
@@ -42,8 +43,9 @@
 </div>
 
 <script>
-  let sidebar = document.querySelector(".sidebar"); 
-  let sidebarBtn = document.querySelector(".bx-chevron-left");
+  const sidebar = document.querySelector(".sidebar"); 
+  const sidebarBtn = document.querySelector(".bx-chevron-left");
   sidebarBtn.addEventListener("click", () => {
-  sidebar.classList.toggle("closes"); });
+    sidebar.classList.toggle("closes"); 
+  });
 </script>
