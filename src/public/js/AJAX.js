@@ -11,7 +11,6 @@ document.getElementById('form').addEventListener('submit', function (event) {
     xhr.onload = function () {
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
-            alert('ok');
             window.location.href = '/';
         } else {
             var response = JSON.parse(xhr.responseText);

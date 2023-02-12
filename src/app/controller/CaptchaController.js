@@ -22,11 +22,11 @@ class CaptchaController {
             createAt: Date.now(),
             expiresAt: Date.now() + 300000,
         })
-        // Captcha.deleteMany({ expiresAt: { $lt: Date.now() } })
-        //     .then(() => {
-        //         console.log('Xóa captcha hết hạn thành công!');
-        //     })
-        //     .catch(next);
+        Captcha.deleteMany({ expiresAt: { $lt: Date.now() } })
+            .then(() => {
+                console.log('Xóa captcha hết hạn thành công!');
+            })
+            .catch(next);
 
         newCaptcha.save()
             .then(() => {
