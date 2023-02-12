@@ -1,4 +1,5 @@
 const svgCaptcha = require('svg-captcha');
+const Captcha = require('../models/Captcha');
 
 function generateCaptcha(req) {
     // Tạo mã captcha ngẫu nhiên
@@ -13,11 +14,26 @@ function generateCaptcha(req) {
 
 class CaptchaController {
 
-    captcha(req, res) {
+    captcha(req, res, next) {
         const captcha = svgCaptcha.create();
         req.session.captcha = captcha.text;
-        res.type('svg');
-        res.status(200).send(captcha.data);
+        const newCaptcha = new Captcha({
+            captcha: captcha.text,
+            createAt: Date.now(),
+            expiresAt: Date.now() + 300000,
+        })
+        // Captcha.deleteMany({ expiresAt: { $lt: Date.now() } })
+        //     .then(() => {
+        //         console.log('Xóa captcha hết hạn thành công!');
+        //     })
+        //     .catch(next);
+
+        newCaptcha.save()
+            .then(() => {
+                res.type('svg');
+                res.status(200).send(captcha.data);
+            })
+            .catch(next);
     }
 
     newCaptcha(req, res) {

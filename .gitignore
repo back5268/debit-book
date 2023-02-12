@@ -1,3 +1,4 @@
 node_modules
 src/public/css/app.css
+src/app/models/Captcha.js
 .env

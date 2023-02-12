@@ -11,6 +11,8 @@ const db = require('./config/db.js');
 db.connect();
 
 const session = require('express-session');
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
 app.use(session({ 
     secret: 'secret-key', 
     resave: false, 

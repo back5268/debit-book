@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const captchaController = require('./CaptchaController');
 const bcrypt = require('bcrypt');
 const captchaURL = `/captcha`;
 
@@ -8,7 +9,7 @@ class LoginController {
         res.render('login', { captchaURL });
     }
 
-    loginPost(req, res) {
+    loginPost(req, res, next) {
         let { email, password, captcha } = req.body;
         if (captcha === req.session.captcha) {
             email = email.trim();
@@ -25,36 +26,31 @@ class LoginController {
                             bcrypt.compare(password, hashedPassword)
                                 .then(data => {
                                     if (data) {
-                                        req.session.userName = user.name;
-                                        req.session.userId = user._id;
-                                        const userName = req.session.userName;
-                                        const userId = req.session.userId;
-                                        res.render('home', { userName, userId });
+                                        req.session.user = user;
+                                        res.json({ user });
+                                        // res.render('home', {
+                                        //     user: user.toObject(),
+                                        // });
                                     } else {
-                                        const error = 'Mật khẩu không chính xác!';
-                                        res.render('login', { error, captchaURL });
+                                        res.status(403).send({ error: 'Mật khẩu không chính xác!' });
                                     }
                                 })
                                 .catch(err => {
                                     console.log(err);
-                                    const error = 'Tài khoản hoặc mật khẩu không chính xác!';
-                                    res.render('login', { error, captchaURL });
+                                    res.status(403).send({ error: 'Tài khoản hoặc mật khẩu không chính xác!' });
                                 })
                         }
                     } else {
-                        const error = 'Tài khoản không tồn tại!';
-                        res.render('login', { error, captchaURL });
+                        res.status(403).send({ error: 'Tài khoản không tồn tại!' });
                     }
                 })
                 .catch((err) => {
                     console.log(err);
-                    const error = 'Tài khoản hoặc mật khẩu không chính xác!';
-                    res.render('login', { error, captchaURL });
+                    res.status(403).send({ error: 'Tài khoản hoặc mật khẩu không chính xác!' });
                 })
 
         } else {
-            const error = 'Mã captcha không đúng!';
-            res.render('login', { error, captchaURL });
+            res.status(403).send({ error: 'Mã captcha không đúng!' });
         }
     }
 
