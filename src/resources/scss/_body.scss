@@ -1,23 +1,12 @@
 .app-content {
   position: relative;
   background: #e4e9f7;
-  height: 100vh;
+  margin-top: 50px;
+  padding: 32px;
   left: 224px;
   width: calc(100% - 224px);
   transition: all 0.5s ease;
-
-  .content {
-    height: 60px;
-    display: flex;
-    align-items: center;
-
-    .text {
-      font-size: 26px;
-      font-weight: 600;
-      color: #343a40;
-      font-size: 35px;
-    }
-  }
+  height: 100vh;
 }
 
 .sidebar.closes ~ .app-content {

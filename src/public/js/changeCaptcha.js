@@ -6,6 +6,7 @@ function changeCaptcha() {
             const response = JSON.parse(xhr.responseText);
             document.getElementById("captcha-img").src =
                 `/captcha?text=${response.captcha}`;
+            
         }; 
         xhr.send();
     });

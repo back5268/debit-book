@@ -32,25 +32,25 @@ class LoginController {
                                         //     user: user.toObject(),
                                         // });
                                     } else {
-                                        res.status(403).send({ error: 'Mật khẩu không chính xác!' });
+                                        res.status(403).json({ error: 'Mật khẩu không chính xác!' });
                                     }
                                 })
                                 .catch(err => {
                                     console.log(err);
-                                    res.status(403).send({ error: 'Tài khoản hoặc mật khẩu không chính xác!' });
+                                    res.status(403).json({ error: 'Tài khoản hoặc mật khẩu không chính xác!' });
                                 })
                         }
                     } else {
-                        res.status(403).send({ error: 'Tài khoản không tồn tại!' });
+                        res.status(403).json({ error: 'Tài khoản không tồn tại!' });
                     }
                 })
                 .catch((err) => {
                     console.log(err);
-                    res.status(403).send({ error: 'Tài khoản hoặc mật khẩu không chính xác!' });
+                    res.status(403).json({ error: 'Tài khoản hoặc mật khẩu không chính xác!' });
                 })
 
         } else {
-            res.status(403).send({ error: 'Mã captcha không đúng!' });
+            res.status(403).json({ error: 'Mã captcha không đúng!' });
         }
     }
 

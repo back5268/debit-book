@@ -9,10 +9,16 @@ class SiteController {
     index(req, res) {
         if (req.session.user) {
             const user = req.session.user;
-            res.render('home', { user });
+            res.render('profile', { 
+                user, title: 'Profile' 
+            });
         } else {
             res.render('login', { captchaURL });
         }
+    }
+
+    showProfile(req, res) {
+        res.render('profile')
     }
 
 }

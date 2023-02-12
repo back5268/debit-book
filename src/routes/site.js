@@ -31,6 +31,7 @@ router.get('/captcha', captchaController.captcha);
 router.get('/newCaptcha', captchaController.newCaptcha);
 
 router.get('/notification', siteController.notification);
+router.get('/profile', siteController.showProfile);
 router.get('/', siteController.index);
 
 module.exports = router;

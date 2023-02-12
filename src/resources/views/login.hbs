@@ -1,5 +1,5 @@
 <div class="main">
-  <form id="form" action="/login" method="post" class="form">
+  <form id="form" class="form">
 
     <h3 class="heading">Đăng nhập</h3>
     <p class="desc">Đăng nhập sổ ghi nợ</p>
@@ -46,7 +46,7 @@
         </div>
       </div>
     </div>
-    <button type="submit" class="form-submit">Đăng nhập</button>
+    <button type="submit" class="form-submit" id="form-submit">Đăng nhập</button>
 
     <div class="mt-4"></div>
     <div class="row">
@@ -76,5 +76,6 @@
       ],
     });
     changeCaptcha();
+    handleLoginBtn()
   })     
 </script>

@@ -1,16 +1,22 @@
 <header class="app-header fixed-top">
-  <div class="dropdown">
-    <a
-      class="btn dropdown-toggle"
-      href="#"
-      id="dropdownMenuLink"
-      data-toggle="dropdown"
-    >
-      {{ user.name }}
-    </a>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-      <a class="dropdown-item" href="#">User infomation</a>
-      <a class="dropdown-item" href="/logout">Logout</a>
+  <div class="content-header">
+    <div class="title-header">
+      {{title}}
+    </div>
+    <div class="dropdown">
+      <a
+        class="btn dropdown-toggle"
+        href="#"
+        id="dropdownMenuLink"
+        data-toggle="dropdown"
+      >
+        {{user.name}}
+      </a>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item" href="#">User infomation</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="/logout">Logout</a>
+      </div>
     </div>
   </div>
 </header>

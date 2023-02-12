@@ -1,0 +1,58 @@
+.profile {
+    height: 100%;
+    width: 100%;
+
+    .row {
+        .user-info {
+            min-height: 600px;
+            width: 100%;
+            background-color: #fff;
+            border: 1px solid #c7d5e6;
+            border-radius: 8px;
+            margin-bottom: 32px;
+        }
+        
+        .user-account {
+            min-height: 600px;
+            width: 100%;
+            background-color: #fff;
+            border: 1px solid #c7d5e6;
+            border-radius: 8px;
+            margin-bottom: 32px;
+        }
+
+        .header {
+            height: 50px;
+            background-color: #1e1e2d;
+            color: #fff;
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 32px;
+            border-radius: 4px 4px 0 0;
+            padding: 8px 16px;
+        }
+
+        .header {
+            height: 50px;
+            background-color: #1e1e2d;
+            color: #fff;
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 32px;
+            border-radius: 4px 4px 0 0;
+            padding: 8px 16px;
+        }
+
+        .body {
+            margin: 0 24px;
+            padding: 24px;
+            border-radius: 4px;
+            border: 1px solid #c7d5e6;
+
+            label {
+                text-align: right;
+                font-weight: 500;
+            }
+        }   
+    }
+}
