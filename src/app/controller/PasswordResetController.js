@@ -25,7 +25,7 @@ transporter.verify((err, success) => {
 })
 
 // Sent password reset email
-const senResetEmail = ({ _id, email }, res) => {
+const senResetEmail = ({ _id, email, account }, res) => {
     const resetString = uuidv4() + _id;
     const error = 'noError';
 
@@ -36,8 +36,8 @@ const senResetEmail = ({ _id, email }, res) => {
                 from: process.env.AUTH_EMAIL,
                 to: email,
                 subject: '[Thông báo] - Lấy lại mật khẩu!',
-                html: `<p>Bạn hoặc ai đó đã sử dụng email: <b>${email}</b> để gửi yêu cầu lấy lại mật khẩu đăng nhập!</p>
-                    <p>Vui lòng truy cập đường dẫn: <a href=${currentUrl + "resetPassword/" + _id + "/" + resetString + "/" + email + "/" + error}>
+                html: `<p>Bạn hoặc ai đó đã sử dụng email: <b>${account}</b> để gửi yêu cầu lấy lại mật khẩu đăng nhập!</p>
+                    <p>Vui lòng truy cập đường dẫn: <a href=${currentUrl + "resetPassword/" + _id + "/" + resetString + "/" + email + "/" + account + "/" + error}>
                     ${currentUrl + "resetPassword/" + _id + "/" + resetString + "/"}</a> để xác nhận yêu cầu.</p> <br/>
                     <p>Lưu ý: Đường link chỉ được sử dụng 01 lần và có <b>thời hạn trong 24 giờ.</b></p>
                     <p>Sau thời gian trên sẽ không thể truy cập để thực hiện yêu cầu lấy lại mật khẩu.</p>
@@ -92,8 +92,7 @@ class PasswordResetController {
 
     resetPassword(req, res) {
         let { userId, resetString, password, captcha, email } = req.body;
-        console.log('Email' + email);
-        if (captcha === req.session.captcha) {
+        if (captcha == req.session.captcha) {
             PasswordReset.find({ userId })
                 .then(data => {
                     if (data.length > 0) {
@@ -183,9 +182,9 @@ class PasswordResetController {
     }
 
     passwordrr(req, res) {
-        const { email, captcha } = req.body;
-        if (captcha === req.session.captcha) {
-            User.find({ email })
+        const { email, account, captcha } = req.body;
+        if (captcha == req.session.captcha) {
+            User.find({ email, account })
                 .then(data => {
                     if (data.length) {
                         if (!data[0].verified) {

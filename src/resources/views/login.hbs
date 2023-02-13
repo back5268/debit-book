@@ -2,16 +2,15 @@
   <form id="form" class="form">
 
     <h3 class="heading">Đăng nhập</h3>
-    <p class="desc">Đăng nhập sổ ghi nợ</p>
-    <span class="err">{{error}}</span>
+    <p class="desc">Đăng nhập sổ ghi nợ!</p>
 
     <div class="form-group mt-4">
-      <label for="email" class="form-label">Email (*)</label>
+      <label for="account" class="form-label">Account (*)</label>
       <input
-        id="email"
-        name="email"
+        id="account"
+        name="account"
         type="text"
-        placeholder="VD: email@domain.com"
+        placeholder="VD: Nhập tài khoản"
         class="form-control"
       />
       <span class="form-message"></span>
@@ -60,8 +59,6 @@
   </form>
 </div>
 
-<script src="/js/AJAX.js"></script>
-
 <script>
     document.addEventListener('DOMContentLoaded', function () {
     Validator({
@@ -69,8 +66,7 @@
       formGroupSelector: '.form-group',
       errorSelector: '.form-message',
       rules: [
-          Validator.isRequired('#email', 'Vui lòng nhập email'),
-          Validator.isEmail('#email'),
+          Validator.isRequired('#account', 'Vui lòng nhập tài khoản của bạn'),
           Validator.isRequired('#password', 'Vui lòng nhập mật khẩu'),
           Validator.minLength('#password', 6),
       ],

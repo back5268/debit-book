@@ -2,14 +2,13 @@
   <form action="/signup" method="POST" class="form" id="form">
 
     <h3 class="heading">Đăng ký</h3>
-    <p class="desc">Đăng ký thành viên</p>
     <span class="err">{{error}}</span>
 
     <div class="form-group mt-4">
-      <label for="name" class="form-label">Tên đầy đủ (*)</label>
+      <label for="fullname" class="form-label">Full name (*)</label>
       <input
-        id="name"
-        name="name"
+        id="fullname"
+        name="fullname"
         type="text"
         placeholder="VD: Lê Trần Tiến Đông"
         class="form-control"
@@ -24,6 +23,18 @@
         name="email"
         type="text"
         placeholder="VD: email@domain.com"
+        class="form-control"
+      />
+      <span class="form-message"></span>
+    </div>
+
+    <div class="form-group">
+      <label for="account" class="form-label">Account (*)</label>
+      <input
+        id="account"
+        name="account"
+        type="text"
+        placeholder="VD: Nhập tài khoản"
         class="form-control"
       />
       <span class="form-message"></span>
@@ -74,8 +85,10 @@
       formGroupSelector: '.form-group',
       errorSelector: '.form-message',
       rules: [
-          Validator.isRequired('#name', 'Vui lòng nhập tên đầy đủ của bạn'),
+          Validator.isRequired('#fullname', 'Vui lòng nhập tên đầy đủ của bạn'),
           Validator.isEmail('#email'),
+          Validator.isRequired('#account', 'Vui lòng nhập tài khoản của bạn'),
+          Validator.isRequired('#password', 'Vui lòng nhập mật khẩu'),
           Validator.minLength('#password', 6),
       ],
     });

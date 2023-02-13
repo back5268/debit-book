@@ -26,12 +26,15 @@
           <span class="link-name">Notification</span>
         </a>
       </li>
-      <li>
-        <a href="#">
-          <i class="bx bx-cog"></i>
-          <span class="link-name">Setting</span>
-        </a>
-      </li>
+      {{!-- {{#if compare user.role 0}}
+        <li>
+          <a href="#">
+            <i class="bx bx-cog"></i>
+            <span class="link-name">Control</span>
+          </a>
+        </li>
+      {{/if}} --}}
+
     </div>
 
     <li>
@@ -43,9 +46,8 @@
 </div>
 
 <script>
-  const sidebar = document.querySelector(".sidebar"); 
-  const sidebarBtn = document.querySelector(".bx-chevron-left");
+  const sidebar = document.querySelector(".sidebar"); const sidebarBtn =
+  document.querySelector(".bx-chevron-left");
   sidebarBtn.addEventListener("click", () => {
-    sidebar.classList.toggle("closes"); 
-  });
+  sidebar.classList.toggle("closes"); });
 </script>

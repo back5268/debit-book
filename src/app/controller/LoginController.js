@@ -1,5 +1,4 @@
 const User = require('../models/User');
-const captchaController = require('./CaptchaController');
 const bcrypt = require('bcrypt');
 const captchaURL = `/captcha`;
 
@@ -10,17 +9,16 @@ class LoginController {
     }
 
     loginPost(req, res, next) {
-        let { email, password, captcha } = req.body;
-        if (captcha === req.session.captcha) {
-            email = email.trim();
+        let { account, password, captcha } = req.body;
+        if (captcha == req.session.captcha) {
+            account = account.trim();
             password = password.trim();
-            User.find({ email })
+            User.find({ account })
                 .then(data => {
                     const user = data[0];
                     if (data.length) {
                         if (!data[0].verified) {
-                            const error = 'Tài khoản chưa được xác minh. Vui lòng kiểm tra emai!';
-                            res.render('login', { error, captchaURL });
+                            res.status(403).json({ error: 'Tài khoản chưa được xác minh. Vui lòng kiểm tra emai!' });
                         } else {
                             const hashedPassword = data[0].password;
                             bcrypt.compare(password, hashedPassword)
@@ -28,9 +26,6 @@ class LoginController {
                                     if (data) {
                                         req.session.user = user;
                                         res.json({ user });
-                                        // res.render('home', {
-                                        //     user: user.toObject(),
-                                        // });
                                     } else {
                                         res.status(403).json({ error: 'Mật khẩu không chính xác!' });
                                     }
@@ -57,7 +52,7 @@ class LoginController {
     logout(req, res) {
         req.session.destroy(err => {
             if (err) {
-                res.status(500).send('Error while logging out');
+                res.status(500).send('Có lỗi khi đăng xuất!');
             } else {
                 res.render('login', { captchaURL });
             }

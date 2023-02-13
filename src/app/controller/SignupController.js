@@ -4,7 +4,7 @@ const UserVertification = require('../models/UserVertification');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const { v4: uuidv4 } = require('uuid');
-const currentUrl = 'http://localhost:3000/';
+const currentUrl = process.env.CURRENT_URL;
 const captchaURL = `/captcha`;
 
 // Nodemailer
@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-const sendVerification = ({ _id, email }, res) => {
+const sendVerification = ({ _id, email, account }, res) => {
     const uniqueString = uuidv4() + _id;
 
     // Mail content
@@ -24,7 +24,7 @@ const sendVerification = ({ _id, email }, res) => {
         from: process.env.AUTH_EMAIL,
         to: email,
         subject: '[Thông báo] - Kích hoạt tài khoản!',
-        html: `<p>Bạn hoặc ai đó đã sử dụng email: <b>${email}</b> để tạo tài khoản!</p>
+        html: `<p>Bạn hoặc ai đó đã sử dụng email để tạo tài khoản: <b>${account}</b> để tạo tài khoản!</p>
             <p>Vui lòng truy cập vào đường dẫn: <a href=${currentUrl + "verify/" + _id + "/" + uniqueString}>
             ${currentUrl + "verify/" + _id + "/" + uniqueString}</a> để kích hoạt.</p> <br/>
             <p>Lưu ý: Đường link chỉ được sử dụng 01 lần và có <b>thời hạn trong 24 giờ.</b></p>
@@ -80,13 +80,14 @@ class SignupController {
     }
 
     signupPost(req, res) {
-        let { name, email, password, captcha } = req.body;
-        if (captcha === req.session.captcha) {
-            name = name.trim();
+        let { fullname, email, account, password, captcha } = req.body;
+        if (captcha == req.session.captcha) {
+            fullname = fullname.trim();
             email = email.trim();
+            account = account.trim();
             password = password.trim();
 
-            User.find({ email })
+            User.find({ account })
                 .then(data => {
                     if (data.length) {
                         const error = 'Tài khoản đã tồn tại!';
@@ -96,10 +97,15 @@ class SignupController {
                         bcrypt.hash(password, saltRounds)
                             .then(data => {
                                 const newUser = new User({
-                                    name,
+                                    fullname,
                                     email,
+                                    account,
                                     password: data,
                                     verified: false,
+                                    phone: '',
+                                    address: '',
+                                    description: '',
+                                    role: 1,
                                 });
                                 newUser.save()
                                     .then(data => {
