@@ -176,9 +176,9 @@ class PasswordResetController {
     }
 
     getReset(req, res) {
-        let { userId, resetString, email, error } = req.params;
+        let { userId, resetString, email, account, error } = req.params;
         if (error === 'noError') error = '';
-        res.render('resetPassword', { userId, resetString, email, error, captchaURL });
+        res.render('resetPassword', { userId, resetString, email, account, error, captchaURL });
     }
 
     passwordrr(req, res) {

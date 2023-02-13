@@ -10,6 +10,8 @@ class LoginController {
 
     loginPost(req, res, next) {
         let { account, password, captcha } = req.body;
+        console.log( 'input: ' + captcha);
+        console.log( 'session: ' + req.session.captcha);
         if (captcha == req.session.captcha) {
             account = account.trim();
             password = password.trim();
