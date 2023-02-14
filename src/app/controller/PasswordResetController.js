@@ -4,7 +4,7 @@ const PasswordReset = require('../models/PasswordReset');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const { v4: uuidv4 } = require('uuid');
-const currentUrl = 'http://localhost:3000/';
+const currentUrl = process.env.CURRENT_URL;
 const captchaURL = `/captcha`;
 
 const transporter = nodemailer.createTransport({
