@@ -5,7 +5,6 @@ const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const { v4: uuidv4 } = require('uuid');
 const currentUrl = process.env.CURRENT_URL;
-const captchaURL = `/captcha`;
 
 const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -178,7 +177,7 @@ class PasswordResetController {
     getReset(req, res) {
         let { userId, resetString, email, account, error } = req.params;
         if (error === 'noError') error = '';
-        res.render('resetPassword', { userId, resetString, email, account, error, captchaURL });
+        res.render('resetPassword', { userId, resetString, email, account, error });
     }
 
     passwordrr(req, res) {
@@ -189,13 +188,13 @@ class PasswordResetController {
                     if (data.length) {
                         if (!data[0].verified) {
                             const error = 'Tài khoản chưa được xác nhận!';
-                            res.render('passwordrr', { error, captchaURL });
+                            res.render('passwordrr', { error });
                         } else {
                             senResetEmail(data[0], res);
                         }
                     } else {
                         const error = 'Tài khoản không tồn tại!';
-                        res.render('passwordrr', { error, captchaURL });
+                        res.render('passwordrr', { error });
                     }
                 })
                 .catch(err => {
@@ -205,12 +204,12 @@ class PasswordResetController {
                 })
         } else {
             const error = 'Mã captcha không đúng!';
-            res.render('passwordrr', { error, captchaURL });
+            res.render('passwordrr', { error });
         }
     }
 
     getRequest(req, res) {
-        res.render('passwordrr', { captchaURL });
+        res.render('passwordrr');
     }
 
 }

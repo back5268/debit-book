@@ -1,11 +1,10 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
-const captchaURL = `/captcha`;
 
 class LoginController {
 
     loginGet(req, res) {
-        res.render('login', { captchaURL });
+        res.render('login');
     }
 
     loginPost(req, res, next) {
@@ -56,7 +55,7 @@ class LoginController {
             if (err) {
                 res.status(500).send('Có lỗi khi đăng xuất!');
             } else {
-                res.render('login', { captchaURL });
+                res.render('login');
             }
         });
     }

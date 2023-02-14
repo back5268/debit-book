@@ -49,9 +49,22 @@
             border-radius: 4px;
             border: 1px solid #c7d5e6;
 
-            label {
-                text-align: right;
-                font-weight: 500;
+            .form-group {
+                align-items: center;
+
+                textarea {
+                    min-height: 76px;
+                }
+
+                label {
+                    text-align: right;
+                    font-weight: 500;
+                }
+    
+                .svg-captcha {
+                    display: flex;
+                    gap: 4px;
+                }
             }
         }   
     }

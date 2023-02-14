@@ -5,7 +5,6 @@ const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const { v4: uuidv4 } = require('uuid');
 const currentUrl = process.env.CURRENT_URL;
-const captchaURL = `/captcha`;
 
 // Nodemailer
 const transporter = nodemailer.createTransport({
@@ -76,7 +75,7 @@ const sendVerification = ({ _id, email, account }, res) => {
 class SignupController {
 
     signupGet(req, res) {
-        res.render('signup', { captchaURL });
+        res.render('signup');
     }
 
     signupPost(req, res) {
@@ -91,7 +90,7 @@ class SignupController {
                 .then(data => {
                     if (data.length) {
                         const error = 'Tài khoản đã tồn tại!';
-                        res.render('signup', { error, captchaURL });
+                        res.render('signup', { error });
                     } else {
                         const saltRounds = 10;
                         bcrypt.hash(password, saltRounds)
@@ -114,24 +113,24 @@ class SignupController {
                                     .catch(err => {
                                         console.log(err);
                                         const error = 'Tài khoản của bạn không thể xác nhận!';
-                                        res.render('signup', { error, captchaURL });
+                                        res.render('signup', { error });
                                     })
                             })
                             .catch(err => {
                                 console.log(err);
                                 const error = 'Tài khoản của bạn không thể xác nhận!';
-                                res.render('signup', { error, captchaURL });
+                                res.render('signup', { error });
                             })
                     }
                 })
                 .catch(err => {
                     console.log(err);
                     const error = 'Tài khoản của bạn không thể xác nhận!';
-                    res.render('signup', { error, captchaURL });
+                    res.render('signup', { error });
                 })
         } else {
             const error = 'Mã captcha không đúng!';
-            res.render('signup', { error, captchaURL });
+            res.render('signup', { error });
         }
     }
 

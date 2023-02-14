@@ -297,9 +297,16 @@
     padding: 24px;
     border-radius: 4px;
     border: 1px solid #c7d5e6; }
-    .profile .row .body label {
-      text-align: right;
-      font-weight: 500; }
+    .profile .row .body .form-group {
+      align-items: center; }
+      .profile .row .body .form-group textarea {
+        min-height: 76px; }
+      .profile .row .body .form-group label {
+        text-align: right;
+        font-weight: 500; }
+      .profile .row .body .form-group .svg-captcha {
+        display: flex;
+        gap: 4px; }
 
 .icon {
   font-size: 20px; }

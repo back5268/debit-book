@@ -7,17 +7,16 @@ const passwordResetController = require('../app/controller/PasswordResetControll
 const verificationController = require('../app/controller/VerificationController');
 const loginController = require('../app/controller/LoginController');
 const signupController = require('../app/controller/SignupController');
+const profileController = require('../app/controller/ProfileController');
 
 // Login
 router.post('/login', loginController.loginPost);
 router.get('/login', loginController.loginGet);
 router.get('/logout', loginController.logout);
 
-// Signup
+// Signup verification
 router.post('/signup', signupController.signupPost);
 router.get('/signup', signupController.signupGet);
-
-// Verification
 router.get('/verify/:userId/:uniqueString', verificationController.verify);
 
 // PasswordReset
@@ -30,8 +29,11 @@ router.get('/resetPassword/:userId/:resetString/:email/:account/:error', passwor
 router.get('/captcha', captchaController.captcha);
 router.get('/newCaptcha', captchaController.newCaptcha);
 
+// profile
+router.get('/profile', profileController.show);
+router.post('/updateUserInfo', profileController.updateUserInfo);
+
 router.get('/notification', siteController.notification);
-router.get('/profile', siteController.showProfile);
 router.get('/', siteController.index);
 
 module.exports = router;

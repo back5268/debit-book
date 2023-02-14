@@ -3,44 +3,46 @@
     <div class="col-12 col-lg-6 col-sm-12">
     <div class="user-info">
         <div class="header">
-            User infomation
+            User information
         </div>
         <div class="body">
             <form>
+                <input type="hidden" id="userId" value="{{ user._id }}" />
+
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label">Full name </label>
                     <div class="col-sm-9">
-                    <input type="text" class="form-control" value="{{ user.fullname }}">
+                    <input type="text" class="form-control" id="fullname" value="{{ user.fullname }}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label">Phone</label>
                     <div class="col-sm-9">
-                    <input type="text" class="form-control" value="{{ user.phone }}">
+                    <input type="text" class="form-control" id="phone" value="{{ user.phone }}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label">Email (*) </label>
                     <div class="col-sm-9">
-                    <input type="text" class="form-control" value="{{ user.email }}">
+                    <input type="text" class="form-control" id="email" value="{{ user.email }}" disabled>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label">Address </label>
                     <div class="col-sm-9">
-                    <input type="text" class="form-control" value="{{ user.address }}">
+                    <input type="text" class="form-control" id="address" value="{{ user.address }}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label">Description </label>
                     <div class="col-sm-9">
-                    <textarea type="text" class="form-control"></textarea>
+                    <textarea type="text" class="form-control" id="description">{{ user.description }}</textarea>
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-3"></div>
                     <div class="col-sm-9">
-                        <button type="submit" class="btn btn-info">
+                        <button type="submit" class="btn btn-info" id="update-info">
                             UPDATE
                         </button>
                     </div>
@@ -80,6 +82,21 @@
                     <input type="text" class="form-control" value="">
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Captcha (*) </label>
+                    <div class="col-sm-8">
+                        <div class="svg-captcha">
+                            <img src="/captcha" id="captcha-img" />
+                            <input
+                                id="captcha"
+                                name="captcha"
+                                type="text"
+                                placeholder="Captcha"
+                                class="form-control"
+                            />
+                        </div>
+                    </div>
+                </div>
 
                 <div class="form-group row">
                     <div class="col-sm-4"></div>
@@ -95,3 +112,9 @@
   </div>
   </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    handleUpdateProfile();
+  })     
+</script>
