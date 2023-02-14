@@ -62,13 +62,25 @@
         background-color: #2a2e45;
         height: 50px;
         padding: 9px 0;
+        cursor: pointer;
 
         .bx-chevron-left {
           font-size: 32px !important;
           color: #b4c2d4;
-          cursor: pointer;
         }
       }
+
+      .toggle:hover {
+        background-color: #3a4060;
+
+        .bx-chevron-left {
+          color: #fff;
+        }
+      }
+    }
+
+    li:focus {
+      background-color: #2ca1c6 !important;
     }
 
     .active {
@@ -86,7 +98,7 @@
     }
 
     li:hover {
-      background-color: #2ca1c6;
+      background-color: #3a4060;
 
       .link-name {
         color: #fff;

@@ -46,8 +46,22 @@
 </div>
 
 <script>
-  const sidebar = document.querySelector(".sidebar"); const sidebarBtn =
-  document.querySelector(".bx-chevron-left");
-  sidebarBtn.addEventListener("click", () => {
-  sidebar.classList.toggle("closes"); });
+  const sidebar = document.querySelector('.sidebar'); 
+  const sidebarBtn = document.querySelector('.toggle');
+  sidebarBtn.addEventListener('click', () => {
+  sidebar.classList.toggle('closes'); });
+
+  const navLinks = document.querySelectorAll('li');
+  navLinks.forEach(navLink => {
+    navLink.addEventListener('click', event => {
+      // Lấy thẻ cha gần nhất của thẻ li
+      const navLink = event.target.closest('li');
+      if (navLink) {
+        navLinks.forEach(item => {
+          item.classList.remove('active');
+        });
+        navLink.classList.add('active');
+      }
+    })
+  })
 </script>

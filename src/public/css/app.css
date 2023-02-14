@@ -105,11 +105,17 @@
         text-align: right;
         background-color: #2a2e45;
         height: 50px;
-        padding: 9px 0; }
+        padding: 9px 0;
+        cursor: pointer; }
         .sidebar .nav-links li .toggle .bx-chevron-left {
           font-size: 32px !important;
-          color: #b4c2d4;
-          cursor: pointer; }
+          color: #b4c2d4; }
+      .sidebar .nav-links li .toggle:hover {
+        background-color: #3a4060; }
+        .sidebar .nav-links li .toggle:hover .bx-chevron-left {
+          color: #fff; }
+    .sidebar .nav-links li:focus {
+      background-color: #2ca1c6 !important; }
     .sidebar .nav-links .active {
       background-color: #2ca1c6 !important; }
       .sidebar .nav-links .active a .link-name {
@@ -117,7 +123,7 @@
       .sidebar .nav-links .active a i {
         color: #fff !important; }
     .sidebar .nav-links li:hover {
-      background-color: #2ca1c6; }
+      background-color: #3a4060; }
       .sidebar .nav-links li:hover .link-name {
         color: #fff; }
       .sidebar .nav-links li:hover i {
