@@ -1,34 +1,29 @@
 <div class="sidebar">
   <a class="header-name" href="#">WhySo.</a>
+  <input type="hidden" id="title" value="{{ title }}" />
   <ul class="nav-links">
     <div>
-      <li class="active">
+      <li>
         <a href="/">
           <i class="bx bx-home"></i>
           <span class="link-name">Home</span>
         </a>
       </li>
-      <li>
-        <a href="/profile">
+      <li id="profile">
+        <a href="/profile" >
           <i class="bx bx-user"></i>
           <span class="link-name">User</span>
         </a>
       </li>
       <li>
-        <a href="#">
+        <a href="/finance">
           <i class="bx bx-notepad"></i>
           <span class="link-name">Finance</span>
         </a>
       </li>
-      <li>
-        <a href="#">
-          <i class="bx bx-bell"></i>
-          <span class="link-name">Notification</span>
-        </a>
-      </li>
       {{#if (compare user.role 0)}}
         <li>
-          <a href="#">
+          <a href="/control">
             <i class="bx bx-cog"></i>
             <span class="link-name">Control</span>
           </a>
@@ -37,11 +32,11 @@
 
     </div>
 
-    <li>
+    <div>
       <div class="toggle">
         <i class="bx bx-chevron-left"></i>
       </div>
-    </li>
+    </div>
   </ul>
 </div>
 
@@ -52,7 +47,7 @@
   sidebar.classList.toggle('closes'); });
 
   const navLinks = document.querySelectorAll('li');
-  navLinks.forEach(navLink => {
+  {{!-- navLinks.forEach(navLink => {
     navLink.addEventListener('click', event => {
       // Lấy thẻ cha gần nhất của thẻ li
       const navLink = event.target.closest('li');
@@ -63,5 +58,20 @@
         navLink.classList.add('active');
       }
     })
-  })
+  }) --}}
+
+  const title = document.querySelector('#title').value; 
+
+  if ( title == 'Home' ) {
+    navLinks[0].classList.add('active');
+  } 
+  if ( title == 'Profile' ) {
+    navLinks[1].classList.add('active');
+  }
+  if ( title == 'Finance' ) {
+    navLinks[2].classList.add('active');
+  }
+  if ( title == 'Control' ) {
+    navLinks[3].classList.add('active');
+  }
 </script>

@@ -1,5 +1,3 @@
-const captchaURL = `/captcha`;
-
 class SiteController {
 
     notification(req, res) {
@@ -13,7 +11,7 @@ class SiteController {
                 user, title: 'Home' 
             });
         } else {
-            res.render('login', { captchaURL });
+            res.render('login');
         }
     }
 

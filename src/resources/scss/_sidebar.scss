@@ -31,7 +31,7 @@
     flex-direction: column;
     justify-content: space-between;
 
-    li {
+    div {
       position: relative;
       list-style: none;
       transition: all 0.4s ease;
@@ -130,15 +130,15 @@
       .link-name {
         display: none;
       }
+    }
 
-      .toggle {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    .toggle {
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-        .bx-chevron-left {
-          transform: rotate(180deg);
-        }
+      .bx-chevron-left {
+        transform: rotate(180deg);
       }
     }
   }

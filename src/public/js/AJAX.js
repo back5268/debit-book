@@ -1,4 +1,4 @@
-function handleLoginBtn() {
+function handleForm() {
     document.getElementById("form-submit").addEventListener("click", function (event) {
         event.preventDefault();
         const account = document.querySelector('#account').value;
@@ -14,9 +14,11 @@ function handleLoginBtn() {
                 var response = JSON.parse(xhr.responseText);
                 window.location.href = '/';
             } else {
+                changeCaptcha();
+                const captcha = document.querySelector('#captcha');
+                captcha.value = '';
                 var response = JSON.parse(xhr.responseText);
                 alert(response.error);
-                window.location.href = '/';
             }
         };
 
@@ -90,6 +92,18 @@ function handleUpdateAccount() {
 }
 
 function changeCaptcha() {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", "/newCaptcha", true);
+    xhr.onload = function () {
+        const response = JSON.parse(xhr.responseText);
+        document.getElementById("captcha-img").src =
+            `/captcha?text=${response.captcha}`;
+
+    };
+    xhr.send();
+}
+
+function handleChangCaptcha() {
     document.getElementById("change-captcha").addEventListener("click", function () {
         const xhr = new XMLHttpRequest();
         xhr.open("GET", "/newCaptcha", true);
