@@ -23,7 +23,7 @@ const sendVerification = ({ _id, email, account }, res) => {
         from: process.env.AUTH_EMAIL,
         to: email,
         subject: '[Thông báo] - Kích hoạt tài khoản!',
-        html: `<p>Bạn hoặc ai đó đã sử dụng email để tạo tài khoản: <b>${account}</b> để tạo tài khoản!</p>
+        html: `<p>Bạn hoặc ai đó đã sử dụng email để tạo tài khoản: <b>${account}</b>!</p>
             <p>Vui lòng truy cập vào đường dẫn: <a href=${currentUrl + "verify/" + _id + "/" + uniqueString}>
             ${currentUrl + "verify/" + _id + "/" + uniqueString}</a> để kích hoạt.</p> <br/>
             <p>Lưu ý: Đường link chỉ được sử dụng 01 lần và có <b>thời hạn trong 24 giờ.</b></p>
