@@ -1,5 +1,5 @@
 function handleLoginBtn() {
-    document.getElementById("form-submit").addEventListener("click", function(event) {
+    document.getElementById("form-submit").addEventListener("click", function (event) {
         event.preventDefault();
         const account = document.querySelector('#account').value;
         const password = document.querySelector('#password').value;
@@ -19,13 +19,13 @@ function handleLoginBtn() {
                 window.location.href = '/';
             }
         };
-        
+
         xhr.send(JSON.stringify(data));
     })
 }
 
 function handleUpdateProfile() {
-    document.getElementById("update-info").addEventListener("click", function(event) {
+    document.getElementById("update-info").addEventListener("click", function (event) {
         event.preventDefault();
         const fullname = document.querySelector('#fullname').value;
         const phone = document.querySelector('#phone').value;
@@ -50,21 +50,55 @@ function handleUpdateProfile() {
                 window.location.href = '/profile';
             }
         };
-        
+
         xhr.send(JSON.stringify(data));
+    })
+}
+
+function handleUpdateAccount() {
+    document.getElementById("update-account").addEventListener("click", function (event) {
+        event.preventDefault();
+        const account = document.querySelector('#account').value;
+        const oldPassword = document.querySelector('#oldPassword').value;
+        const newPassword = document.querySelector('#newPassword').value;
+        const reTypePassword = document.querySelector('#reTypePassword').value;
+        const captcha = document.querySelector('#captcha').value;
+
+        const data = { account, oldPassword, newPassword, captcha };
+        if (reTypePassword != newPassword) {
+            alert('Re-entered password does not match');
+            window.location.href = '/profile';
+        } else {
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', `${window.location.origin}/updateUserAccount`, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    alert(response.error);
+                    window.location.href = '/profile';
+                } else {
+                    var response = JSON.parse(xhr.responseText);
+                    alert(response.error);
+                    window.location.href = '/profile';
+                }
+            };
+
+            xhr.send(JSON.stringify(data));
+        }
     })
 }
 
 function changeCaptcha() {
     document.getElementById("change-captcha").addEventListener("click", function () {
-        const xhr = new XMLHttpRequest(); 
+        const xhr = new XMLHttpRequest();
         xhr.open("GET", "/newCaptcha", true);
         xhr.onload = function () {
             const response = JSON.parse(xhr.responseText);
             document.getElementById("captcha-img").src =
                 `/captcha?text=${response.captcha}`;
-            
-        }; 
+
+        };
         xhr.send();
     });
 }

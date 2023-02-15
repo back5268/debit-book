@@ -32,6 +32,7 @@ router.get('/newCaptcha', captchaController.newCaptcha);
 // profile
 router.get('/profile', profileController.show);
 router.post('/updateUserInfo', profileController.updateUserInfo);
+router.post('/updateUserAccount', profileController.updateUserAccount);
 
 router.get('/notification', siteController.notification);
 router.get('/', siteController.index);

@@ -35,7 +35,7 @@ const senResetEmail = ({ _id, email, account }, res) => {
                 from: process.env.AUTH_EMAIL,
                 to: email,
                 subject: '[Thông báo] - Lấy lại mật khẩu!',
-                html: `<p>Bạn hoặc ai đó đã sử dụng email: <b>${account}</b> để gửi yêu cầu lấy lại mật khẩu đăng nhập!</p>
+                html: `<p>Bạn hoặc ai đó đã sử dụng email để gửi yêu cầu lấy lại mật khẩu cho tài khoản: <b>${account}</b> !</p>
                     <p>Vui lòng truy cập đường dẫn: <a href=${currentUrl + "resetPassword/" + _id + "/" + resetString + "/" + email + "/" + account + "/" + error}>
                     ${currentUrl + "resetPassword/" + _id + "/" + resetString + "/"}</a> để xác nhận yêu cầu.</p> <br/>
                     <p>Lưu ý: Đường link chỉ được sử dụng 01 lần và có <b>thời hạn trong 24 giờ.</b></p>
