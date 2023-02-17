@@ -8,7 +8,6 @@ const verificationController = require('../app/controller/VerificationController
 const loginController = require('../app/controller/LoginController');
 const signupController = require('../app/controller/SignupController');
 const profileController = require('../app/controller/ProfileController');
-const financesController = require('../app/controller/FinancesController');
 const systemController = require('../app/controller/SystemController');
 
 // Login
@@ -35,9 +34,6 @@ router.get('/newCaptcha', captchaController.newCaptcha);
 router.get('/profile', profileController.show);
 router.post('/updateUserInfo', profileController.updateUserInfo);
 router.post('/updateUserAccount', profileController.updateUserAccount);
-
-// finances
-router.get('/finance', financesController.show);
 
 // control
 router.get('/control', systemController.show);

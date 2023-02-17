@@ -3,10 +3,35 @@
     display: flex;
     justify-content: space-between;
     background-color: #3a4060;
+    padding: 0 16px;
     align-items: center;
+
+    .header {
+      display: flex;
+      align-items: center;
+      margin-top: 16px;
+
+      .nav-tabs {
+        border: none;
+
+        .nav-link.active {
+          color: #2f1c6a;
+          border: none;
+        }
+
+        a {
+          min-width: 120px;
+          text-align: center;
+          color: #b4c2d4;
+          border: none;
+          padding: 12px 16px;
+        }
+      } 
+    }
 
     h5 {
       color: #fff;
+      margin-right: 24px;
     }
 
     span {
@@ -17,8 +42,8 @@
 
   .card-body {
     .body {
-      height: 62vh;
-      max-height: 62vh;
+      height: 65vh;
+      max-height: 65vh;
       position: relative;
       display: flex;
       flex-direction: column;
@@ -27,8 +52,9 @@
 
       table {
         tr,
-        td {  
+        td {
           min-width: 100px;
+          font-size: 14px;
         }
 
         tr {
@@ -39,6 +65,15 @@
           vertical-align: middle;
         }
       }
+    }
+
+    label {
+      text-align: right;
+      font-weight: 500;
+    }
+
+    textarea {
+      min-height: 120px;
     }
   }
 
@@ -54,7 +89,7 @@
     }
 
     button:hover {
-        background-color: #b7bfc8;
+      background-color: #b7bfc8;
     }
 
     input {
@@ -69,5 +104,32 @@
   i {
     color: #fff;
     margin-right: 4px;
+  }
+}
+
+.modal-dialog {
+  width: 60vw;
+  margin: 16px;
+
+  label {
+    width: 100%;
+
+    .debt {
+      text-align: center;
+      background-color: #c8ced3;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .choose {
+      background-color: #17a2b8;
+    }
+  }
+}
+
+@media (min-width: 576px) {
+  .modal-dialog {
+      max-width: none;
+      margin: 32px auto;
   }
 }

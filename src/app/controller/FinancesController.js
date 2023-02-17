@@ -11,6 +11,17 @@ class FinancesController {
         }
     }
 
+    showDetail(req, res) {
+        if (req.session.user) {
+            const user = req.session.user;
+            res.render('detailFinances', { 
+                user, title: 'Finance', title2: '/ detail',
+            });
+        } else {
+            res.render('login');
+        }
+    }
+
 }
 
 module.exports = new FinancesController;
