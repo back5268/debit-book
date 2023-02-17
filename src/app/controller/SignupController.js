@@ -50,25 +50,21 @@ const sendVerification = ({ _id, email, account }, res) => {
                 .then(() => {
                     transporter.sendMail(mailOptions)
                         .then(() => {
-                            const message = 'Yêu cầu xác thực tài khoản đã được gửi. Vui lòng kiểm tra email!';
-                            res.render('notification', { message });
+                            res.json({ message: 'Yêu cầu đã được gửi, vui lòng kiểm tra gmail!' });
                         })
                         .catch(err => {
                             console.log(err);
-                            const message = 'Gửi mail không thành công!';
-                            res.render('notification', { message });
+                            res.status(403).json({ message: 'Gửi mail không thành công!' });
                         })
                 })
                 .catch(err => {
                     console.log(err);
-                    const message = 'Không thể lưu xác nhận mail!';
-                    res.render('notification', { message });
+                    res.status(403).json({ message: 'Gửi mail không thành công!' });
                 })
         })
         .catch(err => {
             console.log(err);
-            const message = 'Có lỗi xảy ra khi hash uniqueString!';
-            res.render('notification', { message });
+            res.status(403).json({ message: 'Gửi mail không thành công!' });
         })
 }
 
@@ -89,8 +85,7 @@ class SignupController {
             User.find({ account })
                 .then(data => {
                     if (data.length) {
-                        const error = 'Tài khoản đã tồn tại!';
-                        res.render('signup', { error });
+                        res.status(403).json({ message: 'Tài khoản đã tồn tại!' });
                     } else {
                         const saltRounds = 10;
                         bcrypt.hash(password, saltRounds)
@@ -112,25 +107,21 @@ class SignupController {
                                     })
                                     .catch(err => {
                                         console.log(err);
-                                        const error = 'Tài khoản của bạn không thể xác nhận!';
-                                        res.render('signup', { error });
+                                        res.status(403).json({ message: 'Tài khoản của bạn không thể xác nhận!' });
                                     })
                             })
                             .catch(err => {
                                 console.log(err);
-                                const error = 'Tài khoản của bạn không thể xác nhận!';
-                                res.render('signup', { error });
+                                res.status(403).json({ message: 'Tài khoản của bạn không thể xác nhận!' });
                             })
                     }
                 })
                 .catch(err => {
                     console.log(err);
-                    const error = 'Tài khoản của bạn không thể xác nhận!';
-                    res.render('signup', { error });
+                    res.status(403).json({ message: 'Tài khoản của bạn không thể xác nhận!' });
                 })
         } else {
-            const error = 'Mã captcha không đúng!';
-            res.render('signup', { error });
+            res.status(403).json({ message: 'Mã captcha không đúng!' });
         }
     }
 

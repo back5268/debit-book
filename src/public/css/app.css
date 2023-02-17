@@ -115,9 +115,9 @@
         .sidebar .nav-links div .toggle:hover .bx-chevron-left {
           color: #fff; }
     .sidebar .nav-links li:focus {
-      background-color: #2ca1c6 !important; }
+      background-color: #17a2b8 !important; }
     .sidebar .nav-links .active {
-      background-color: #2ca1c6 !important; }
+      background-color: #17a2b8 !important; }
       .sidebar .nav-links .active a .link-name {
         color: #fff !important; }
       .sidebar .nav-links .active a i {
@@ -276,16 +276,7 @@
     margin-bottom: 32px; }
   .profile .row .header {
     height: 50px;
-    background-color: #1e1e2d;
-    color: #fff;
-    font-size: 20px;
-    font-weight: 500;
-    margin-bottom: 32px;
-    border-radius: 4px 4px 0 0;
-    padding: 8px 16px; }
-  .profile .row .header {
-    height: 50px;
-    background-color: #1e1e2d;
+    background-color: #3a4060;
     color: #fff;
     font-size: 20px;
     font-weight: 500;
@@ -315,6 +306,55 @@
   border-radius: 4px;
   border: 1px solid #c7d5e6;
   padding: 8px 24px; }
+
+.card-group .card-header {
+  display: flex;
+  justify-content: space-between;
+  background-color: #3a4060;
+  align-items: center; }
+  .card-group .card-header h5 {
+    color: #fff; }
+  .card-group .card-header span {
+    color: #b4c2d4;
+    font-size: 12px; }
+
+.card-group .card-body .body {
+  height: 62vh;
+  max-height: 62vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  border: 1px solid #c7d5e6; }
+  .card-group .card-body .body table tr,
+  .card-group .card-body .body table td {
+    min-width: 100px; }
+  .card-group .card-body .body table tr {
+    text-align: center; }
+  .card-group .card-body .body table td {
+    vertical-align: middle; }
+
+.card-group .card-footer .justify-content-center {
+  display: flex;
+  align-items: center; }
+
+.card-group .card-footer button {
+  width: 100%;
+  border: 1px solid #c7d5e6; }
+
+.card-group .card-footer button:hover {
+  background-color: #b7bfc8; }
+
+.card-group .card-footer input {
+  padding: 4px 8px;
+  margin: 0 4px;
+  border: 1px solid #c7d5e6;
+  border-radius: 4px;
+  max-width: 80px; }
+
+.card-group i {
+  color: #fff;
+  margin-right: 4px; }
 
 .icon {
   font-size: 20px; }

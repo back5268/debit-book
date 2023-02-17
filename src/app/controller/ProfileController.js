@@ -19,11 +19,11 @@ class ProfileController {
         User.findOneAndUpdate({ _id: userId }, { fullname, phone, address, description }, { new: true })
             .then(data => {
                 req.session.user = data;
-                res.status(200).json({ error: 'Update successful!' });
+                res.status(200).json({ message: 'Update successful!' });
             })
             .catch(err => {
                 console.log(err);
-                res.status(403).json({ error: 'Update failed!' });
+                res.status(403).json({ message: 'Update failed!' });
             })
     }
 
@@ -41,27 +41,27 @@ class ProfileController {
                                 .then(data => {
                                     User.updateOne({ account }, { password: data })
                                         .then(() => {
-                                            res.status(200).json({ error: 'Update successful!' });
+                                            res.status(200).json({ message: 'Update successful!' });
                                         })
                                         .catch(err => {
                                             console.log(err);
-                                            res.status(403).json({ error: 'Update failed!' });
+                                            res.status(403).json({ message: 'Update failed!' });
                                         })
                                 })
                                 .catch(err => {
-                                    res.status(403).json({ error: 'Update failed!' });
+                                    res.status(403).json({ message: 'Update failed!' });
                                 })
                         } else {
-                            res.status(403).json({ error: 'Incorrect oldPassword!' });
+                            res.status(403).json({ message: 'Incorrect oldPassword!' });
                         }
                     })
                     .catch(err => {
                         console.log(err);
-                        res.status(403).json({ error: 'Update failed!' });
+                        res.status(403).json({ message: 'Update failed!' });
                     })
             })
         } else {
-            res.status(403).json({ error: 'Incorrect captcha!' });
+            res.status(403).json({ message: 'Incorrect captcha!' });
         }
     }
 

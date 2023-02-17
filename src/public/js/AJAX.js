@@ -18,7 +18,37 @@ function handleForm() {
                 const captcha = document.querySelector('#captcha');
                 captcha.value = '';
                 var response = JSON.parse(xhr.responseText);
-                alert(response.error);
+                alert(response.message);
+            }
+        };
+
+        xhr.send(JSON.stringify(data));
+    })
+}
+
+function handleSignup() {
+    document.getElementById("form-submit").addEventListener("click", function (event) {
+        event.preventDefault();
+        const fullname = document.querySelector('#fullname').value;
+        const email = document.querySelector('#email').value;
+        const account = document.querySelector('#account').value;
+        const password = document.querySelector('#password').value;
+        const captcha = document.querySelector('#captcha').value;
+        const data = { fullname, email, account, password, captcha };
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', `${window.location.origin}/signup`, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                window.location.href = '/';
+            } else {
+                changeCaptcha();
+                const captcha = document.querySelector('#captcha');
+                captcha.value = '';
+                var response = JSON.parse(xhr.responseText);
+                alert(response.message);
             }
         };
 
@@ -44,12 +74,10 @@ function handleUpdateProfile() {
         xhr.onload = function () {
             if (xhr.status === 200) {
                 var response = JSON.parse(xhr.responseText);
-                alert(response.error);
-                window.location.href = '/profile';
+                alert(response.message);
             } else {
                 var response = JSON.parse(xhr.responseText);
-                alert(response.error);
-                window.location.href = '/profile';
+                alert(response.message);
             }
         };
 
@@ -77,12 +105,13 @@ function handleUpdateAccount() {
             xhr.onload = function () {
                 if (xhr.status === 200) {
                     var response = JSON.parse(xhr.responseText);
-                    alert(response.error);
-                    window.location.href = '/profile';
+                    alert(response.message);
                 } else {
+                    changeCaptcha();
+                    const captcha = document.querySelector('#captcha');
+                    captcha.value = '';
                     var response = JSON.parse(xhr.responseText);
-                    alert(response.error);
-                    window.location.href = '/profile';
+                    alert(response.message);
                 }
             };
 
@@ -111,7 +140,6 @@ function handleChangCaptcha() {
             const response = JSON.parse(xhr.responseText);
             document.getElementById("captcha-img").src =
                 `/captcha?text=${response.captcha}`;
-
         };
         xhr.send();
     });
