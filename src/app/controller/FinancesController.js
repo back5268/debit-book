@@ -10,7 +10,7 @@ class FinancesController {
                 .then(data => {
                     data = data.map(d => d.toObject());
                     res.render('finance', {
-                        user, title: 'Finance', debtors: data
+                        user, title: 'Finance', debtors: data, totalRecord: data.length
                     });
                 })
                 .catch(err => {
@@ -104,6 +104,18 @@ class FinancesController {
         } else {
             res.render('login');
         }
+    }
+
+    updateDebtor(req, res) {
+        const { debtorId, email, phone, address } = req.body;
+        Debtor.findByIdAndUpdate({ _id: debtorId }, { email, phone, address })
+            .then(() => {
+                res.status(200).json({ message: 'Update successful!' });
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(403).json({ message: 'Update failed!' });
+            })
     }
 
 }

@@ -173,6 +173,32 @@ function handleAddDebt() {
     })
 }
 
+function handleAddDebt() {
+    document.getElementById("updateDebtor").addEventListener("click", function (event) {
+        event.preventDefault();
+        const debtorId = document.querySelector('#debtorId').value;
+        const phone = document.querySelector('#phone').value;
+        const email = document.querySelector('#email').value;
+        const address = document.querySelector('#address').value;
+
+        const data = { debtorId, phone, email, address };
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', `${window.location.origin}/finance/updateDebtor`, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                alert(response.message);
+            } else {
+                var response = JSON.parse(xhr.responseText);
+                alert(response.message);
+            }
+        };
+
+        xhr.send(JSON.stringify(data));
+    })
+}
+
 function changeCaptcha() {
     const xhr = new XMLHttpRequest();
     xhr.open("GET", "/newCaptcha", true);

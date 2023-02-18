@@ -95,11 +95,12 @@
                 <div class="container">
                     <div class="card-body">
                         <form>
+                            <input type="hidden" value="{{ debtor._id }}" id="debtorId">
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Full name (*)</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" id="fullname"
-                                        value="{{ debtor.fullname }}" />
+                                        value="{{ debtor.fullname }}" disabled/>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -137,7 +138,7 @@
                             <div class="form-group row">
                                 <div class="col-sm-3"></div>
                                 <div class="col-sm-6">
-                                    <button type="submit" class="btn btn-info" id="createNew">
+                                    <button type="submit" class="btn btn-info" id="updateDebtor">
                                         Update
                                     </button>
                                 </div>
@@ -340,5 +341,6 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         handleAddDebt();
+        handleUpdateDebtor();
     });
 </script>

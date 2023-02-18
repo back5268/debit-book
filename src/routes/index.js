@@ -1,5 +1,5 @@
 const siteRouter = require('./site');
-const financeRouter = require('./finance');
+const financeRouter = require('./finances');
 
 function route(app) {
     app.use('/', siteRouter);
