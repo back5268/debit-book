@@ -120,6 +120,59 @@ function handleUpdateAccount() {
     })
 }
 
+function handleAddDebtor() {
+    document.getElementById("addNewDebtor").addEventListener("click", function (event) {
+        event.preventDefault();
+        const fullname = document.querySelector('#fullname').value;
+        const phone = document.querySelector('#phone').value;
+        const address = document.querySelector('#address').value;
+        const email = document.querySelector('#email').value;
+
+        const data = { fullname, phone, address, email };
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', `${window.location.origin}/finance/createNewDebtor`, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                alert(response.message);
+            } else {
+                var response = JSON.parse(xhr.responseText);
+                alert(response.message);
+            }
+        };
+
+        xhr.send(JSON.stringify(data));
+    })
+}
+
+function handleAddDebt() {
+    document.getElementById("addNewDebt").addEventListener("click", function (event) {
+        event.preventDefault();
+        const debtorId = document.querySelector('#debtorId').value;
+        const noteDebt = document.querySelector('#noteDebt').value;
+        const typeOfDebt = document.querySelector('input[name="typeOfDebt"]:checked').value;
+        const amountOfMoney = document.querySelector('#amountOfMoney').value;
+        const timeDebt = document.querySelector('#timeDebt').value;
+
+        const data = { debtorId, noteDebt, typeOfDebt, amountOfMoney, timeDebt };
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', `${window.location.origin}/finance/addNewDebt`, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                alert(response.message);
+            } else {
+                var response = JSON.parse(xhr.responseText);
+                alert(response.message);
+            }
+        };
+
+        xhr.send(JSON.stringify(data));
+    })
+}
+
 function changeCaptcha() {
     const xhr = new XMLHttpRequest();
     xhr.open("GET", "/newCaptcha", true);

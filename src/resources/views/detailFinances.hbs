@@ -13,7 +13,7 @@
                 </ul>
             </div>
             <div>
-                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#detailDebts">
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#detailDebt">
                     <i class="fa-solid fa-plus"></i>
                     Tạo phiếu nợ
                 </button>
@@ -55,13 +55,15 @@
                                     <td>To</td>
                                     <td colspan="3"></td>
                                 </tr>
+
+                                {{#each loanInformations}}
                                 <tr>
                                     <td>1</td>
-                                    <td>Thanh toán</td>
-                                    <td>-</td>
-                                    <td>300000</td>
-                                    <td>17/2/2023</td>
-                                    <td>17/2/2023</td>
+                                    <td> {{ this.noteDebt }} </td>
+                                    <td> {{ this.typeOfDebt }} </td>
+                                    <td> {{ this.amountOfMoney }} </td>
+                                    <td> {{ this.timeDebt }} </td>
+                                    <td> {{ this.createAt }} </td>
                                     <td>
                                         <button type="button" class="btn btn-info" data-toggle="modal"
                                             data-target="#detailDebts">
@@ -69,6 +71,8 @@
                                             Chi tiet</button>
                                     </td>
                                 </tr>
+                                {{/each}}
+
                             </tbody>
                         </table>
                     </div>
@@ -94,31 +98,31 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Full name (*)</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="fullname" />
+                                    <input type="text" class="form-control" id="fullname" value="{{ debtor.fullname }}"/>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Phone</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="phone" />
+                                    <input type="text" class="form-control" id="phone" value="{{ debtor.phone }}"/>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Address</label>
                                 <div class="col-sm-6">
-                                    <textarea type="text" class="form-control" id="address"></textarea>
+                                    <textarea type="text" class="form-control" id="address">{{ debtor.address }}</textarea>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Email </label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="email" />
+                                    <input type="text" class="form-control" id="email" value="{{ debtor.email }}"/>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Tổng nợ</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="liabitities" value="0" disabled />
+                                    <input type="text" class="form-control" id="liabitities" value="{{ debtor.totalLiabilities }}" disabled />
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -143,7 +147,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="detailDebts">
+<div class="modal fade" id="detailDebt">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
@@ -154,18 +158,19 @@
                         </div>
                         <div class="card-body">
                             <form>
+                                <input type="hidden" value="{{ debtor._id }}" id="debtorId">
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Ghi chú</label>
                                     <div class="col-sm-9">
-                                        <textarea type="text" class="form-control" id="note"></textarea>
+                                        <textarea type="text" class="form-control" id="noteDebt"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Loại nợ </label>
                                     <div class="col-sm-9">
                                         <div class="row">
-                                            <input type="radio" name="typeDebts" id="+Debts" value="+" hidden>
-                                            <input type="radio" name="typeDebts" id="-Debts" value="-" hidden>
+                                            <input type="radio" name="typeOfDebt" id="+Debts" value="+" checked hidden>
+                                            <input type="radio" name="typeOfDebt" id="-Debts" value="-" hidden>
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-6">
@@ -184,7 +189,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Số tiền (*)</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" value="0">
+                                        <input type="number" class="form-control" value="0" id="amountOfMoney">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -196,20 +201,20 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Ngày lập phiếu </label>
                                     <div class="col-sm-9">
-                                        <input type="date" class="form-control" id="email">
+                                        <input type="date" class="form-control" id="timeDebt">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Hình ảnh chứng minh </label>
                                     <div class="col-sm-9">
-                                        <input type="file" class="form-control" id="email">
+                                        <input type="file" class="form-control" id="imgDebt">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-3"></div>
                                     <div class="col-sm-9">
-                                        <button type="submit" class="btn btn-info" id="createNew">
-                                            Add
+                                        <button type="submit" class="btn btn-info" id="addNewDebt">
+                                            Thêm phiếu nợ
                                         </button>
                                     </div>
                                 </div>
@@ -235,4 +240,10 @@
             event.target.classList.add('choose');
         })
     })
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    handleAddDebt();
+  });
 </script>
