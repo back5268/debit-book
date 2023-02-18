@@ -13,7 +13,7 @@
                 </ul>
             </div>
             <div>
-                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#detailDebt">
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addDebt">
                     <i class="fa-solid fa-plus"></i>
                     Tạo phiếu nợ
                 </button>
@@ -58,7 +58,7 @@
 
                                 {{#each loanInformations}}
                                 <tr>
-                                    <td>1</td>
+                                    <td> {{ sum @index 1 }} </td>
                                     <td> {{ this.noteDebt }} </td>
                                     <td> {{ this.typeOfDebt }} </td>
                                     <td> {{ this.amountOfMoney }} </td>
@@ -66,7 +66,7 @@
                                     <td> {{ this.createAt }} </td>
                                     <td>
                                         <button type="button" class="btn btn-info" data-toggle="modal"
-                                            data-target="#detailDebts">
+                                            data-target="#detailDebt{{ sum @index 1 }}">
                                             <i class="fa-solid fa-info"></i>
                                             Chi tiet</button>
                                     </td>
@@ -98,31 +98,34 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Full name (*)</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="fullname" value="{{ debtor.fullname }}"/>
+                                    <input type="text" class="form-control" id="fullname"
+                                        value="{{ debtor.fullname }}" />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Phone</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="phone" value="{{ debtor.phone }}"/>
+                                    <input type="text" class="form-control" id="phone" value="{{ debtor.phone }}" />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Address</label>
                                 <div class="col-sm-6">
-                                    <textarea type="text" class="form-control" id="address">{{ debtor.address }}</textarea>
+                                    <textarea type="text" class="form-control"
+                                        id="address">{{ debtor.address }}</textarea>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Email </label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="email" value="{{ debtor.email }}"/>
+                                    <input type="text" class="form-control" id="email" value="{{ debtor.email }}" />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Tổng nợ</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="liabitities" value="{{ debtor.totalLiabilities }}" disabled />
+                                    <input type="text" class="form-control" id="liabitities"
+                                        value="{{ debtor.totalLiabilities }}" disabled />
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -147,7 +150,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="detailDebt">
+<div class="modal fade" id="addDebt">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
@@ -175,12 +178,12 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <label class="form-check-label" for="+Debts">
-                                                    <div class="form-control debt choose">+</div>
+                                                    <div class="form-control debt debts choose">+</div>
                                                 </label>
                                             </div>
                                             <div class="col-sm-6">
                                                 <label class="form-check-label" for="-Debts">
-                                                    <div class="form-control debt">-</div>
+                                                    <div class="form-control debt debts">-</div>
                                                 </label>
                                             </div>
                                         </div>
@@ -230,8 +233,100 @@
     </div>
 </div>
 
+{{#each loanInformations}}
+<div class="modal fade" id="detailDebt{{ sum @index 1 }}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="card-group">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Thông tin người nợ</h5>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Ghi chú</label>
+                                    <div class="col-sm-9">
+                                        <textarea type="text" class="form-control"
+                                            id="noteDebt">{{ this.noteDebt }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Loại nợ </label>
+                                    <div class="col-sm-9">
+                                        <div class="row">
+                                            <input type="radio" name="typeOfDebt" id="+Debts" value="+" checked hidden>
+                                            <input type="radio" name="typeOfDebt" id="-Debts" value="-" hidden>
+                                        </div>
+                                        <div class="row">
+                                            {{#if (compare this.typeOfDebt '+')}}
+                                            <div class="col-sm-6">
+                                                <label class="form-check-label" for="+Debts">
+                                                    <div class="form-control debt choose">+</div>
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label class="form-check-label" for="-Debts">
+                                                    <div class="form-control debt">-</div>
+                                                </label>
+                                            </div>
+                                            {{else}}
+                                            <div class="col-sm-6">
+                                                <label class="form-check-label" for="+Debts">
+                                                    <div class="form-control debt">+</div>
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label class="form-check-label" for="-Debts">
+                                                    <div class="form-control debt choose">-</div>
+                                                </label>
+                                            </div>
+                                            {{/if}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Số tiền (*)</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" class="form-control" value="{{ this.amountOfMoney }}"
+                                            id="amountOfMoney" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label"></label>
+                                    <div class="col-sm-9">
+                                        Không
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Ngày lập phiếu </label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="timeDebt"
+                                            value="{{ this.timeDebt }}" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Hình ảnh chứng minh </label>
+                                    <div class="col-sm-9">
+                                        <input type="file" class="form-control" id="imgDebt">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/each}}
+
 <script>
-    const debts = document.querySelectorAll('.debt');
+    const debts = document.querySelectorAll('.debts');
     debts.forEach(debt => {
         debt.addEventListener('click', event => {
             debts.forEach(d => {
@@ -243,7 +338,7 @@
 </script>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    handleAddDebt();
-  });
+    document.addEventListener('DOMContentLoaded', function () {
+        handleAddDebt();
+    });
 </script>

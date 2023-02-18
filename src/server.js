@@ -39,6 +39,7 @@ app.engine('hbs', engine({
     extname: ".hbs",
     helpers: {
         compare: (a, b) => a === b,
+        sum: (a, b) => a + b,
     }
 }));
 app.set('view engine', 'hbs');

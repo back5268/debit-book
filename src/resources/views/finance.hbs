@@ -20,7 +20,7 @@
             <div class="card card-link">
               <a href="/finance/detail/{{ this.slug }}">
                 <div class="card-body">
-                  <h5 class="card-title">1. {{ this.fullname }}</h5>
+                  <h5 class="card-title">{{ sum @index 1 }}. {{ this.fullname }}</h5>
                   <div class="row">
                     <div class="col-sm-4 card-text">Ngày tạo:</div>
                     <div class="col-sm-8 card-text"> {{ this.createAt }} </div>
@@ -31,7 +31,7 @@
                   </div>
                 </div>
                 <div class="card-body card-body-hover">
-                  <h5 class="card-title">1. {{ this.fullname }} </h5>
+                  <h5 class="card-title">{{sum @index 1}}. {{ this.fullname }} </h5>
                   <div class="row">
                     <div class="col-sm-3 card-text">SĐT:</div>
                     <div class="col-sm-9 card-text"> {{ this.phone }} </div>
