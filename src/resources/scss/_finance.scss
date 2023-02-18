@@ -31,19 +31,20 @@
 
     h5 {
       color: #fff;
-      margin-right: 24px;
+      margin: 10px 24px 10px 8px;
     }
 
     span {
       color: #b4c2d4;
       font-size: 12px;
+      margin-left: 12px;
     }
   }
 
   .card-body {
     .body {
-      height: 65vh;
-      max-height: 65vh;
+      min-height: 68vh;
+      max-height: 68vh;
       position: relative;
       display: flex;
       flex-direction: column;
@@ -67,6 +68,56 @@
       }
     }
 
+    .card-links {
+      border: 1px solid #c7d5e6;
+      min-height: 68vh;
+      max-height: 68vh;
+      padding: 0 16px;
+      border-radius: 8px;
+      
+      .card-link {
+        width: 100%;
+        margin: 16px 0;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+
+        .card-body-hover {
+          display: none;
+        }
+
+        .card-body {
+          background-color: rgb(185, 235, 249);
+          min-height: 180px;
+          max-height: 180px;
+        }
+
+        .card-footer {
+          display: flex;
+          justify-content: space-between;
+          padding: 8px 16px;
+
+          h5 {
+            margin: 0;
+            font-size: 16px;
+            margin-top: 4px;
+          }
+        }
+      }
+
+      .card-link:hover {
+        .card-body-hover {
+          display: block !important;
+        }
+
+        .card-body {
+          display: none;
+        }
+
+        a {
+          text-decoration: none;
+        }
+      }
+    }
+
     label {
       text-align: right;
       font-weight: 500;
@@ -78,6 +129,8 @@
   }
 
   .card-footer {
+    padding: 4px 8px;
+
     .justify-content-center {
       display: flex;
       align-items: center;
