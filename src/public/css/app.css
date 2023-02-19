@@ -420,7 +420,8 @@
     .modal-dialog label .debt {
       text-align: center;
       background-color: #c8ced3;
-      color: #fff;
+      color: #fff; }
+    .modal-dialog label .debts {
       cursor: pointer; }
     .modal-dialog label .choose {
       background-color: #17a2b8; }

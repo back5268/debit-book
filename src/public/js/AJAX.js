@@ -173,7 +173,7 @@ function handleAddDebt() {
     })
 }
 
-function handleAddDebt() {
+function handleUpdateDebtor() {
     document.getElementById("updateDebtor").addEventListener("click", function (event) {
         event.preventDefault();
         const debtorId = document.querySelector('#debtorId').value;

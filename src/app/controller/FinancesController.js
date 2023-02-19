@@ -1,5 +1,6 @@
 const Debtor = require('../models/Debtor');
 const LoanInformation = require('../models/LoanInformation');
+const { dateTimeHelper } = require('../../util/dateTimeHelper');
 
 class FinancesController {
 
@@ -9,6 +10,11 @@ class FinancesController {
             Debtor.find({ UserId: user._id })
                 .then(data => {
                     data = data.map(d => d.toObject());
+                    data = data.map(d => {
+                        d.createAt = dateTimeHelper(d.createAt);
+                        d.updateAt = dateTimeHelper(d.updateAt);
+                        return d;
+                    })
                     res.render('finance', {
                         user, title: 'Finance', debtors: data, totalRecord: data.length
                     });
@@ -54,7 +60,7 @@ class FinancesController {
 
     addNewDebt(req, res) {
         const { debtorId, noteDebt, typeOfDebt, amountOfMoney, timeDebt } = req.body;
-        if (amountOfMoney) {
+        if (amountOfMoney != 0) {
             const newLoanInformation = new LoanInformation({
                 debtorId,
                 noteDebt,
@@ -72,7 +78,7 @@ class FinancesController {
                     res.status(403).json({ message: 'Không thể thêm Thông tin khoản nợ!' });
                 })
         } else {
-            res.status(403).json({ message: 'Vui lòng nhập số tiền của khoản nợ!' });
+            res.status(403).json({ message: 'Vui lòng nhập giá trị khác 0!' });
         }
     }
 
@@ -87,6 +93,11 @@ class FinancesController {
                     LoanInformation.find({ debtorId })
                         .then(data => {
                             data = data.map(d => d.toObject());
+                            data = data.map(d => {
+                                d.createAt = dateTimeHelper(d.createAt);
+                                d.timeDebt = dateTimeHelper(d.timeDebt);
+                                return d;
+                            })
                             debtor = debtor.toObject();
                             res.render('detailFinances', {
                                 user, title: 'Finance', title2: '/ detail', loanInformations: data, debtor
