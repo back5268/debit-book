@@ -10,12 +10,12 @@ class ProfileController {
                 user, title: 'Profile'
             });
         } else {
-            res.render('login');
+            res.render('form/login');
         }
     }
 
     updateUserInfo(req, res) {
-        const { fullname, phone, email, address, description, userId } = req.body;
+        const { fullname, phone, address, description, userId } = req.body;
         User.findOneAndUpdate({ _id: userId }, { fullname, phone, address, description }, { new: true })
             .then(data => {
                 req.session.user = data;

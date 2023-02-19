@@ -26,7 +26,7 @@ class FinancesController {
                     });
                 })
         } else {
-            res.render('login');
+            res.render('form/login');
         }
     }
 
@@ -113,7 +113,7 @@ class FinancesController {
                     next(err);
                 })
         } else {
-            res.render('login');
+            res.render('form/login');
         }
     }
 

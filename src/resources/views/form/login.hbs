@@ -1,7 +1,8 @@
 <div class="main">
-  <form class="form" id="form" action="/passwordrr" method="post">
-    <h3 class="heading">Reset Password</h3>
-    <span class="err">{{error}}</span>
+  <form id="form" class="form">
+
+    <h3 class="heading">Đăng nhập</h3>
+    <p class="desc">Đăng nhập sổ ghi nợ!</p>
 
     <div class="form-group mt-4">
       <label for="account" class="form-label">Account (*)</label>
@@ -16,12 +17,12 @@
     </div>
 
     <div class="form-group">
-      <label for="email" class="form-label">Email (*)</label>
+      <label for="password" class="form-label">Mật khẩu (*)</label>
       <input
-        id="email"
-        name="email"
-        type="text"
-        placeholder="VD: email@domain.com"
+        id="password"
+        name="password"
+        type="password"
+        placeholder="Nhập mật khẩu"
         class="form-control"
       />
       <span class="form-message"></span>
@@ -39,31 +40,39 @@
             class="captcha"
           />
           <button type="button" id="change-captcha"><i
-              class="bx bx-rotate-left icon"
+              class="bx bx-rotate-left"
             ></i></button>
         </div>
       </div>
     </div>
-    <button type="submit" class="form-submit">Submit</button>
+    <button type="submit" class="form-submit" id="form-submit">Đăng nhập</button>
 
-    <div class="spacer mt-4"></div>
+    <div class="mt-4"></div>
     <div class="row">
-      <div class="col-12"><a href="/login">Quay lại đăng nhập</a></div>
+      <div class="col-6 col-lg-6">
+        <a href="/passwordrr">Quên mật khẩu</a>
+      </div>
+      <div class="col-6 col-lg-6">
+        <a href="/signup">Đăng ký</a>
+      </div>
     </div>
   </form>
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
     Validator({
       form: '#form',
       formGroupSelector: '.form-group',
       errorSelector: '.form-message',
       rules: [
           Validator.isRequired('#account', 'Vui lòng nhập tài khoản của bạn'),
-          Validator.isEmail('#email'),
+          Validator.isRequired('#password', 'Vui lòng nhập mật khẩu'),
+          Validator.minLength('#password', 6),
       ],
     });
+
     handleChangCaptcha();
-  })
+    handleLogin();
+  })     
 </script>

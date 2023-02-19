@@ -24,7 +24,7 @@ router.get('/verify/:userId/:uniqueString', verificationController.verify);
 router.post('/passwordrr', passwordResetController.passwordrr);
 router.get('/passwordrr', passwordResetController.getRequest);
 router.post('/resetPassword', passwordResetController.resetPassword);
-router.get('/resetPassword/:userId/:resetString/:email/:account/:error', passwordResetController.getReset);
+router.get('/resetPassword/:userId/:resetString/:email/:account', passwordResetController.getReset);
 
 // Captcha
 router.get('/captcha', captchaController.captcha);

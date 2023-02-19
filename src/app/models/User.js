@@ -11,6 +11,8 @@ const UserSchema = new Schema({
   address: String,
   description: String,
   role: Number,
+  createAt: Date,
+  lastLogin: Date,
 });
 
 const User = mongoose.model('User', UserSchema);

@@ -1,4 +1,4 @@
-function handleForm() {
+function handleLogin() {
     document.getElementById("form-submit").addEventListener("click", function (event) {
         event.preventDefault();
         const account = document.querySelector('#account').value;
@@ -42,6 +42,64 @@ function handleSignup() {
         xhr.onload = function () {
             if (xhr.status === 200) {
                 var response = JSON.parse(xhr.responseText);
+                alert(response.message);
+            } else {
+                changeCaptcha();
+                const captcha = document.querySelector('#captcha');
+                captcha.value = '';
+                var response = JSON.parse(xhr.responseText);
+                alert(response.message);
+            }
+        };
+
+        xhr.send(JSON.stringify(data));
+    })
+}
+
+function handleRequestResetPassword() {
+    document.getElementById("form-submit").addEventListener("click", function (event) {
+        event.preventDefault();
+        const account = document.querySelector('#account').value;
+        const email = document.querySelector('#email').value;
+        const captcha = document.querySelector('#captcha').value;
+        const data = { account, email, captcha };
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', `${window.location.origin}/passwordrr`, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                alert(response.message);
+            } else {
+                changeCaptcha();
+                const captcha = document.querySelector('#captcha');
+                captcha.value = '';
+                var response = JSON.parse(xhr.responseText);
+                alert(response.message);
+            }
+        };
+
+        xhr.send(JSON.stringify(data));
+    })
+}
+
+function handleResetPassword() {
+    document.getElementById("form-submit").addEventListener("click", function (event) {
+        event.preventDefault();
+        const userId = document.querySelector('#userId').value;
+        const password = document.querySelector('#password').value;
+        const resetString = document.querySelector('#resetString').value;
+        const captcha = document.querySelector('#captcha').value;
+        const data = { userId, password, resetString, captcha };
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', `${window.location.origin}/resetPassword`, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                alert(response.message);
                 window.location.href = '/';
             } else {
                 changeCaptcha();

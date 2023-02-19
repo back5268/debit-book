@@ -11,7 +11,7 @@ class SiteController {
                 user, title: 'Home' 
             });
         } else {
-            res.render('login');
+            res.render('form/login');
         }
     }
 

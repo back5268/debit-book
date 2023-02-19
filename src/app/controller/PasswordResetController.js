@@ -14,7 +14,6 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-// Test nodemailer
 transporter.verify((err, success) => {
     if (err) {
         console.log('Connect to nodemailer Failed!');
@@ -26,7 +25,6 @@ transporter.verify((err, success) => {
 // Sent password reset email
 const senResetEmail = ({ _id, email, account }, res) => {
     const resetString = uuidv4() + _id;
-    const error = 'noError';
 
     // Clear all existing records
     PasswordReset.deleteMany({ userId: _id })
@@ -36,7 +34,7 @@ const senResetEmail = ({ _id, email, account }, res) => {
                 to: email,
                 subject: '[Thông báo] - Lấy lại mật khẩu!',
                 html: `<p>Bạn hoặc ai đó đã sử dụng email để gửi yêu cầu lấy lại mật khẩu cho tài khoản: <b>${account}</b> !</p>
-                    <p>Vui lòng truy cập đường dẫn: <a href=${currentUrl + "resetPassword/" + _id + "/" + resetString + "/" + email + "/" + account + "/" + error}>
+                    <p>Vui lòng truy cập đường dẫn: <a href=${currentUrl + "resetPassword/" + _id + "/" + resetString + "/" + email + "/" + account}>
                     ${currentUrl + "resetPassword/" + _id + "/" + resetString + "/"}</a> để xác nhận yêu cầu.</p> <br/>
                     <p>Lưu ý: Đường link chỉ được sử dụng 01 lần và có <b>thời hạn trong 24 giờ.</b></p>
                     <p>Sau thời gian trên sẽ không thể truy cập để thực hiện yêu cầu lấy lại mật khẩu.</p>
@@ -59,31 +57,26 @@ const senResetEmail = ({ _id, email, account }, res) => {
                         .then(() => {
                             transporter.sendMail(mailOptions)
                                 .then(() => {
-                                    const message = 'Yêu cầu lấy lại mật khẩu đã được gửi. Vui lòng kiểm tra email để xác nhận!';
-                                    res.render('notification', { message });
+                                    res.status(200).json({ message: 'Yêu cầu đã được gửi, vui lòng kiểm tra email!' });
                                 })
                                 .catch(err => {
-                                    console.log(err)
-                                    const message = 'Gửi mail xác nhận không thành công!';
-                                    res.render('notification', { message });
+                                    console.log(err);
+                                    res.status(403).json({ message: 'Gửi mail xác nhận không thành công!' });
                                 })
                         })
                         .catch(err => {
-                            console.log(err)
-                            const message = 'Không thể lưu dữ liệu!';
-                            res.render('notification', { message });
+                            console.log(err);
+                            res.status(403).json({ message: 'Gửi mail xác nhận không thành công!' });
                         })
                 })
                 .catch(err => {
                     console.log(err);
-                    const message = 'Có lỗi xảy ra khi hash resetString!';
-                    res.render('notification', { message });
+                    res.status(403).json({ message: 'Gửi mail xác nhận không thành công!' });
                 })
         })
         .catch(err => {
             console.log(err);
-            const message = 'Có lỗi xảy ra khi xóa dữ liệu PasswordResetDB!';
-            res.render('notification', { message });
+            res.status(403).json({ message: 'Gửi mail xác nhận không thành công!' });
         })
 }
 
@@ -103,13 +96,12 @@ class PasswordResetController {
                         if (expiresAt < Date.now()) {
                             PasswordReset.deleteOne({ userId })
                                 .then(() => {
-                                    const message = 'Yêu cầu lấy lại mật khẩu đã hết hạn!';
-                                    res.render('notification', { message });
+                                    res.status(403).json({ message: 'Yêu cầu lấy lại mật khẩu đã hết hạn!' });
                                 })
                                 .catch(err => {
                                     console.log(err);
-                                    const message = 'Xóa dữ liệu không thành công!';
-                                    res.render('notification', { message });
+                                    res.status(403).json({ message: 'Cập nhật mật khẩu mới không thành công!' });
+
                                 })
                         } else {
                             // Compare resetString
@@ -126,50 +118,41 @@ class PasswordResetController {
                                                         // Update complete 
                                                         PasswordReset.deleteOne({ userId })
                                                             .then(() => {
-                                                                const message = 'Đổi mật khẩu thành công!';
-                                                                res.render('notification', { message });
+                                                                res.status(403).json({ message: 'Đổi mật khẩu thành công!' });
                                                             })
                                                             .catch(err => {
                                                                 console.log(err);
-                                                                const message = 'Xóa dữ liệu không thành công!';
-                                                                res.render('notification', { message });
+                                                                res.status(403).json({ message: 'Cập nhật mật khẩu mới không thành công!' });
                                                             })
                                                     })
                                                     .catch(err => {
                                                         console.log(err);
-                                                        const message = 'Cập nhật mật khẩu mới không thành công!';
-                                                        res.render('notification', { message });
+                                                        res.status(403).json({ message: 'Cập nhật mật khẩu mới không thành công!' });
                                                     })
                                             })
                                             .catch(err => {
                                                 console.log(err);
-                                                const message = 'Hash pasword không thành công!';
-                                                res.render('notification', { message });
+                                                res.status(403).json({ message: 'Cập nhật mật khẩu mới không thành công!' });
                                             })
                                     } else {
-                                        const message = 'ResetString không đúng!';
-                                        res.render('notification', { message });
+                                        res.status(403).json({ message: 'Cập nhật mật khẩu mới không thành công!' });
                                     }
                                 })
                                 .catch(err => {
                                     console.log(err);
-                                    const message = 'ResetString không đúng!';
-                                    res.render('notification', { message });
+                                    res.status(403).json({ message: 'Cập nhật mật khẩu mới không thành công!' });
                                 })
                         }
                     } else {
-                        const message = 'Không tìm thấy userId!';
-                        res.render('notification', { message });
+                        res.status(403).json({ message: 'Cập nhật mật khẩu mới không thành công!' });
                     }
                 })
                 .catch(err => {
                     console.log(err);
-                    const message = 'Có lỗi xảy ra khi tìm kiếm thông tin người dùng!';
-                    res.render('notification', { message });
+                    res.status(403).json({ message: 'Cập nhật mật khẩu mới không thành công!' });
                 })
         } else {
-            const error = 'Mã captcha không đúng!';
-            res.redirect(`${currentUrl + "resetPassword/" + userId + "/" + resetString + "/" + email + "/" + error}`);
+            res.status(403).json({ message: 'Mã captcha không đúng!' });
         }
 
     }
@@ -177,39 +160,35 @@ class PasswordResetController {
     getReset(req, res) {
         let { userId, resetString, email, account, error } = req.params;
         if (error === 'noError') error = '';
-        res.render('resetPassword', { userId, resetString, email, account, error });
+        res.render('form/resetPassword', { userId, resetString, email, account, error });
     }
 
     passwordrr(req, res) {
         const { email, account, captcha } = req.body;
-        if (captcha == req.session.captcha) {
+        if (req.session.captcha === captcha) {
             User.find({ email, account })
                 .then(data => {
                     if (data.length) {
                         if (!data[0].verified) {
-                            const error = 'Tài khoản chưa được xác nhận!';
-                            res.render('passwordrr', { error });
+                            res.status(403).json({ message: 'Tài khoản chưa được xác minh!' });
                         } else {
                             senResetEmail(data[0], res);
                         }
                     } else {
-                        const error = 'Tài khoản không tồn tại!';
-                        res.render('passwordrr', { error });
+                        res.status(403).json({ message: 'Tài khoản không tồn tại!' });
                     }
                 })
                 .catch(err => {
                     console.log(err);
-                    const message = 'Có lỗi khi tìm kiếm thông tin người dùng!';
-                    res.render('notification', { message });
+                    res.status(403).json({ message: 'Tài khoản chưa được xác minh!' });
                 })
         } else {
-            const error = 'Mã captcha không đúng!';
-            res.render('passwordrr', { error });
+            res.status(403).json({ message: 'Mã captcha không đúng!' });
         }
     }
 
     getRequest(req, res) {
-        res.render('passwordrr');
+        res.render('form/passwordrr');
     }
 
 }

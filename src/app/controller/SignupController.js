@@ -18,7 +18,6 @@ const transporter = nodemailer.createTransport({
 const sendVerification = ({ _id, email, account }, res) => {
     const uniqueString = uuidv4() + _id;
 
-    // Mail content
     const mailOptions = {
         from: process.env.AUTH_EMAIL,
         to: email,
@@ -32,12 +31,9 @@ const sendVerification = ({ _id, email, account }, res) => {
             <p>Thanks and best regards,</p> <p><i>Development</i></p>`
     };
 
-    // Hash the uniqueString
     const saltRounds = 10;
     bcrypt.hash(uniqueString, saltRounds)
         .then(data => {
-
-            // Crate newVertification
             const newVertification = UserVertification({
                 userId: _id,
                 uniqueString: data,
@@ -45,12 +41,11 @@ const sendVerification = ({ _id, email, account }, res) => {
                 expiresAt: Date.now() + 86400000,
             })
 
-            // Save newVertification at DB
             newVertification.save()
                 .then(() => {
                     transporter.sendMail(mailOptions)
                         .then(() => {
-                            res.json({ message: 'Yêu cầu đã được gửi, vui lòng kiểm tra gmail!' });
+                            res.status(200).json({ message: 'Yêu cầu đã được gửi, vui lòng kiểm tra gmail!' });
                         })
                         .catch(err => {
                             console.log(err);
@@ -71,7 +66,7 @@ const sendVerification = ({ _id, email, account }, res) => {
 class SignupController {
 
     signupGet(req, res) {
-        res.render('signup');
+        res.render('form/signup');
     }
 
     signupPost(req, res) {
@@ -100,6 +95,7 @@ class SignupController {
                                     address: '',
                                     description: '',
                                     role: 1,
+                                    createAt: Date.now(),
                                 });
                                 newUser.save()
                                     .then(data => {
