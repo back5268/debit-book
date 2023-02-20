@@ -194,6 +194,7 @@ function handleAddDebtor() {
             if (xhr.status === 200) {
                 var response = JSON.parse(xhr.responseText);
                 alert(response.message);
+                window.location.href = '/finance';
             } else {
                 var response = JSON.parse(xhr.responseText);
                 alert(response.message);
@@ -212,6 +213,7 @@ function handleAddDebt() {
         const typeOfDebt = document.querySelector('input[name="typeOfDebt"]:checked').value;
         const amountOfMoney = document.querySelector('#amountOfMoney').value;
         const timeDebt = document.querySelector('#timeDebt').value;
+        const slug = document.querySelector('#slug').value;
 
         const data = { debtorId, noteDebt, typeOfDebt, amountOfMoney, timeDebt };
         const xhr = new XMLHttpRequest();
@@ -221,9 +223,49 @@ function handleAddDebt() {
             if (xhr.status === 200) {
                 var response = JSON.parse(xhr.responseText);
                 alert(response.message);
+                window.location.href = `/finance/detail/${slug}`;
             } else {
                 var response = JSON.parse(xhr.responseText);
                 alert(response.message);
+            }
+        };
+
+        xhr.send(JSON.stringify(data));
+    })
+}
+
+function handleSearchDebt() {
+    document.getElementById("searchDebt").addEventListener("click", function (event) {
+        event.preventDefault();
+        const typeOfDebt = document.querySelector('#typeOfDebt').value;
+        const minMonney = document.querySelector('#minMonney').value;
+        const maxMonney = document.querySelector('#maxMonney').value;
+        const minTimeDebt = document.querySelector('#minTimeDebt').value;
+        const maxTimeDebt = document.querySelector('#maxTimeDebt').value;
+        const minTimeCreate = document.querySelector('#minTimeCreate').value;
+        const maxTimeCreate = document.querySelector('#maxTimeCreate').value;
+        const slug = document.querySelector('#slug').value;
+
+        const data = { typeOfDebt, minMonney, maxMonney, minTimeDebt, maxTimeDebt, minTimeCreate, maxTimeCreate, slug };
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', `${window.location.origin}/finance/searchDebt`, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                console.log('response: ' + response.debt);
+                let tbody = document.querySelector('tbody');
+                tbody.innerHTML = '';
+                for (const { id, noteDebt, typeOfDebt, amountOfMoney, timeDebt, createAt } of response.debt) {
+                    let row = tbody.insertRow();
+                    row.insertCell().innerHTML = id;
+                    row.insertCell().innerHTML = noteDebt;
+                    row.insertCell().innerHTML = typeOfDebt;
+                    row.insertCell().innerHTML = amountOfMoney;
+                    row.insertCell().innerHTML = timeDebt;
+                    row.insertCell().innerHTML = createAt;
+                    row.insertCell().innerHTML = `<button type="button" class="btn btn-info" data-toggle="modal" data-target="#detailDebt${id}"> <i class="fa-solid fa-info"></i>Chi tiet</button>`;
+                }
             }
         };
 

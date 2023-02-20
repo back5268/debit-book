@@ -2,7 +2,7 @@
     <div class="card">
         <div class="card-header">
             <div class="header">
-                <h5>Lê Trần Tiến Đông</h5>
+                <h5>{{ debtor.fullname }}</h5>
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
                         <a class="nav-link active" data-toggle="tab" href="#debts">Debts</a>
@@ -35,30 +35,40 @@
                                     <th scope="col">Thời gian tạo</th>
                                     <th scope="col" colspan="3">Action</th>
                                 </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <input type="hidden" value="{{ debtor.slug }}" id="slug">
+                                        <select name="typeDebt" id="typeOfDebt">
+                                            <option value="all">All</option>
+                                            <option value="+">+</option>
+                                            <option value="-">-</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="number" id="minMonney" placeholder="from">
+                                        <input type="number" id="maxMonney" placeholder="to">
+                                    </td>
+                                    <td>
+                                        <input type="datetime-local" id="minTimeDebt">
+                                        <input type="datetime-local" id="maxTimeDebt">
+                                    </td>
+                                    <td>
+                                        <input type="datetime-local" id="minTimeCreate">
+                                        <input type="datetime-local" id="maxTimeCreate">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-info" id="searchDebt">
+                                            Tìm kiếm</button>
+                                    </td>
+                                </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td>All</td>
-                                    <td>From</td>
-                                    <td>From</td>
-                                    <td>From</td>
-                                    <td colspan="3"></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>To</td>
-                                    <td>To</td>
-                                    <td>To</td>
-                                    <td colspan="3"></td>
-                                </tr>
 
                                 {{#each loanInformations}}
                                 <tr>
-                                    <td> {{ sum @index 1 }} </td>
+                                    <td> {{ this.id }} </td>
                                     <td> {{ this.noteDebt }} </td>
                                     <td> {{ this.typeOfDebt }} </td>
                                     <td> {{ this.amountOfMoney }} </td>
@@ -66,7 +76,7 @@
                                     <td> {{ this.createAt }} </td>
                                     <td>
                                         <button type="button" class="btn btn-info" data-toggle="modal"
-                                            data-target="#detailDebt{{ sum @index 1 }}">
+                                            data-target="#detailDebt{{ this.id }}">
                                             <i class="fa-solid fa-info"></i>
                                             Chi tiet</button>
                                     </td>
@@ -99,8 +109,8 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Full name (*)</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="fullname"
-                                        value="{{ debtor.fullname }}" disabled/>
+                                    <input type="text" class="form-control" id="fullname" value="{{ debtor.fullname }}"
+                                        disabled />
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -162,6 +172,7 @@
                         </div>
                         <div class="card-body">
                             <form>
+                                <input type="hidden" value="{{ debtor.slug }}" id="slug">
                                 <input type="hidden" value="{{ debtor._id }}" id="debtorId">
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Ghi chú</label>
@@ -235,7 +246,7 @@
 </div>
 
 {{#each loanInformations}}
-<div class="modal fade" id="detailDebt{{ sum @index 1 }}">
+<div class="modal fade" id="detailDebt{{ this.id }}">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
@@ -249,8 +260,8 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Ghi chú</label>
                                     <div class="col-sm-9">
-                                        <textarea type="text" class="form-control"
-                                            id="noteDebt" disabled>{{ this.noteDebt }}</textarea>
+                                        <textarea type="text" class="form-control" id="noteDebt"
+                                            disabled>{{ this.noteDebt }}</textarea>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -342,5 +353,6 @@
     document.addEventListener('DOMContentLoaded', function () {
         handleAddDebt();
         handleUpdateDebtor();
+        handleSearchDebt();
     });
 </script>

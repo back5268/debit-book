@@ -5,6 +5,7 @@ const financesController = require('../app/controller/FinancesController');
 
 router.post('/createNewDebtor', financesController.createNewDebtor);
 router.post('/updateDebtor', financesController.updateDebtor);
+router.post('/searchDebt', financesController.searchDebt);
 router.post('/addNewDebt', financesController.addNewDebt);
 router.get('/detail/:slug', financesController.showDetail);
 router.get('/', financesController.show);

@@ -1,6 +1,45 @@
 const Debtor = require('../models/Debtor');
 const LoanInformation = require('../models/LoanInformation');
 const { dateTimeHelper } = require('../../util/dateTimeHelper');
+const { searchDebt } = require('../../util/searchDebt');
+
+function showDetail(slug, user, res, options) {
+    Debtor.find({ slug })
+        .then(data => {
+            let debtor = data[0];
+            const debtorId = data[0]._id;
+            LoanInformation.find({ debtorId })
+                .then(data => {
+                    data = data.map((d, index) => {
+                       d = d.toObject();
+                       d.id = index + 1;
+                       return d;
+                    });
+                    data = searchDebt(data, options);
+                    data = data.map(d => {
+                        d.createAt = dateTimeHelper(d.createAt);
+                        d.timeDebt = dateTimeHelper(d.timeDebt);
+                        return d;
+                    })
+                    debtor = debtor.toObject();
+                    if (!options.typeOfDebt) {
+                        res.render('detailFinances', {
+                            user, title: 'Finance', title2: '/ detail', loanInformations: data, debtor
+                        });
+                    } else {
+                        res.status(200).json({ debt: data });
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.status(403).json({ message: 'Not found!' });
+                })
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(403).json({ message: 'Not found!' });
+        })
+}
 
 class FinancesController {
 
@@ -86,35 +125,17 @@ class FinancesController {
         if (req.session.user) {
             const { slug } = req.params;
             const user = req.session.user;
-            Debtor.find({ slug })
-                .then(data => {
-                    let debtor = data[0];
-                    const debtorId = data[0]._id;
-                    LoanInformation.find({ debtorId })
-                        .then(data => {
-                            data = data.map(d => d.toObject());
-                            data = data.map(d => {
-                                d.createAt = dateTimeHelper(d.createAt);
-                                d.timeDebt = dateTimeHelper(d.timeDebt);
-                                return d;
-                            })
-                            debtor = debtor.toObject();
-                            res.render('detailFinances', {
-                                user, title: 'Finance', title2: '/ detail', loanInformations: data, debtor
-                            });
-                        })
-                        .catch(err => {
-                            console.log(err);
-                            next(err);
-                        })
-                })
-                .catch(err => {
-                    console.log(err);
-                    next(err);
-                })
+            let options = {};
+            showDetail(slug, user, res, options);
         } else {
             res.render('form/login');
         }
+    }
+
+    searchDebt(req, res, next) {
+        let options = req.body;
+        const user = req.session.user;
+        showDetail(options.slug, user, res, options);
     }
 
     updateDebtor(req, res) {
