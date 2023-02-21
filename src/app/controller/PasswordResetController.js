@@ -23,61 +23,26 @@ transporter.verify((err, success) => {
 })
 
 // Sent password reset email
-const senResetEmail = ({ _id, email, account }, res) => {
-    const resetString = uuidv4() + _id;
+const senResetEmail = async ({ _id, email, account }, resetString) => {
+    const mailOptions = {
+        from: process.env.AUTH_EMAIL,
+        to: email,
+        subject: '[Thông báo] - Lấy lại mật khẩu!',
+        html: `<p>Bạn hoặc ai đó đã sử dụng email để gửi yêu cầu lấy lại mật khẩu cho tài khoản: <b>${account}</b> !</p>
+            <p>Vui lòng truy cập đường dẫn: <a href=${currentUrl + "resetPassword/" + _id + "/" + resetString + "/" + email + "/" + account}>
+            reset password</a> để xác nhận yêu cầu.</p> <br/>
+            <p>Lưu ý: Đường link chỉ được sử dụng 01 lần và có <b>thời hạn trong 24 giờ.</b></p>
+            <p>Sau thời gian trên sẽ không thể truy cập để thực hiện yêu cầu lấy lại mật khẩu.</p>
+            <p>Trân trọng cảm ơn,</p> <br/> <p>------------------------------------------------------------</p>
+            <p>Thanks and best regards,</p> <p><i>Development</i></p>`
+    };
 
-    // Clear all existing records
-    PasswordReset.deleteMany({ userId: _id })
-        .then(() => {
-            const mailOptions = {
-                from: process.env.AUTH_EMAIL,
-                to: email,
-                subject: '[Thông báo] - Lấy lại mật khẩu!',
-                html: `<p>Bạn hoặc ai đó đã sử dụng email để gửi yêu cầu lấy lại mật khẩu cho tài khoản: <b>${account}</b> !</p>
-                    <p>Vui lòng truy cập đường dẫn: <a href=${currentUrl + "resetPassword/" + _id + "/" + resetString + "/" + email + "/" + account}>
-                    ${currentUrl + "resetPassword/" + _id + "/" + resetString + "/"}</a> để xác nhận yêu cầu.</p> <br/>
-                    <p>Lưu ý: Đường link chỉ được sử dụng 01 lần và có <b>thời hạn trong 24 giờ.</b></p>
-                    <p>Sau thời gian trên sẽ không thể truy cập để thực hiện yêu cầu lấy lại mật khẩu.</p>
-                    <p>Trân trọng cảm ơn,</p> <br/> <p>------------------------------------------------------------</p>
-                    <p>Thanks and best regards,</p> <p><i>Development</i></p>`
-            };
-
-            // Hash the reset String
-            const saltRounds = 10;
-            bcrypt.hash(resetString, saltRounds)
-                .then(data => {
-                    const newPasswordReset = new PasswordReset({
-                        userId: _id,
-                        resetString: data,
-                        createAt: Date.now(),
-                        expiresAt: Date.now() + 86400000,
-                    })
-
-                    newPasswordReset.save()
-                        .then(() => {
-                            transporter.sendMail(mailOptions)
-                                .then(() => {
-                                    res.status(200).json({ message: 'Yêu cầu đã được gửi, vui lòng kiểm tra email!' });
-                                })
-                                .catch(err => {
-                                    console.log(err);
-                                    res.status(403).json({ message: 'Gửi mail xác nhận không thành công!' });
-                                })
-                        })
-                        .catch(err => {
-                            console.log(err);
-                            res.status(403).json({ message: 'Gửi mail xác nhận không thành công!' });
-                        })
-                })
-                .catch(err => {
-                    console.log(err);
-                    res.status(403).json({ message: 'Gửi mail xác nhận không thành công!' });
-                })
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(403).json({ message: 'Gửi mail xác nhận không thành công!' });
-        })
+    try {
+        let info = await transporter.sendMail(mailOptions);
+        console.log('Email sent: ' + info.response);
+    } catch (error) {
+        console.log('Error sending email: ' + error.message);
+    }
 }
 
 class PasswordResetController {
@@ -172,6 +137,31 @@ class PasswordResetController {
                         if (!data[0].verified) {
                             res.status(403).json({ message: 'Tài khoản chưa được xác minh!' });
                         } else {
+                            let user = data;
+                            const resetString = uuidv4() + user._id;
+                            const saltRounds = 10;
+                            bcrypt.hash(resetString, saltRounds)
+                                .then(data => {
+                                    const newPasswordReset = new PasswordReset({
+                                        userId: user._id,
+                                        resetString: data,
+                                        createAt: Date.now(),
+                                        expiresAt: Date.now() + 86400000,
+                                    })
+                                    newPasswordReset.save()
+                                        .then(() => {
+                                            senResetEmail(user, resetString, res);
+                                            res.json({ message: 'Yêu cầu đã được gửi, vui lòng kiểm tra gmail!' });
+                                        })
+                                        .catch(err => {
+                                            console.log(err);
+                                            res.status(403).json({ message: 'Gửi mail xác nhận không thành công!' });
+                                        })
+                                })
+                                .catch(err => {
+                                    console.log(err);
+                                    res.status(403).json({ message: 'Gửi mail xác nhận không thành công!' });
+                                })
                             senResetEmail(data[0], res);
                         }
                     } else {

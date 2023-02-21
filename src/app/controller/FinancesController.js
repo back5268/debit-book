@@ -2,6 +2,7 @@ const Debtor = require('../models/Debtor');
 const LoanInformation = require('../models/LoanInformation');
 const { dateTimeHelper } = require('../../util/dateTimeHelper');
 const { searchDebt } = require('../../util/searchDebt');
+const { totalDebts } = require('../../util/totalDebts');
 
 function showDetail(slug, user, res, options) {
     Debtor.find({ slug })
@@ -11,14 +12,14 @@ function showDetail(slug, user, res, options) {
             LoanInformation.find({ debtorId })
                 .then(data => {
                     data = data.map((d, index) => {
-                       d = d.toObject();
-                       d.id = index + 1;
-                       return d;
+                        d = d.toObject();
+                        d.id = index + 1;
+                        return d;
                     });
                     data = searchDebt(data, options);
                     data = data.map(d => {
-                        d.createAt = dateTimeHelper(d.createAt);
                         d.timeDebt = dateTimeHelper(d.timeDebt);
+                        d.createAt = dateTimeHelper(d.createAt);
                         return d;
                     })
                     debtor = debtor.toObject();
@@ -70,7 +71,7 @@ class FinancesController {
     }
 
     createNewDebtor(req, res) {
-        const { fullname, phone, address, email } = req.body;
+        let { fullname, phone, address, email } = req.body;
         const user = req.session.user;
         if (fullname) {
             const newDebtor = new Debtor({
@@ -98,8 +99,9 @@ class FinancesController {
     }
 
     addNewDebt(req, res) {
-        const { debtorId, noteDebt, typeOfDebt, amountOfMoney, timeDebt } = req.body;
-        if (amountOfMoney != 0) {
+        let { debtorId, noteDebt, typeOfDebt, amountOfMoney, timeDebt } = req.body;
+        if (!timeDebt) timeDebt =  Date.now();
+        if (Number(amountOfMoney) > 0) {
             const newLoanInformation = new LoanInformation({
                 debtorId,
                 noteDebt,
@@ -109,15 +111,32 @@ class FinancesController {
                 createAt: Date.now(),
             })
             newLoanInformation.save()
-                .then(() => {
-                    res.json({ message: 'Thêm thông tin khoản nợ thành công!' });
+                .then(data => {
+                    let debt = data;
+                    Debtor.find({ _id: debtorId })
+                        .then(data => {
+                            let totalLiabilities = totalDebts(debt, data[0].totalLiabilities);
+                            Debtor.findOneAndUpdate({ _id: debtorId }, { totalLiabilities })
+                                .then(() => {
+                                    res.json({ message: 'Thêm thông tin khoản nợ thành công!' });
+                                })
+                                .catch(err => {
+                                    console.log(err);
+                                    res.status(403).json({ message: 'Không thể thêm Thông tin khoản nợ!' });
+                                })
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            res.status(403).json({ message: 'Không thể thêm Thông tin khoản nợ!' });
+                        })
+
                 })
                 .catch(err => {
                     console.log(err);
                     res.status(403).json({ message: 'Không thể thêm Thông tin khoản nợ!' });
                 })
         } else {
-            res.status(403).json({ message: 'Vui lòng nhập giá trị khác 0!' });
+            res.status(403).json({ message: 'Vui lòng nhập giá trị lớn hơn 0!' });
         }
     }
 
@@ -139,7 +158,7 @@ class FinancesController {
     }
 
     updateDebtor(req, res) {
-        const { debtorId, email, phone, address } = req.body;
+        let { debtorId, email, phone, address } = req.body;
         Debtor.findByIdAndUpdate({ _id: debtorId }, { email, phone, address })
             .then(() => {
                 res.status(200).json({ message: 'Update successful!' });

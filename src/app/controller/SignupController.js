@@ -6,17 +6,14 @@ const nodemailer = require('nodemailer');
 const { v4: uuidv4 } = require('uuid');
 const currentUrl = process.env.CURRENT_URL;
 
-// Nodemailer
-const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        user: process.env.AUTH_EMAIL,
-        pass: process.env.AUTH_PASS,
-    }
-})
-
-const sendVerification = ({ _id, email, account }, res) => {
-    const uniqueString = uuidv4() + _id;
+const sendVerification = async ({ _id, email, account }, uniqueString, res) => {
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: process.env.AUTH_EMAIL,
+            pass: process.env.AUTH_PASS,
+        }
+    })
 
     const mailOptions = {
         from: process.env.AUTH_EMAIL,
@@ -24,43 +21,20 @@ const sendVerification = ({ _id, email, account }, res) => {
         subject: '[Thông báo] - Kích hoạt tài khoản!',
         html: `<p>Bạn hoặc ai đó đã sử dụng email để tạo tài khoản: <b>${account}</b>!</p>
             <p>Vui lòng truy cập vào đường dẫn: <a href=${currentUrl + "verify/" + _id + "/" + uniqueString}>
-            ${currentUrl + "verify/" + _id + "/" + uniqueString}</a> để kích hoạt.</p> <br/>
+            active account</a> để kích hoạt.</p> <br/>
             <p>Lưu ý: Đường link chỉ được sử dụng 01 lần và có <b>thời hạn trong 24 giờ.</b></p>
             <p>Sau thời gian trên hãy sử dụng chức năng quên mật khẩu để tiến hành tạo mới mật khẩu và kích hoạt tài khoản.</p>
             <p>Trân trọng cảm ơn,</p> <br/> <p>------------------------------------------------------------</p>
             <p>Thanks and best regards,</p> <p><i>Development</i></p>`
     };
 
-    const saltRounds = 10;
-    bcrypt.hash(uniqueString, saltRounds)
-        .then(data => {
-            const newVertification = UserVertification({
-                userId: _id,
-                uniqueString: data,
-                createAt: Date.now(),
-                expiresAt: Date.now() + 86400000,
-            })
+    try {
+        let info = await transporter.sendMail(mailOptions);
+        console.log('Email sent: ' + info.response);
+    } catch (error) {
+        console.log('Error sending email: ' + error.message);
+    }
 
-            newVertification.save()
-                .then(() => {
-                    transporter.sendMail(mailOptions)
-                        .then(() => {
-                            res.status(200).json({ message: 'Yêu cầu đã được gửi, vui lòng kiểm tra gmail!' });
-                        })
-                        .catch(err => {
-                            console.log(err);
-                            res.status(403).json({ message: 'Gửi mail không thành công!' });
-                        })
-                })
-                .catch(err => {
-                    console.log(err);
-                    res.status(403).json({ message: 'Gửi mail không thành công!' });
-                })
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(403).json({ message: 'Gửi mail không thành công!' });
-        })
 }
 
 class SignupController {
@@ -99,6 +73,32 @@ class SignupController {
                                 });
                                 newUser.save()
                                     .then(data => {
+                                        let user = data;
+                                        const uniqueString = uuidv4() + user._id;
+                                        const saltRounds = 10;
+                                        bcrypt.hash(uniqueString, saltRounds)
+                                            .then(data => {
+                                                const newVertification = UserVertification({
+                                                    userId: user._id,
+                                                    uniqueString: data,
+                                                    createAt: Date.now(),
+                                                    expiresAt: Date.now() + 86400000,
+                                                })
+                                                newVertification.save()
+                                                    .then(() => {
+                                                        sendVerification(user, uniqueString, res);
+                                                        res.json({ message: 'Yêu cầu đã được gửi, vui lòng kiểm tra gmail!' });
+                                                    })
+                                                    .catch(err => {
+                                                        console.log(err);
+                                                        res.status(403).json({ message: 'Gửi mail không thành công!' });
+                                                    })
+                                            })
+                                            .catch(err => {
+                                                console.log(err);
+                                                res.status(403).json({ message: 'Gửi mail không thành công!' });
+                                            })
+
                                         sendVerification(data, res);
                                     })
                                     .catch(err => {

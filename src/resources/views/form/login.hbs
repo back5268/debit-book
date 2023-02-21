@@ -61,18 +61,18 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-    Validator({
-      form: '#form',
-      formGroupSelector: '.form-group',
-      errorSelector: '.form-message',
-      rules: [
-          Validator.isRequired('#account', 'Vui lòng nhập tài khoản của bạn'),
-          Validator.isRequired('#password', 'Vui lòng nhập mật khẩu'),
-          Validator.minLength('#password', 6),
-      ],
-    });
+      Validator({
+        form: '#form',
+        formGroupSelector: '.form-group',
+        errorSelector: '.form-message',
+        rules: [
+            Validator.isRequired('#account', 'Vui lòng nhập tài khoản của bạn'),
+            Validator.isRequired('#password', 'Vui lòng nhập mật khẩu'),
+            Validator.minLength('#password', 6),
+        ],
+      });
 
-    handleChangCaptcha();
-    handleLogin();
+      handleChangCaptcha();
+      handleLogin();
   })     
 </script>
