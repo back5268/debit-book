@@ -57,31 +57,6 @@
       flex-direction: column;
       overflow: scroll;
       border: 1px solid #c7d5e6;
-
-      table {
-        tr,
-        td {
-          min-width: 100px;
-          font-size: 14px;
-        }
-
-        tr {
-          text-align: center;
-          align-items: center;
-        }
-
-        td {
-          vertical-align: middle;
-
-          input {
-            padding: 6px 12px;
-            border-radius: 4px;
-            outline: none;
-            border: 1px solid #c7d5e6;
-            max-width: 148px;
-          }
-        }
-      }
     }
 
     .sort {
@@ -252,6 +227,31 @@
 
     .choose {
       background-color: #17a2b8;
+    }
+  }
+}
+
+table {
+  tr,
+  td {
+    min-width: 100px;
+    font-size: 14px;
+  }
+
+  tr {
+    text-align: center;
+    align-items: center;
+  }
+
+  td {
+    vertical-align: middle;
+
+    input {
+      padding: 6px 12px;
+      border-radius: 4px;
+      outline: none;
+      border: 1px solid #c7d5e6;
+      max-width: 148px;
     }
   }
 }

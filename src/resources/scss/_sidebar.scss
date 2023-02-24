@@ -7,6 +7,7 @@
   background-color: #1e1e2d;
   z-index: 1000;
   transition: all 0.5s ease;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 15px;
 
   .header-name {
     width: 100%;
@@ -31,6 +32,57 @@
     flex-direction: column;
     justify-content: space-between;
 
+    .dropdownMenu {
+      cursor: pointer;
+    }
+
+    li {
+      .dropdownItem {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .sub-menu {
+        background: #27273a;
+        display: none;
+        list-style: none;
+
+        li {
+          a {
+            height: 50px;
+            color: #b4c2d4;
+            font-size: 15px;
+            padding: 5px 0 5px 64px;
+            transition: all 0.3s ease;
+          }
+
+          a:hover {
+            opacity: 1;
+          }
+        }
+      }
+    }
+
+    li.showMenu {
+      .arrow {
+        transform: rotate(180deg);
+      }
+      .sub-menu {
+        display: block;
+      }
+    }
+
+    i {
+      height: 50px;
+      min-width: 64px;
+      text-align: center;
+      line-height: 50px;
+      color: #b4c2d4;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
     div {
       position: relative;
       list-style: none;
@@ -40,16 +92,6 @@
         display: flex;
         align-items: center;
         text-decoration: none;
-
-        i {
-          height: 50px;
-          min-width: 64px;
-          text-align: center;
-          line-height: 50px;
-          color: #b4c2d4;
-          font-size: 20px;
-          cursor: pointer;
-        }
 
         .link-name {
           color: #b4c2d4;
@@ -61,7 +103,6 @@
         text-align: right;
         background-color: #2a2e45;
         height: 50px;
-        padding: 9px 0;
         cursor: pointer;
 
         .bx-chevron-left {
@@ -91,9 +132,9 @@
           color: #fff !important;
         }
 
-        i {
-          color: #fff !important;
-        }
+      }
+      i {
+        color: #fff !important;
       }
     }
 
@@ -122,7 +163,31 @@
   .nav-links {
     overflow: visible;
 
+    .dropdownMenu {
+      .arrow {
+        display: none;
+      }
+    }
+
     li {
+      .sub-menu {
+        position: absolute;
+        left: 100%;
+        top: 80px;
+        border-radius: 0 6px 6px 0;
+        opacity: 0;
+        display: block;
+        pointer-events: none;
+        transition: 0s;
+        width: 132px;
+
+        a {
+          margin-left: 16px;
+          height: 50px;
+          padding: 0;
+        }
+      }
+
       .link-icon {
         display: block;
       }
@@ -130,6 +195,13 @@
       .link-name {
         display: none;
       }
+    }
+
+    li:hover .sub-menu {
+      top: 100px;
+      opacity: 1;
+      pointer-events: auto;
+      transition: all 0.4s ease;
     }
 
     .toggle {

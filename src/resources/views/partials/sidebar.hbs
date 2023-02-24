@@ -1,5 +1,5 @@
 <div class="sidebar">
-  <a class="header-name" href="#">WhySo.</a>
+  <a class="header-name" href="#">Pikachu</a>
   <input type="hidden" id="title" value="{{ title }}" />
   <ul class="nav-links">
     <div>
@@ -15,11 +15,18 @@
           <span class="link-name">User</span>
         </a>
       </li>
-      <li>
-        <a href="/finance">
-          <i class="bx bx-notepad"></i>
-          <span class="link-name">Finance</span>
-        </a>
+      <li class="dropdownMenu showMenu">
+        <div class="dropdownItem">
+          <a>
+            <i class="bx bx-notepad"></i>
+            <span class="link-name">Finance</span>
+          </a>
+          <i class='bx bxs-chevron-down arrow'></i>
+        </div>
+        <ul class="sub-menu">
+          <li><a href="/finance" >Sổ ghi nợ</a></li>
+          <li><a href="/finance/trash" >Thùng rác</a></li>
+        </ul>
       </li>
       {{#if (compare user.role 0)}}
         <li>
@@ -46,20 +53,25 @@
   sidebarBtn.addEventListener('click', () => {
   sidebar.classList.toggle('closes'); });
 
-  const navLinks = document.querySelectorAll('li');
-  {{!-- navLinks.forEach(navLink => {
-    navLink.addEventListener('click', event => {
-      // Lấy thẻ cha gần nhất của thẻ li
-      const navLink = event.target.closest('li');
-      if (navLink) {
-        navLinks.forEach(item => {
-          item.classList.remove('active');
-        });
-        navLink.classList.add('active');
-      }
+  {{!-- const dropdownItem = document.querySelectorAll('.dropdownItem');
+  dropdownItem.forEach(dropdownItem => {
+    dropdownItem.addEventListener('click', e => {
+      const dropdownItemParent = e.target.parentElement.parentElement;
+      dropdownItemParent.classList.toggle('showMenu');
     })
   }) --}}
 
+  const dropdownMenu = document.querySelectorAll('.dropdownMenu');
+  dropdownMenu.forEach(dropdown => {
+    dropdown.addEventListener('click', e => {
+      const dropdown = e.target.closest('li');
+      if (dropdown) {
+        dropdown.classList.toggle('showMenu');
+      }
+    })
+  })
+
+  const navLinks = document.querySelectorAll('li');
   const title = document.querySelector('#title').value; 
 
   if ( title == 'Home' ) {
@@ -72,6 +84,6 @@
     navLinks[2].classList.add('active');
   }
   if ( title == 'Control' ) {
-    navLinks[3].classList.add('active');
+    navLinks[5].classList.add('active');
   }
 </script>

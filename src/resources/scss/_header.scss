@@ -4,6 +4,7 @@
   background-color: fff;
   border: 1px solid #c7d5e6;
   z-index: 500;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 5px 10px;
 
   .content-header {
     position: relative;
@@ -20,6 +21,26 @@
       font-size: 24px;
       font-weight: 600;
       margin-left: 24px;
+    }
+
+    .account {
+      display: flex;
+      align-items: center;
+    }
+
+    .avatar {
+      height: 40px;
+      width: 40px;
+      border-radius: 4px;
+      padding: 4px;
+      border: 1px solid #c7d5e6;
+
+
+      img {
+        width: 100%;
+        border-radius: 4px;
+        opacity: 0.75;
+      }
     }
 
     .dropdown {

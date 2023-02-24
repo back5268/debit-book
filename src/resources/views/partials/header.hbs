@@ -1,21 +1,32 @@
 <header class="app-header fixed-top">
   <div class="content-header">
     <div class="title-header">
-      {{title}} {{ title2 }}
+      {{title}}
+      {{title2}}
     </div>
-    <div class="dropdown">
-      <a
-        class="btn dropdown-toggle"
-        href="#"
-        id="dropdownMenuLink"
-        data-toggle="dropdown"
-      >
-        {{user.account}}
-      </a>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <a class="dropdown-item" href="/profile">User infomation</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="/logout">Logout</a>
+
+     <div class="account">
+      <div class="avatar">
+        <img
+          src="https://i.pinimg.com/564x/c9/81/02/c98102218bb57cd0bff42d9ef7f55e94.jpg"
+          alt=""
+        />
+      </div>
+
+      <div class="dropdown">
+        <a
+          class="btn dropdown-toggle"
+          href="#"
+          id="dropdownMenuLink"
+          data-toggle="dropdown"
+        >
+          {{user.account}}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <a class="dropdown-item" href="/profile">User infomation</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/logout">Logout</a>
+        </div>
       </div>
     </div>
   </div>
