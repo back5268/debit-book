@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const PasswordResetSchema = new Schema({
     userId: String,
     resetString: String,
-    createAt: Date,
+    createAt: { type: Date, default: Date.now },
     expiresAt: Date,
 })
 

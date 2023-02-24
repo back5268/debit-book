@@ -7,7 +7,7 @@ class SystemController {
         if (req.session.user) {
             const user = req.session.user;
             if (user.role === 0) {
-                User.find({})
+                User.find({ verified: true })
                     .then(data => {
                         data = data.map(d => d.toObject());
                         data = data.map(d => {

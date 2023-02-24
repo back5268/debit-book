@@ -5,14 +5,16 @@ const slug = require('mongoose-slug-generator');
 mongoose.plugin(slug);
 
 const DebtorSchema = new Schema({
-    UserId: String,
     fullname: String,
     email: String,
     phone: String,
     address: String,
-    totalLiabilities: Number,
-    createAt: Date,
-    updateAt: Date,
+    totalDebts: Number,
+    createAt: { type: Date, default: Date.now },
+    updateAt: { type: Date, default: Date.now },
+    deleteAt: Date,
+    isDelete: Boolean,
+    createBy: String,
     slug: { type: String, slug: 'fullname', unique: true },
 })
 

@@ -40,7 +40,7 @@
                                     <td></td>
                                     <td>
                                         <input type="hidden" value="{{ debtor.slug }}" id="slug">
-                                        <select name="typeDebt" id="typeOfDebt">
+                                        <select name="typeDebt" id="type">
                                             <option value="all">All</option>
                                             <option value="+">+</option>
                                             <option value="-">-</option>
@@ -65,13 +65,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-
-                                {{#each loanInformations}}
+                                {{#each debts}}
                                 <tr>
                                     <td> {{ this.id }} </td>
-                                    <td> {{ this.noteDebt }} </td>
-                                    <td> {{ this.typeOfDebt }} </td>
-                                    <td> {{ this.amountOfMoney }} </td>
+                                    <td> {{ this.note }} </td>
+                                    <td> {{ this.type }} </td>
+                                    <td> {{ this.monney }} </td>
                                     <td> {{ this.timeDebt }} </td>
                                     <td> {{ this.createAt }} </td>
                                     <td>
@@ -177,15 +176,15 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Ghi chú</label>
                                     <div class="col-sm-9">
-                                        <textarea type="text" class="form-control" id="noteDebt"></textarea>
+                                        <textarea type="text" class="form-control" id="note"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Loại nợ </label>
                                     <div class="col-sm-9">
                                         <div class="row">
-                                            <input type="radio" name="typeOfDebt" id="+Debts" value="+" checked hidden>
-                                            <input type="radio" name="typeOfDebt" id="-Debts" value="-" hidden>
+                                            <input type="radio" name="type" id="+Debts" value="+" checked hidden>
+                                            <input type="radio" name="type" id="-Debts" value="-" hidden>
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-6">
@@ -204,7 +203,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Số tiền (*)</label>
                                     <div class="col-sm-9">
-                                        <input type="number" class="form-control" value="0" id="amountOfMoney">
+                                        <input type="number" class="form-control" value="0" id="monney">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -245,7 +244,7 @@
     </div>
 </div>
 
-{{#each loanInformations}}
+{{#each debts}}
 <div class="modal fade" id="detailDebt{{ this.id }}">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -260,19 +259,19 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Ghi chú</label>
                                     <div class="col-sm-9">
-                                        <textarea type="text" class="form-control" id="noteDebt"
-                                            disabled>{{ this.noteDebt }}</textarea>
+                                        <textarea type="text" class="form-control" id="note"
+                                            disabled>{{ this.note }}</textarea>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Loại nợ </label>
                                     <div class="col-sm-9">
                                         <div class="row">
-                                            <input type="radio" name="typeOfDebt" id="+Debts" value="+" checked hidden>
-                                            <input type="radio" name="typeOfDebt" id="-Debts" value="-" hidden>
+                                            <input type="radio" name="type" id="+Debts" value="+" checked hidden>
+                                            <input type="radio" name="type" id="-Debts" value="-" hidden>
                                         </div>
                                         <div class="row">
-                                            {{#if (compare this.typeOfDebt '+')}}
+                                            {{#if (compare this.type '+')}}
                                             <div class="col-sm-6">
                                                 <label class="form-check-label" for="+Debts">
                                                     <div class="form-control debt choose">+</div>
@@ -301,8 +300,8 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Số tiền (*)</label>
                                     <div class="col-sm-9">
-                                        <input type="number" class="form-control" value="{{ this.amountOfMoney }}"
-                                            id="amountOfMoney" disabled>
+                                        <input type="number" class="form-control" value="{{ this.monney }}"
+                                            id="monney" disabled>
                                     </div>
                                 </div>
                                 <div class="form-group row">

@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
-const financesController = require('../app/controller/FinancesController');
+const debtorController = require('../app/controller/DebtorController');
+const debtController = require('../app/controller/DebtController');
 
-router.post('/createNewDebtor', financesController.createNewDebtor);
-router.post('/updateDebtor', financesController.updateDebtor);
-router.post('/searchDebt', financesController.searchDebt);
-router.post('/addNewDebt', financesController.addNewDebt);
-router.get('/detail/:slug', financesController.showDetail);
-router.get('/', financesController.show);
+router.post('/createNewDebtor', debtorController.addNew);
+router.post('/updateDebtor', debtorController.update);
+router.post('/searchDebt', debtController.search);
+router.post('/addNewDebt', debtController.addNew);
+router.get('/detail/:slug', debtController.show);
+router.get('/', debtorController.show);
 
 module.exports = router;

@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const UserVertificationSchema = new Schema({
     userId: String,
     uniqueString: String,
-    createAt: Date,
+    createAt: { type: Date, default: Date.now },
     expiresAt: Date,
 })
 

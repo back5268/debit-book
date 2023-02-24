@@ -1,11 +1,11 @@
 module.exports = {
-    totalDebts: function (debt, totalLiabilities) {
-        if (debt.typeOfDebt === '+') {
-            totalLiabilities += Number(debt.amountOfMoney);
+    totalDebt: function (debt, totalDebts) {
+        if (debt.type) {
+            totalDebts += Number(debt.monney);
         } else {
-            totalLiabilities -= Number(debt.amountOfMoney);
+            totalDebts -= Number(debt.monney);
         }
 
-        return totalLiabilities;
+        return totalDebts;
     }
 }

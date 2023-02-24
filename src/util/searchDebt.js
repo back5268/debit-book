@@ -6,14 +6,14 @@ module.exports = {
         let maxTimeDebt = options.maxTimeDebt ? (new Date(options.maxTimeDebt)).getTime() : Number.MAX_VALUE;
         let minTimeCreate = options.minTimeCreate ? (new Date(options.minTimeCreate)).getTime() : 0;
         let maxTimeCreate = options.maxTimeCreate ? (new Date(options.maxTimeCreate)).getTime() : Number.MAX_VALUE;
-        let typeOfDebt = (options.typeOfDebt === 'all') ? undefined : options.typeOfDebt;
+        let type = (options.type === 'all') ? undefined : options.type;
 
-        if (typeOfDebt) {
-            debts = debts.filter(d => d.typeOfDebt === options.typeOfDebt);
+        if (type) {
+            debts = debts.filter(d => d.type === options.type);
         }
 
         debts = debts.filter(d => 
-            d.amountOfMoney >= minMonney && d.amountOfMoney <= maxMonney
+            d.monney >= minMonney && d.monney <= maxMonney
             && d.timeDebt >= minTimeDebt && d.timeDebt <= maxTimeDebt 
             && d.createAt >= minTimeCreate && d.createAt <= maxTimeCreate
         )

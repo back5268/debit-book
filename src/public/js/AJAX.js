@@ -209,13 +209,13 @@ function handleAddDebt() {
     document.getElementById("addNewDebt").addEventListener("click", function (event) {
         event.preventDefault();
         const debtorId = document.querySelector('#debtorId').value;
-        const noteDebt = document.querySelector('#noteDebt').value;
-        const typeOfDebt = document.querySelector('input[name="typeOfDebt"]:checked').value;
-        const amountOfMoney = document.querySelector('#amountOfMoney').value;
+        const note = document.querySelector('#note').value;
+        const type = document.querySelector('input[name="type"]:checked').value;
+        const monney = document.querySelector('#monney').value;
         const timeDebt = document.querySelector('#timeDebt').value;
         const slug = document.querySelector('#slug').value;
 
-        const data = { debtorId, noteDebt, typeOfDebt, amountOfMoney, timeDebt };
+        const data = { debtorId, note, type, monney, timeDebt };
         const xhr = new XMLHttpRequest();
         xhr.open('POST', `${window.location.origin}/finance/addNewDebt`, true);
         xhr.setRequestHeader('Content-Type', 'application/json');
@@ -237,7 +237,7 @@ function handleAddDebt() {
 function handleSearchDebt() {
     document.getElementById("searchDebt").addEventListener("click", function (event) {
         event.preventDefault();
-        const typeOfDebt = document.querySelector('#typeOfDebt').value;
+        const type = document.querySelector('#type').value;
         const minMonney = document.querySelector('#minMonney').value;
         const maxMonney = document.querySelector('#maxMonney').value;
         const minTimeDebt = document.querySelector('#minTimeDebt').value;
@@ -246,7 +246,7 @@ function handleSearchDebt() {
         const maxTimeCreate = document.querySelector('#maxTimeCreate').value;
         const slug = document.querySelector('#slug').value;
 
-        const data = { typeOfDebt, minMonney, maxMonney, minTimeDebt, maxTimeDebt, minTimeCreate, maxTimeCreate, slug };
+        const data = { type, minMonney, maxMonney, minTimeDebt, maxTimeDebt, minTimeCreate, maxTimeCreate, slug };
         const xhr = new XMLHttpRequest();
         xhr.open('POST', `${window.location.origin}/finance/searchDebt`, true);
         xhr.setRequestHeader('Content-Type', 'application/json');
@@ -256,12 +256,12 @@ function handleSearchDebt() {
                 console.log('response: ' + response.debt);
                 let tbody = document.querySelector('tbody');
                 tbody.innerHTML = '';
-                for (const { id, noteDebt, typeOfDebt, amountOfMoney, timeDebt, createAt } of response.debt) {
+                for (const { id, note, type, monney, timeDebt, createAt } of response.debt) {
                     let row = tbody.insertRow();
                     row.insertCell().innerHTML = id;
-                    row.insertCell().innerHTML = noteDebt;
-                    row.insertCell().innerHTML = typeOfDebt;
-                    row.insertCell().innerHTML = amountOfMoney;
+                    row.insertCell().innerHTML = note;
+                    row.insertCell().innerHTML = type;
+                    row.insertCell().innerHTML = monney;
                     row.insertCell().innerHTML = timeDebt;
                     row.insertCell().innerHTML = createAt;
                     row.insertCell().innerHTML = `<button type="button" class="btn btn-info" data-toggle="modal" data-target="#detailDebt${id}"> <i class="fa-solid fa-info"></i>Chi tiet</button>`;
