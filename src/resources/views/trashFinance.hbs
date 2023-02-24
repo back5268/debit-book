@@ -1,0 +1,99 @@
+<div class="card-group">
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <h5>Danh sách khoản nợ đã xóa</h5>
+        <p>Total: {{totalRecord}} record(s)</p>
+      </div>
+      <div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="sort">
+        <label for="#sort">Sắp xếp theo</label>
+        <select id="sort">
+          <option value="">Ngày xóa phiếu</option>
+          <option value="">Ngày lập phiếu</option>
+        </select>
+      </div>
+      <div class="trash-body">
+        <div id="accordion">
+          {{#each debts}}
+          <div class="card">
+            <div class="card-header" id="heading{{ this.id }}">
+              <h5>
+                <button class="btn btn-shows" data-toggle="collapse" data-target="#collapse{{ this.id }}">
+                  Mã số phiếu nợ: {{ this._id }}
+                </button>
+                <button type="button" class="btn btn-danger" data-toggle="modal" 
+                data-target="#restoreDebt" data-id="{{ this._id }}">
+                  Khôi phục
+                </button>
+              </h5>
+            </div>
+            <div id="collapse{{ this.id }}" class="collapse">
+              <div class="container">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-6">
+                      Tên người nợ: {{ this.debtorName }} <br>
+                      Số tiền: ({{ this.type }}) {{ this.monney }} <br>
+                      Ghi chú: {{ this.note }} <br>
+                      Ngày lập phiếu: {{ this.timeDebt }} <br>
+                      Ngày xóa phiếu: {{ this.deleteAt }} <br>
+                    </div>
+                    <div class="col-6">
+                      Hình ảnh chứng minh:
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="restoreDebt" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 30vw;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Khôi phục khoản nợ</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc chắn muốn khôi phục khoản nợ này hay không
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="restoreDebtBtn">Khôi phục</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form name="restoreForm" method="GET"></form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var debtId;
+        var restoreDebtBtn = document.querySelector('#restoreDebtBtn');
+        var restoreForm = document.forms['restoreForm'];
+
+        $('#restoreDebt').on('show.bs.modal', event => {
+            var button = $(event.relatedTarget);
+            debtId = button.data('id');
+        })
+
+        restoreDebtBtn.onclick = function () {
+            restoreForm.action = '/finance/debt/restore/' + debtId;
+            restoreForm.submit();
+        }
+
+    });
+</script>

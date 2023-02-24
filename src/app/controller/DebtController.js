@@ -4,12 +4,12 @@ const { dateTimeHelper } = require('../../util/dateTimeHelper');
 const { searchDebt } = require('../../util/searchDebt');
 const { totalDebt } = require('../../util/totalDebts');
 
-function showDetail(slug, user, res, options) {
+function show(slug, user, res, options) {
     Debtor.find({ slug })
         .then(data => {
             let debtor = data[0];
             const debtorId = data[0]._id;
-            Debt.find({ debtorId })
+            Debt.find({ debtorId, isDelete: false })
                 .then(data => {
                     data = data.map((d, index) => {
                         d = d.toObject();
@@ -48,7 +48,7 @@ class DebtController {
             const { slug } = req.params;
             const user = req.session.user;
             let options = {};
-            showDetail(slug, user, res, options);
+            show(slug, user, res, options);
         } else {
             res.render('form/login');
         }
@@ -94,7 +94,23 @@ class DebtController {
     search(req, res) {
         let options = req.body;
         const user = req.session.user;
-        showDetail(options.slug, user, res, options);
+        show(options.slug, user, res, options);
+    }
+
+    delete(req, res, next) {
+        Debt.updateOne({ _id: req.params.id }, { isDelete: true, deleteAt: Date.now() })
+            .then(() => {
+                res.redirect('back');
+            })
+            .catch(next);
+    }
+
+    restore(req, res, next) {
+        Debt.updateOne({ _id: req.params.id }, { isDelete: false, deleteAt: null })
+            .then(() => {
+                res.redirect('back');
+            })
+            .catch(next);
     }
 
 }

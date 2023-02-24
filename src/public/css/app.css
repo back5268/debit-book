@@ -337,6 +337,8 @@
     font-size: 12px;
     margin-left: 12px;
     margin-bottom: 8px; }
+  .card-group .card-header button {
+    margin-left: 12px; }
 
 .card-group .card-body .body {
   min-height: 68vh;
@@ -355,18 +357,38 @@
     align-items: center; }
   .card-group .card-body .body table td {
     vertical-align: middle; }
-    .card-group .card-body .body table td select {
-      min-height: 24px;
-      min-width: 96px;
-      padding: 8px;
-      border-radius: 4px;
-      border: 1px solid #c7d5e6; }
     .card-group .card-body .body table td input {
       padding: 6px 12px;
       border-radius: 4px;
       outline: none;
       border: 1px solid #c7d5e6;
       max-width: 148px; }
+
+.card-group .card-body .sort {
+  margin-left: 16px;
+  margin-bottom: 24px;
+  gap: 16px; }
+
+.card-group .card-body .trash-body {
+  min-height: 65vh;
+  max-height: 65vh;
+  overflow: scroll;
+  padding: 0 1rem; }
+  .card-group .card-body .trash-body .card {
+    margin-bottom: 16px; }
+    .card-group .card-body .trash-body .card .card-header {
+      background-color: #e4e9f7; }
+      .card-group .card-body .trash-body .card .card-header h5 {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        align-items: center; }
+        .card-group .card-body .trash-body .card .card-header h5 .btn-shows {
+          background-color: #e4e9f7;
+          width: 100%;
+          text-align: left; }
+        .card-group .card-body .trash-body .card .card-header h5 .btn-shows:focus {
+          box-shadow: none; }
 
 .card-group .card-body .card-links {
   border: 1px solid #c7d5e6;
@@ -411,6 +433,13 @@
 
 .card-group .card-body textarea {
   min-height: 120px; }
+
+.card-group select {
+  min-height: 24px;
+  min-width: 96px;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #c7d5e6; }
 
 .card-group .card-footer {
   padding: 4px 8px; }

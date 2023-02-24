@@ -13,6 +13,12 @@
                 </ul>
             </div>
             <div>
+                <a href="../trash">
+                    <button type="button" class="btn btn-info">
+                    <i class="fa-regular fa-trash-can"></i>
+                    Thùng rác
+                </button>
+                </a>
                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addDebt">
                     <i class="fa-solid fa-plus"></i>
                     Tạo phiếu nợ
@@ -33,7 +39,7 @@
                                     <th scope="col">Số tiền</th>
                                     <th scope="col">Ngày lập phiếu</th>
                                     <th scope="col">Thời gian tạo</th>
-                                    <th scope="col" colspan="3">Action</th>
+                                    <th scope="col" colspan="2">Action</th>
                                 </tr>
                                 <tr>
                                     <td></td>
@@ -58,7 +64,7 @@
                                         <input type="datetime-local" id="minTimeCreate">
                                         <input type="datetime-local" id="maxTimeCreate">
                                     </td>
-                                    <td>
+                                    <td colspan="2">
                                         <button type="button" class="btn btn-info" id="searchDebt">
                                             Tìm kiếm</button>
                                     </td>
@@ -67,7 +73,7 @@
                             <tbody>
                                 {{#each debts}}
                                 <tr>
-                                    <td> {{ this.id }} </td>
+                                    <td scope="col"> {{ this.id }} </td>
                                     <td> {{ this.note }} </td>
                                     <td> {{ this.type }} </td>
                                     <td> {{ this.monney }} </td>
@@ -78,6 +84,12 @@
                                             data-target="#detailDebt{{ this.id }}">
                                             <i class="fa-solid fa-info"></i>
                                             Chi tiet</button>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger" data-toggle="modal"
+                                            data-target="#deleteDebt" data-id="{{ this._id }}">
+                                            <i class="fa-sharp fa-solid fa-minus"></i>
+                                            Xóa</button>
                                     </td>
                                 </tr>
                                 {{/each}}
@@ -135,7 +147,7 @@
                                 <label class="col-sm-3 col-form-label">Tổng nợ</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" id="liabitities"
-                                        value="{{ debtor.totalLiabilities }}" disabled />
+                                        value="{{ debtor.totalDebts }}" disabled />
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -173,6 +185,8 @@
                             <form>
                                 <input type="hidden" value="{{ debtor.slug }}" id="slug">
                                 <input type="hidden" value="{{ debtor._id }}" id="debtorId">
+                                <input type="hidden" value="{{ debtor.fullname }}" id="debtorName">
+
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Ghi chú</label>
                                     <div class="col-sm-9">
@@ -252,7 +266,7 @@
                 <div class="card-group">
                     <div class="card">
                         <div class="card-header">
-                            <h5>Thông tin người nợ</h5>
+                            <h5>Thông tin phiếu nợ</h5>
                         </div>
                         <div class="card-body">
                             <form>
@@ -300,8 +314,8 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Số tiền (*)</label>
                                     <div class="col-sm-9">
-                                        <input type="number" class="form-control" value="{{ this.monney }}"
-                                            id="monney" disabled>
+                                        <input type="number" class="form-control" value="{{ this.monney }}" id="monney"
+                                            disabled>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -336,6 +350,28 @@
 </div>
 {{/each}}
 
+<div class="modal fade" id="deleteDebt" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 30vw;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xóa khoản ghi nợ</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Khoản ghi nợ đã tạo ra sẽ không thể bị xóa mà nó sẽ được lưu trong thùng rác, bạn có muốn tiếp tục xóa
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="deleteDebtBtn">Xóa</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form name="deleteForm" method="GET"></form>
+
 <script>
     const debts = document.querySelectorAll('.debts');
     debts.forEach(debt => {
@@ -350,8 +386,23 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        var debtId;
+        var deleteDebtBtn = document.querySelector('#deleteDebtBtn');
+        var deleteForm = document.forms['deleteForm'];
+
         handleAddDebt();
         handleUpdateDebtor();
         handleSearchDebt();
+
+        $('#deleteDebt').on('show.bs.modal', event => {
+            var button = $(event.relatedTarget);
+            debtId = button.data('id');
+        })
+
+        deleteDebtBtn.onclick = function () {
+            deleteForm.action = '/finance/debt/delete/' + debtId;
+            deleteForm.submit();
+        }
+
     });
 </script>

@@ -1,8 +1,8 @@
 module.exports = {
     totalDebt: function (debt, totalDebts) {
-        if (debt.type) {
+        if (debt.type === '+') {
             totalDebts += Number(debt.monney);
-        } else {
+        } else if (debt.type === '-') {
             totalDebts -= Number(debt.monney);
         }
 

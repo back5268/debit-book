@@ -209,13 +209,14 @@ function handleAddDebt() {
     document.getElementById("addNewDebt").addEventListener("click", function (event) {
         event.preventDefault();
         const debtorId = document.querySelector('#debtorId').value;
+        const debtorName = document.querySelector('#debtorName').value;
         const note = document.querySelector('#note').value;
         const type = document.querySelector('input[name="type"]:checked').value;
         const monney = document.querySelector('#monney').value;
         const timeDebt = document.querySelector('#timeDebt').value;
         const slug = document.querySelector('#slug').value;
 
-        const data = { debtorId, note, type, monney, timeDebt };
+        const data = { debtorId, debtorName, note, type, monney, timeDebt };
         const xhr = new XMLHttpRequest();
         xhr.open('POST', `${window.location.origin}/finance/addNewDebt`, true);
         xhr.setRequestHeader('Content-Type', 'application/json');
@@ -256,7 +257,7 @@ function handleSearchDebt() {
                 console.log('response: ' + response.debt);
                 let tbody = document.querySelector('tbody');
                 tbody.innerHTML = '';
-                for (const { id, note, type, monney, timeDebt, createAt } of response.debt) {
+                for (const { _id, id, note, type, monney, timeDebt, createAt } of response.debt) {
                     let row = tbody.insertRow();
                     row.insertCell().innerHTML = id;
                     row.insertCell().innerHTML = note;
@@ -265,6 +266,7 @@ function handleSearchDebt() {
                     row.insertCell().innerHTML = timeDebt;
                     row.insertCell().innerHTML = createAt;
                     row.insertCell().innerHTML = `<button type="button" class="btn btn-info" data-toggle="modal" data-target="#detailDebt${id}"> <i class="fa-solid fa-info"></i>Chi tiet</button>`;
+                    row.insertCell().innerHTML = `<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteDebt" data-id="${_id}"> <i class="fa-sharp fa-solid fa-minus"></i> Xóa</button>`
                 }
             }
         };
