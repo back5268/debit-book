@@ -101,13 +101,13 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="col-sm-4 justify-content-center">
-                            <button class="btn">Previous</button>
+                            <button class="btn" id="prePage">Previous</button>
                         </div>
                         <div class="col justify-content-center">
-                            <span>Page <input type="number" value="1" /> /2</span>
+                            <span>Page <input type="number" value="{{ currentPage }}" id="currentPage"/> /{{ pages }}</span>
                         </div>
                         <div class="col-sm-4 justify-content-center">
-                            <button class="btn">Next</button>
+                            <button class="btn" id="nextPage">Next</button>
                         </div>
                     </div>
                 </div>
@@ -371,6 +371,7 @@
 </div>
 
 <form name="deleteForm" method="GET"></form>
+<form id="togglePage" method="GET"></form>
 
 <script>
     const debts = document.querySelectorAll('.debts');
@@ -402,6 +403,22 @@
         deleteDebtBtn.onclick = function () {
             deleteForm.action = '/finance/debt/delete/' + debtId;
             deleteForm.submit();
+        }
+
+        var nextPage = document.querySelector('#nextPage');
+        var prePage = document.querySelector('#prePage');
+        var currentPage = Number(document.querySelector('#currentPage').value);
+        var slug = document.querySelector('#slug').value;
+        var togglePage = document.querySelector('#togglePage');
+        var perPage = 5;
+        
+        nextPage.onclick = function() {
+            togglePage.action = `/finance/detail/${slug}/?page=1`;
+            togglePage.submit();
+        }
+        prePage.onclick = function() {
+            togglePage.action = `/finance/detail/${slug}/?page=${currentPage-1}&perPage=${perPage}`;
+            togglePage.submit();
         }
 
     });

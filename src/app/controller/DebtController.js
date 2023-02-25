@@ -4,16 +4,18 @@ const { dateTimeHelper } = require('../../util/dateTimeHelper');
 const { searchDebt } = require('../../util/searchDebt');
 const { totalDebt } = require('../../util/totalDebts');
 
-function show(slug, user, res, options) {
+function show(slug, user, res, options, perPage, page) {
     Debtor.find({ slug })
         .then(data => {
             let debtor = data[0];
             const debtorId = data[0]._id;
             Debt.find({ debtorId, isDelete: false })
+                .skip((perPage * page) - perPage)
+                .limit(perPage)
                 .then(data => {
                     data = data.map((d, index) => {
                         d = d.toObject();
-                        d.id = index + 1;
+                        d.id = index + perPage*(page - 1) + 1;
                         return d;
                     });
                     data = searchDebt(data, options);
@@ -23,9 +25,18 @@ function show(slug, user, res, options) {
                         return d;
                     })
                     if (!options.type) {
-                        res.render('detailDebtor', {
-                            user, title: 'Finance', title2: '/ Detail', debts: data, debtor: debtor.toObject()
-                        });
+                        Debt.countDocuments({ debtorId, isDelete: false })
+                            .then(count => {
+                                res.render('detailDebtor', {
+                                    user, title: 'Finance', title2: '/ Detail', debts: data, 
+                                    debtor: debtor.toObject(), pages: Math.ceil(count / perPage),
+                                    currentPage: page
+                                });
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                res.status(403).json({ message: 'Not found!' });
+                            })
                     } else {
                         res.status(200).json({ debt: data });
                     }
@@ -45,10 +56,13 @@ class DebtController {
 
     show(req, res) {
         if (req.session.user) {
+            console.log(req.query);
             const { slug } = req.params;
             const user = req.session.user;
             let options = {};
-            show(slug, user, res, options);
+            let perPage = req.query.perPage || 5; // số lượng sản phẩm xuất hiện trên 1 page
+            let page = req.query.page || 1; 
+            show(slug, user, res, options, perPage, page);
         } else {
             res.render('form/login');
         }
