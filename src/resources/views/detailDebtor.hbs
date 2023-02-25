@@ -15,9 +15,9 @@
             <div>
                 <a href="../trash">
                     <button type="button" class="btn btn-info">
-                    <i class="fa-regular fa-trash-can"></i>
-                    Thùng rác
-                </button>
+                        <i class="fa-regular fa-trash-can"></i>
+                        Thùng rác
+                    </button>
                 </a>
                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addDebt">
                     <i class="fa-solid fa-plus"></i>
@@ -222,7 +222,7 @@
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label"></label>
-                                    <div class="col-sm-9">
+                                    <div id="textMonney" class="col-sm-9">
                                         Không
                                     </div>
                                 </div>
@@ -405,4 +405,14 @@
         }
 
     });
+</script>
+
+<script>
+    let monney = document.querySelector('#monney');
+    monney.oninput = function () {
+        setInterval(() => {
+            let textMonney = document.querySelector('#textMonney');
+            textMonney.innerText = convertMoneyToString(Number(monney.value));
+        }, 1000);
+    }
 </script>
