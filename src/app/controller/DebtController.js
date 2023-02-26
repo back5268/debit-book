@@ -27,9 +27,11 @@ function show(slug, user, res, options, perPage, page) {
                     if (!options.type) {
                         Debt.countDocuments({ debtorId, isDelete: false })
                             .then(count => {
+                                let pages = Math.ceil(count / perPage);
+                                pages = ( pages === 0) ? 1 : pages;
                                 res.render('detailDebtor', {
                                     user, title: 'Finance', title2: '/ Detail', debts: data, 
-                                    debtor: debtor.toObject(), pages: Math.ceil(count / perPage),
+                                    debtor: debtor.toObject(), pages,
                                     currentPage: page
                                 });
                             })
@@ -111,18 +113,48 @@ class DebtController {
         show(options.slug, user, res, options);
     }
 
-    delete(req, res, next) {
-        Debt.updateOne({ _id: req.params.id }, { isDelete: true, deleteAt: Date.now() })
-            .then(() => {
-                res.redirect('back');
+    delete(req, res) {
+        Debt.findOneAndUpdate({ _id: req.body.debtId }, { isDelete: true, deleteAt: Date.now() })
+            .then(data => {
+                let debt = data;
+                debt.monney = -debt.monney;
+                Debtor.find({ _id: debt.debtorId })
+                    .then(data => {
+                        let totalDebts = totalDebt(debt, data[0].totalDebts);
+                        Debtor.findOneAndUpdate({ _id: debt.debtorId }, { totalDebts })
+                                .then(() => {
+                                    res.status(200).json({ message: 'Xóa khoản nợ thành công!' });
+                                })
+                                .catch(err => {
+                                    console.log(err);
+                                    res.status(400).json({ message: 'Không thể xóa khoản nợ!' })
+                                })
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        res.status(400).json({ message: 'Không thể xóa khoản nợ!' })
+                    })
             })
-            .catch(next);
+            .catch(err => {
+                console.log(err);
+                res.status(400).json({ message: 'Không thể xóa khoản nợ!' })
+            });
     }
 
     restore(req, res, next) {
-        Debt.updateOne({ _id: req.params.id }, { isDelete: false, deleteAt: null })
-            .then(() => {
-                res.redirect('back');
+        Debt.findOneAndUpdate({ _id: req.params.id }, { isDelete: false, deleteAt: null })
+            .then(data => {
+                let debt = data;
+                Debtor.find({ _id: debt.debtorId })
+                    .then(data => {
+                        let totalDebts = totalDebt(debt, data[0].totalDebts);
+                        Debtor.findOneAndUpdate({ _id: debt.debtorId }, { totalDebts })
+                                .then(() => {
+                                    res.redirect('back');
+                                })
+                                .catch(next)
+                    })
+                    .catch(next)
             })
             .catch(next);
     }

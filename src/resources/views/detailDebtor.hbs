@@ -387,23 +387,12 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        var debtId;
-        var deleteDebtBtn = document.querySelector('#deleteDebtBtn');
-        var deleteForm = document.forms['deleteForm'];
+
 
         handleAddDebt();
         handleUpdateDebtor();
         handleSearchDebt();
-
-        $('#deleteDebt').on('show.bs.modal', event => {
-            var button = $(event.relatedTarget);
-            debtId = button.data('id');
-        })
-
-        deleteDebtBtn.onclick = function () {
-            deleteForm.action = '/finance/debt/delete/' + debtId;
-            deleteForm.submit();
-        }
+        handleDeleteDebt();
 
         var nextPage = document.querySelector('#nextPage');
         var prePage = document.querySelector('#prePage');

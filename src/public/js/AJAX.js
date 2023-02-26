@@ -301,6 +301,34 @@ function handleUpdateDebtor() {
     })
 }
 
+function handleDeleteDebt(debtId) {
+    var debtId;
+
+    $('#deleteDebt').on('show.bs.modal', event => {
+        var button = $(event.relatedTarget);
+        debtId = button.data('id');
+    })
+
+    document.getElementById("deleteDebtBtn").addEventListener("click", function (event) {
+        const slug = document.querySelector('#slug').value;
+        const data = { debtId };
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', `${window.location.origin}/finance/debt/delete`, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                window.location.href = `/finance/detail/${slug}`;
+            } else {
+                var response = JSON.parse(xhr.responseText);
+                alert(response.message);
+            }
+        };
+
+        xhr.send(JSON.stringify(data));
+    })
+}
+
 function changeCaptcha() {
     const xhr = new XMLHttpRequest();
     xhr.open("GET", "/newCaptcha", true);
