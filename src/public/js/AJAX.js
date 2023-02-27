@@ -207,7 +207,6 @@ function handleAddDebtor() {
 
 function handleShowDebt() {
     const slug = document.querySelector('#slug').value;
-    console.log(slug);
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `${window.location.origin}/finance/detail/debt/${slug}`);
     xhr.onload = function () {
@@ -224,15 +223,97 @@ function handleShowDebt() {
                 row.insertCell().innerHTML = monney;
                 row.insertCell().innerHTML = timeDebt;
                 row.insertCell().innerHTML = createAt;
-                row.insertCell().innerHTML = `<button type="button" class="btn btn-info detailDebtBtn" onclick="myFunction()" id="detailDebtBtn${id}" data-toggle="modal" data-target="#detailDebt" data-id="${id}" data-note="${note}" data-type="${type}" data-monney="${monney}" data-time="${timeDebt}"> <i class="fa-solid fa-info"></i>Chi tiet</button>`;
+                row.insertCell().innerHTML = `<button type="button" class="btn btn-info detailDebtBtn" onclick="showDetailDebt()" id="detailDebtBtn${id}" data-toggle="modal" data-target="#detailDebt" data-id="${id}" data-note="${note}" data-type="${type}" data-monney="${monney}" data-time="${timeDebt}"> <i class="fa-solid fa-info"></i>Chi tiet</button>`;
                 row.insertCell().innerHTML = `<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteDebt" data-id="${_id}"> <i class="fa-sharp fa-solid fa-minus"></i> Xóa</button>`;
             }
-        } else {
-            console.log("We connected to the server, but it returned an error.");
+
+            document.getElementById('currentPage').value = response.currentPage;
+            document.getElementById('pages').textContent = response.pages;
+            if (response.currentPage >= response.pages) {
+                document.getElementById('nextPage').disabled = true;
+            } else {
+                document.getElementById('nextPage').disabled = false;
+            }
         }
     };
 
     xhr.send();
+}
+
+function nextPageDebt() {
+    document.getElementById('nextPage').addEventListener('click', () => {
+        const slug = document.querySelector('#slug').value;
+        let perPage = Number(document.getElementById('perPage').value);
+        let currentPage = Number(document.getElementById('currentPage').value);
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', `${window.location.origin}/finance/detail/debt/${slug}/?perPage=${perPage}&page=${currentPage + 1}`);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                let tbody = document.querySelector('tbody');
+                tbody.innerHTML = '';
+                for (let { _id, id, note, type, monney, timeDebt, createAt } of response.debts) {
+                    let row = tbody.insertRow();
+                    timeDebt = String(timeDebt);
+                    row.insertCell().innerHTML = id;
+                    row.insertCell().innerHTML = note;
+                    row.insertCell().innerHTML = type;
+                    row.insertCell().innerHTML = monney;
+                    row.insertCell().innerHTML = timeDebt;
+                    row.insertCell().innerHTML = createAt;
+                    row.insertCell().innerHTML = `<button type="button" class="btn btn-info detailDebtBtn" onclick="showDetailDebt()" id="detailDebtBtn${id}" data-toggle="modal" data-target="#detailDebt" data-id="${id}" data-note="${note}" data-type="${type}" data-monney="${monney}" data-time="${timeDebt}"> <i class="fa-solid fa-info"></i>Chi tiet</button>`;
+                    row.insertCell().innerHTML = `<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteDebt" data-id="${_id}"> <i class="fa-sharp fa-solid fa-minus"></i> Xóa</button>`;
+                }
+
+                document.getElementById('currentPage').value = response.currentPage;
+                document.getElementById('pages').textContent = response.pages;
+                document.getElementById('prePage').disabled = false;
+                if (response.currentPage >= response.pages) {
+                    document.getElementById('nextPage').disabled = true;
+                }
+            }
+        };
+
+        xhr.send();
+    })
+}
+
+function prePageDebt() {
+    document.getElementById('prePage').addEventListener('click', () => {
+        const slug = document.querySelector('#slug').value;
+        let perPage = Number(document.getElementById('perPage').value);
+        let currentPage = Number(document.getElementById('currentPage').value);
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', `${window.location.origin}/finance/detail/debt/${slug}/?perPage=${perPage}&page=${currentPage - 1}`);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                let tbody = document.querySelector('tbody');
+                tbody.innerHTML = '';
+                for (let { _id, id, note, type, monney, timeDebt, createAt } of response.debts) {
+                    let row = tbody.insertRow();
+                    timeDebt = String(timeDebt);
+                    row.insertCell().innerHTML = id;
+                    row.insertCell().innerHTML = note;
+                    row.insertCell().innerHTML = type;
+                    row.insertCell().innerHTML = monney;
+                    row.insertCell().innerHTML = timeDebt;
+                    row.insertCell().innerHTML = createAt;
+                    row.insertCell().innerHTML = `<button type="button" class="btn btn-info detailDebtBtn" onclick="showDetailDebt()" id="detailDebtBtn${id}" data-toggle="modal" data-target="#detailDebt" data-id="${id}" data-note="${note}" data-type="${type}" data-monney="${monney}" data-time="${timeDebt}"> <i class="fa-solid fa-info"></i>Chi tiet</button>`;
+                    row.insertCell().innerHTML = `<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteDebt" data-id="${_id}"> <i class="fa-sharp fa-solid fa-minus"></i> Xóa</button>`;
+                }
+
+                document.getElementById('currentPage').value = response.currentPage;
+                document.getElementById('pages').textContent = response.pages;
+                document.getElementById('nextPage').disabled = false;
+                if (response.currentPage == 1) {
+                    document.getElementById('prePage').disabled = true;
+                }
+            }
+        };
+
+        xhr.send();
+    })
 }
 
 function handleAddDebt() {
@@ -295,7 +376,7 @@ function handleSearchDebt() {
                     row.insertCell().innerHTML = monney;
                     row.insertCell().innerHTML = timeDebt;
                     row.insertCell().innerHTML = createAt;
-                    row.insertCell().innerHTML = `<button type="button" class="btn btn-info" data-toggle="modal" data-target="#detailDebt${id}"> <i class="fa-solid fa-info"></i>Chi tiet</button>`;
+                    row.insertCell().innerHTML = `<button type="button" class="btn btn-info detailDebtBtn" onclick="showDetailDebt()" id="detailDebtBtn${id}" data-toggle="modal" data-target="#detailDebt" data-id="${id}" data-note="${note}" data-type="${type}" data-monney="${monney}" data-time="${timeDebt}"> <i class="fa-solid fa-info"></i>Chi tiet</button>`;
                     row.insertCell().innerHTML = `<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteDebt" data-id="${_id}"> <i class="fa-sharp fa-solid fa-minus"></i> Xóa</button>`;
                 }
             }
@@ -384,7 +465,7 @@ function handleChangCaptcha() {
     });
 }
 
-function myFunction() {
+function showDetailDebt() {
     let monney, note, type, timeDebt;
     $('#detailDebt').on('show.bs.modal', event => {
         var button = $(event.relatedTarget);
@@ -409,4 +490,40 @@ function myFunction() {
             negative.classList.add('choose');
         }
     })
+}
+
+function choosePerPage() {
+    let perPage = document.getElementById('perPage').value;
+    const slug = document.querySelector('#slug').value;
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `${window.location.origin}/finance/detail/debt/${slug}?perPage=${perPage}&page=1`);
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            let tbody = document.querySelector('tbody');
+            tbody.innerHTML = '';
+            for (let { _id, id, note, type, monney, timeDebt, createAt } of response.debts) {
+                let row = tbody.insertRow();
+                timeDebt = String(timeDebt);
+                row.insertCell().innerHTML = id;
+                row.insertCell().innerHTML = note;
+                row.insertCell().innerHTML = type;
+                row.insertCell().innerHTML = monney;
+                row.insertCell().innerHTML = timeDebt;
+                row.insertCell().innerHTML = createAt;
+                row.insertCell().innerHTML = `<button type="button" class="btn btn-info detailDebtBtn" onclick="showDetailDebt()" id="detailDebtBtn${id}" data-toggle="modal" data-target="#detailDebt" data-id="${id}" data-note="${note}" data-type="${type}" data-monney="${monney}" data-time="${timeDebt}"> <i class="fa-solid fa-info"></i>Chi tiet</button>`;
+                row.insertCell().innerHTML = `<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteDebt" data-id="${_id}"> <i class="fa-sharp fa-solid fa-minus"></i> Xóa</button>`;
+            }
+
+            document.getElementById('currentPage').value = response.currentPage;
+            document.getElementById('pages').textContent = response.pages;
+            if (response.currentPage >= response.pages) {
+                document.getElementById('nextPage').disabled = true;
+            } else {
+                document.getElementById('nextPage').disabled = false;
+            }
+        }
+    };
+
+    xhr.send();
 }
