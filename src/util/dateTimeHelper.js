@@ -14,5 +14,29 @@ module.exports = {
         seconds = seconds < 10 ? '0' + seconds : seconds; 
         
         return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+    },
+
+    formatMonney: function(num) {
+        let numStr = String(Math.abs(num));
+        let words = '';
+        let x = Math.ceil(numStr.length / 3);
+
+        if (x > 1) {
+            let i = 0;
+            while(i < x) {
+                if (words === '') {
+                    words = numStr.slice(-3);
+                } else {
+                    words = numStr.slice(-3) + ',' + words;
+                }
+                numStr = numStr.slice(0, -3);
+                i += 1;
+            }
+        } else {
+            words = numStr;
+        }
+
+        words = words.trim();
+        return words;
     }
 }

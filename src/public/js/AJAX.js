@@ -216,6 +216,7 @@ function handleShowDebt() {
             tbody.innerHTML = '';
             for (let { _id, id, note, type, monney, timeDebt, createAt } of response.debts) {
                 let row = tbody.insertRow();
+                row.classList.add('perDebt');
                 timeDebt = String(timeDebt);
                 row.insertCell().innerHTML = id;
                 row.insertCell().innerHTML = note;
@@ -526,4 +527,13 @@ function choosePerPage() {
     };
 
     xhr.send();
+}
+
+function textErr() {
+    let perDebt = document.querySelectorAll('.perDebt');
+        perDebt.forEach(d => {
+            if (d.querySelectorAll('td')[2].innerHTML === '-') {
+                d.classList.add('text-danger');
+            }
+        })
 }

@@ -1,6 +1,6 @@
 const Debtor = require('../models/Debtor');
 const Debt = require('../models/Debt');
-const { dateTimeHelper } = require('../../util/dateTimeHelper');
+const { dateTimeHelper, formatMonney } = require('../../util/dateTimeHelper');
 const { searchDebt } = require('../../util/searchDebt');
 const { totalDebt } = require('../../util/totalDebts');
 
@@ -25,8 +25,9 @@ function show(slug, req, res, options, perPage, page) {
                     data = data.map(d => {
                         d.timeDebt = dateTimeHelper(d.timeDebt);
                         d.createAt = dateTimeHelper(d.createAt);
+                        d.monney = formatMonney(d.monney);
                         return d;
-                    })
+                    });
                     if (!options.type) {
                         Debt.countDocuments({ debtorId, isDelete: false })
                             .then(count => {
@@ -114,7 +115,7 @@ class DebtController {
                     Debtor.find({ _id: debt.debtorId })
                         .then(data => {
                             let totalDebts = totalDebt(debt, data[0].totalDebts);
-                            Debtor.findOneAndUpdate({ _id: debt.debtorId }, { totalDebts })
+                            Debtor.findOneAndUpdate({ _id: debt.debtorId }, { totalDebts, updateAt: Date.now() })
                                 .then(() => {
                                     res.json({ message: 'Thêm thông tin khoản nợ thành công!' });
                                 })
@@ -145,7 +146,7 @@ class DebtController {
                 Debtor.find({ _id: debt.debtorId })
                     .then(data => {
                         let totalDebts = totalDebt(debt, data[0].totalDebts);
-                        Debtor.findOneAndUpdate({ _id: debt.debtorId }, { totalDebts })
+                        Debtor.findOneAndUpdate({ _id: debt.debtorId }, { totalDebts, updateAt: Date.now() })
                             .then(() => {
                                 res.status(200).json({ message: 'Xóa khoản nợ thành công!' });
                             })
@@ -172,7 +173,7 @@ class DebtController {
                 Debtor.find({ _id: debt.debtorId })
                     .then(data => {
                         let totalDebts = totalDebt(debt, data[0].totalDebts);
-                        Debtor.findOneAndUpdate({ _id: debt.debtorId }, { totalDebts })
+                        Debtor.findOneAndUpdate({ _id: debt.debtorId }, { totalDebts, updateAt: Date.now() })
                             .then(() => {
                                 res.redirect('back');
                             })

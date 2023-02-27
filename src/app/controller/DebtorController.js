@@ -1,5 +1,5 @@
 const Debtor = require('../models/Debtor');
-const { dateTimeHelper } = require('../../util/dateTimeHelper');
+const { dateTimeHelper, formatMonney } = require('../../util/dateTimeHelper');
 
 class DebtorController {
 
@@ -12,6 +12,7 @@ class DebtorController {
                     data = data.map(d => {
                         d.createAt = dateTimeHelper(d.createAt);
                         d.updateAt = dateTimeHelper(d.updateAt);
+                        d.totalDebts = formatMonney(d.totalDebts);
                         return d;
                     })
                     res.render('debtor', {
