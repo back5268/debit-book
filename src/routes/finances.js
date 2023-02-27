@@ -9,6 +9,7 @@ router.post('/createNewDebtor', debtorController.addNew);
 router.post('/updateDebtor', debtorController.update);
 router.post('/searchDebt', debtController.search);
 router.post('/addNewDebt', debtController.addNew);
+router.get('/detail/debt/:slug', debtController.showDebts);
 router.get('/detail/:slug', debtController.show);
 router.get('/trash', trashController.show);
 router.post('/debt/delete', debtController.delete);

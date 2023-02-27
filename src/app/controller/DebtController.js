@@ -4,7 +4,10 @@ const { dateTimeHelper } = require('../../util/dateTimeHelper');
 const { searchDebt } = require('../../util/searchDebt');
 const { totalDebt } = require('../../util/totalDebts');
 
-function show(slug, user, res, options, perPage, page) {
+function show(slug, req, res, options, perPage, page) {
+    perPage = perPage || 5;
+    page = page || 1;
+    const user = req.session.user;
     Debtor.find({ slug })
         .then(data => {
             let debtor = data[0];
@@ -15,7 +18,7 @@ function show(slug, user, res, options, perPage, page) {
                 .then(data => {
                     data = data.map((d, index) => {
                         d = d.toObject();
-                        d.id = index + perPage*(page - 1) + 1;
+                        d.id = index + perPage * (page - 1) + 1;
                         return d;
                     });
                     data = searchDebt(data, options);
@@ -28,9 +31,9 @@ function show(slug, user, res, options, perPage, page) {
                         Debt.countDocuments({ debtorId, isDelete: false })
                             .then(count => {
                                 let pages = Math.ceil(count / perPage);
-                                pages = ( pages === 0) ? 1 : pages;
-                                res.render('detailDebtor', {
-                                    user, title: 'Finance', title2: '/ Detail', debts: data, 
+                                pages = (pages === 0) ? 1 : pages;
+                                res.status(200).json({
+                                    user, debts: data,
                                     debtor: debtor.toObject(), pages,
                                     currentPage: page
                                 });
@@ -56,18 +59,45 @@ function show(slug, user, res, options, perPage, page) {
 
 class DebtController {
 
-    show(req, res) {
+    show(req, res, next) {
         if (req.session.user) {
-            console.log(req.query);
-            const { slug } = req.params;
             const user = req.session.user;
-            let options = {};
-            let perPage = req.query.perPage || 5; // số lượng sản phẩm xuất hiện trên 1 page
-            let page = req.query.page || 1; 
-            show(slug, user, res, options, perPage, page);
+            const { slug } = req.params;
+            Debtor.find({ slug })
+                .then(data => {
+                    let debtor = data[0].toObject();
+                    Debt.countDocuments({ debtorId: debtor._id, isDelete: false })
+                        .then(count => {
+                            let pages = Math.ceil(count / 5);
+                            pages = (pages === 0) ? 1 : pages;
+                            res.render('detailDebtor', {
+                                user, title: 'Finance', title2: '/ Detail',
+                                debtor, pages,
+                                currentPage: 1
+                            });
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            res.status(403).json({ message: 'Not found!' });
+                        })
+                })
+                .catch(next);
         } else {
             res.render('form/login');
         }
+    }
+
+    showDebts(req, res) {
+        const { slug } = req.params;
+        let options = {};
+        let perPage = req.query.perPage || 5;
+        let page = req.query.page || 1;
+        show(slug, req, res, options, perPage, page);
+    }
+
+    search(req, res) {
+        let options = req.body;
+        show(options.slug, req, res, options);
     }
 
     addNew(req, res) {
@@ -107,12 +137,6 @@ class DebtController {
         }
     }
 
-    search(req, res) {
-        let options = req.body;
-        const user = req.session.user;
-        show(options.slug, user, res, options);
-    }
-
     delete(req, res) {
         Debt.findOneAndUpdate({ _id: req.body.debtId }, { isDelete: true, deleteAt: Date.now() })
             .then(data => {
@@ -122,13 +146,13 @@ class DebtController {
                     .then(data => {
                         let totalDebts = totalDebt(debt, data[0].totalDebts);
                         Debtor.findOneAndUpdate({ _id: debt.debtorId }, { totalDebts })
-                                .then(() => {
-                                    res.status(200).json({ message: 'Xóa khoản nợ thành công!' });
-                                })
-                                .catch(err => {
-                                    console.log(err);
-                                    res.status(400).json({ message: 'Không thể xóa khoản nợ!' })
-                                })
+                            .then(() => {
+                                res.status(200).json({ message: 'Xóa khoản nợ thành công!' });
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                res.status(400).json({ message: 'Không thể xóa khoản nợ!' })
+                            })
                     })
                     .catch(err => {
                         console.log(err);
@@ -149,10 +173,10 @@ class DebtController {
                     .then(data => {
                         let totalDebts = totalDebt(debt, data[0].totalDebts);
                         Debtor.findOneAndUpdate({ _id: debt.debtorId }, { totalDebts })
-                                .then(() => {
-                                    res.redirect('back');
-                                })
-                                .catch(next)
+                            .then(() => {
+                                res.redirect('back');
+                            })
+                            .catch(next)
                     })
                     .catch(next)
             })

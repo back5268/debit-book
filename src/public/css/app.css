@@ -397,6 +397,26 @@
   .card-group .card-header button {
     margin-left: 12px; }
 
+.card-group .card-body table tr,
+.card-group .card-body table td {
+  min-width: 100px;
+  font-size: 14px; }
+
+.card-group .card-body table tr {
+  text-align: center;
+  align-items: center; }
+
+.card-group .card-body table td {
+  vertical-align: middle;
+  text-align: center;
+  align-items: center; }
+  .card-group .card-body table td input {
+    padding: 6px 12px;
+    border-radius: 4px;
+    outline: none;
+    border: 1px solid #c7d5e6;
+    max-width: 148px; }
+
 .card-group .card-body .body {
   min-height: 68vh;
   max-height: 68vh;
@@ -517,24 +537,6 @@
       cursor: pointer; }
     .modal-dialog label .choose {
       background-color: #17a2b8; }
-
-table tr,
-table td {
-  min-width: 100px;
-  font-size: 14px; }
-
-table tr {
-  text-align: center;
-  align-items: center; }
-
-table td {
-  vertical-align: middle; }
-  table td input {
-    padding: 6px 12px;
-    border-radius: 4px;
-    outline: none;
-    border: 1px solid #c7d5e6;
-    max-width: 148px; }
 
 @media (min-width: 576px) {
   .modal-dialog {

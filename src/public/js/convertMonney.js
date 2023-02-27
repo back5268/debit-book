@@ -13,44 +13,45 @@ function convertMoneyToString(amount) {
         let numThousands = Math.ceil(numStr.length / 3);
 
         // Vòng lặp từ hàng ngàn đến hàng đơn vị để chuyển đổi giá trị tiền thành chuỗi
-        while (i < numThousands) {
-            // Lấy 3 chữ số cuối cùng của số và chuyển đổi thành chuỗi
-            let part = numStr.slice(-3);
-            numStr = numStr.slice(0, -3);
-            let partWords = '';
+        if (amount > 0) {
+            while (i < numThousands) {
+                // Lấy 3 chữ số cuối cùng của số và chuyển đổi thành chuỗi
+                let part = numStr.slice(-3);
+                numStr = numStr.slice(0, -3);
+                let partWords = '';
+    
+                // Lấy số hàng trăm, chục, đơn vị của 3 chữ số và chuyển đổi thành chuỗi
+                let partNum = parseInt(part);
+                if (partNum !== 0) {
+                    let hundredsDigit = Math.floor(partNum / 100);
+                    let tensDigit = Math.floor((partNum % 100) / 10);
+                    let onesDigit = partNum % 10;
+                    if (hundredsDigit !== 0) {
+                        partWords += ones[hundredsDigit] + ' trăm ';
+                    }
+                    if (tensDigit === 0 && onesDigit !== 0) {
+                        partWords += ones[onesDigit];
+                    } else if (tensDigit === 1 && onesDigit !== 0) {
+                        partWords += 'mười ' + ones[onesDigit];
+                    } else if (tensDigit > 1 && onesDigit === 0) {
+                        partWords += tens[tensDigit];
+                    } else if (tensDigit > 1 && onesDigit !== 0) {
+                        partWords += tens[tensDigit] + ' ' + ones[onesDigit];
+                    } else if (tensDigit === 0 && onesDigit === 0 && i === 0) {
+                        partWords += 'không';
+                    }
+                }
+                if (partWords !== '') {
+                    partWords += ' ' + thousands[i];
+                }
+                words = partWords + ' ' + words;
+                i++;
+            }
 
-            // Lấy số hàng trăm, chục, đơn vị của 3 chữ số và chuyển đổi thành chuỗi
-            let partNum = parseInt(part);
-            if (partNum !== 0) {
-                let hundredsDigit = Math.floor(partNum / 100);
-                let tensDigit = Math.floor((partNum % 100) / 10);
-                let onesDigit = partNum % 10;
-                if (hundredsDigit !== 0) {
-                    partWords += ones[hundredsDigit] + ' trăm ';
-                }
-                if (tensDigit === 0 && onesDigit !== 0) {
-                    partWords += ones[onesDigit];
-                } else if (tensDigit === 1 && onesDigit !== 0) {
-                    partWords += 'mười ' + ones[onesDigit];
-                } else if (tensDigit > 1 && onesDigit === 0) {
-                    partWords += tens[tensDigit];
-                } else if (tensDigit > 1 && onesDigit !== 0) {
-                    partWords += tens[tensDigit] + ' ' + ones[onesDigit];
-                } else if (tensDigit === 0 && onesDigit === 0 && i === 0) {
-                    partWords += 'không đồng';
-                }
-            }
-            if (partWords !== '') {
-                partWords += ' ' + thousands[i];
-            }
-            words = partWords + ' ' + words;
-            i++;
+            words = words.charAt(0).toUpperCase() + words.slice(1);
+            words = words.trim() + ' đồng.';
+        } else {
+            words = 'Undefined'
         }
-
-        // for (let i = 0; i < array.length; i++) {
-        //     const element = array[i];
-            
-        // }
-        words = words.charAt(0).toUpperCase() + words.slice(1);
-        return words.trim() + ' đồng.';
+        return words;
     }

@@ -6,6 +6,12 @@
         <p>Total: {{totalRecord}} record(s)</p>
       </div>
       <div>
+        <a href="./">
+          <button type="button" class="btn btn-info">
+            <i class="bx bx-notepad"></i>
+            Sổ ghi nợ
+          </button>
+        </a>
       </div>
     </div>
     <div class="card-body">
@@ -100,9 +106,7 @@
 
     restoreDebtBtn.onclick = function () {
       restoreForm.action = '/finance/debt/restore/' + debtId;
-      console.log(debtId)
-
-      {{!-- restoreForm.submit(); --}}
+      restoreForm.submit(); 
     };
 
   });
