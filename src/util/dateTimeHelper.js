@@ -37,6 +37,10 @@ module.exports = {
         }
 
         words = words.trim();
-        return words;
+        if (num < 0) {
+            return '-' + words;
+        } else {
+            return words;
+        }
     }
 }

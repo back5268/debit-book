@@ -308,7 +308,7 @@
   left: 224px;
   width: calc(100% - 224px);
   transition: all 0.5s ease;
-  height: 94vh; }
+  height: 95vh; }
 
 .sidebar.closes ~ .app-content {
   left: 60px;
@@ -384,7 +384,8 @@
         text-align: center;
         color: #b4c2d4;
         border: none;
-        padding: 12px 16px; }
+        padding: 12px 16px;
+        margin-bottom: -24px; }
   .card-group .card-header h5 {
     color: #fff;
     margin: 10px 24px 10px 8px;
@@ -418,8 +419,8 @@
     max-width: 148px; }
 
 .card-group .card-body .body {
-  min-height: 68vh;
-  max-height: 68vh;
+  min-height: 65vh;
+  max-height: 65vh;
   position: relative;
   display: flex;
   flex-direction: column;

@@ -1,51 +1,42 @@
 const Debtor = require('../models/Debtor');
 const Debt = require('../models/Debt');
-const { dateTimeHelper, formatMonney } = require('../../util/dateTimeHelper');
-const { searchDebt } = require('../../util/searchDebt');
+const { formatOption } = require('../../util/formatOption');
 const { totalDebt } = require('../../util/totalDebts');
 
-function show(slug, req, res, options, perPage, page) {
+function show(slug, res, options, perPage, page) {
     perPage = perPage || 5;
-    page = page || 1;
-    const user = req.session.user;
+    page = Number(page) || 1;
+    options = formatOption(options);
     Debtor.find({ slug })
         .then(data => {
-            let debtor = data[0];
             const debtorId = data[0]._id;
-            Debt.find({ debtorId, isDelete: false })
+            Debt.find({ debtorId, isDelete: false, type: { $ne: options.type }, 
+                        monney: {$gte: options.minMonney, $lte: options.maxMonney},
+                        // timeDebt: {$gte: options.minTimeDebt, $lte: options.maxTimeDebt},
+                        // createAt: {$gte: options.minTimeCreate, $lte: options.maxTimeCreate},
+                     })
                 .skip((perPage * page) - perPage)
                 .limit(perPage)
                 .then(data => {
                     data = data.map((d, index) => {
                         d = d.toObject();
-                        d.id = index + perPage * (page - 1) + 1;
+                        d.stt = index + perPage * (page - 1) + 1;
                         return d;
                     });
-                    data = searchDebt(data, options);
-                    data = data.map(d => {
-                        d.timeDebt = dateTimeHelper(d.timeDebt);
-                        d.createAt = dateTimeHelper(d.createAt);
-                        d.monney = formatMonney(d.monney);
-                        return d;
-                    });
-                    if (!options.type) {
-                        Debt.countDocuments({ debtorId, isDelete: false })
-                            .then(count => {
-                                let pages = Math.ceil(count / perPage);
-                                pages = (pages === 0) ? 1 : pages;
-                                res.status(200).json({
-                                    user, debts: data,
-                                    debtor: debtor.toObject(), pages,
-                                    currentPage: page
-                                });
-                            })
-                            .catch(err => {
-                                console.log(err);
-                                res.status(403).json({ message: 'Not found!' });
-                            })
-                    } else {
-                        res.status(200).json({ debt: data });
-                    }
+
+                    Debt.countDocuments({ debtorId, isDelete: false, type: { $ne: options.type }, 
+                                          monney: {$gte: options.minMonney, $lte: options.maxMonney},
+                                        })
+                        .then(count => {
+                            let pages = Math.ceil(count / perPage);
+                            pages = (pages === 0) ? 1 : pages;
+                            res.status(200).json({ data, count, page });
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            res.status(403).json({ message: 'Not found!' });
+                        })
+
                 })
                 .catch(err => {
                     console.log(err);
@@ -67,20 +58,7 @@ class DebtController {
             Debtor.find({ slug })
                 .then(data => {
                     let debtor = data[0].toObject();
-                    Debt.countDocuments({ debtorId: debtor._id, isDelete: false })
-                        .then(count => {
-                            let pages = Math.ceil(count / 5);
-                            pages = (pages === 0) ? 1 : pages;
-                            res.render('detailDebtor', {
-                                user, title: 'Finance', title2: '/ Detail',
-                                debtor, pages,
-                                currentPage: 1
-                            });
-                        })
-                        .catch(err => {
-                            console.log(err);
-                            res.status(403).json({ message: 'Not found!' });
-                        })
+                    res.render('detailDebtor', { user, title: 'Finance', title2: '/ Detail', debtor });
                 })
                 .catch(next);
         } else {
@@ -91,14 +69,22 @@ class DebtController {
     showDebts(req, res) {
         const { slug } = req.params;
         let options = {};
+        options.type = req.query.type;
+        if (options.type == '0') options.type = '-';
+        else if (options.type == '1') options.type = '+';
+        else options.type = '';
+
+        options.minMonney = req.query.minMonney;
+        options.maxMonney = req.query.maxMonney;
+        console.log(options);
         let perPage = req.query.perPage || 5;
         let page = req.query.page || 1;
-        show(slug, req, res, options, perPage, page);
+        show(slug, res, options, perPage, page);
     }
 
     search(req, res) {
-        let options = req.body;
-        show(options.slug, req, res, options);
+        let data = req.body;
+        show(data.slug, res, data.options);
     }
 
     addNew(req, res) {
@@ -118,7 +104,7 @@ class DebtController {
                             let totalDebts = totalDebt(debt, data[0].totalDebts);
                             Debtor.findOneAndUpdate({ _id: debt.debtorId }, { totalDebts, updateAt: Date.now() })
                                 .then(() => {
-                                    show(data[0].slug, req, res, options, Number(debt.perPage), 1);
+                                    show(data[0].slug, res, options, Number(debt.perPage), 1);
                                 })
                                 .catch(err => {
                                     console.log(err);

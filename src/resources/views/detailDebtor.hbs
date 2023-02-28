@@ -2,7 +2,10 @@
     <div class="card">
         <div class="card-header">
             <div class="header">
-                <h5>{{ debtor.fullname }}</h5>
+                <div>
+                    <h5>{{debtor.fullname}}</h5>
+                    <p id="totalRecord"></p>
+                </div>
                 <ul class="nav nav-tabs">
                     <li class="nav-item" id="showDebt">
                         <a class="nav-link active" data-toggle="tab" href="#debts">Debts</a>
@@ -33,7 +36,7 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th scope="col">ID</th>
+                                    <th scope="col">STT</th>
                                     <th scope="col">Ghi chú</th>
                                     <th scope="col">Loại nợ</th>
                                     <th scope="col">Số tiền</th>
@@ -45,24 +48,24 @@
                                     <td></td>
                                     <td></td>
                                     <td>
-                                        <input type="hidden" value="{{ debtor.slug }}" id="slug">
-                                        <select name="typeDebt" id="type">
+                                        <input type="hidden" value="{{debtor.slug}}" id="slug" />
+                                        <select id="type" onchange="chooseType()">
                                             <option value="all">All</option>
                                             <option value="+">+</option>
                                             <option value="-">-</option>
                                         </select>
                                     </td>
                                     <td>
-                                        <input type="number" id="minMonney" placeholder="from">
-                                        <input type="number" id="maxMonney" placeholder="to">
+                                        <input type="number" id="minMonney" placeholder="from" oninput="chooseMonney()"/>
+                                        <input type="number" id="maxMonney" placeholder="to" oninput="chooseMonney()"/>
                                     </td>
                                     <td>
-                                        <input type="datetime-local" id="minTimeDebt">
-                                        <input type="datetime-local" id="maxTimeDebt">
+                                        <input type="datetime-local" id="minTimeDebt" />
+                                        <input type="datetime-local" id="maxTimeDebt" />
                                     </td>
                                     <td>
-                                        <input type="datetime-local" id="minTimeCreate">
-                                        <input type="datetime-local" id="maxTimeCreate">
+                                        <input type="datetime-local" id="minTimeCreate" />
+                                        <input type="datetime-local" id="maxTimeCreate" />
                                     </td>
                                     <td colspan="2">
                                         <button type="button" class="btn btn-info" id="searchDebt">
@@ -71,7 +74,7 @@
                                 </tr>
                             </thead>
                             <tbody class="showDebts">
-                                
+
                             </tbody>
                         </table>
                     </div>
@@ -82,7 +85,11 @@
                             <button class="btn btn-light" id="prePage" disabled>Previous</button>
                         </div>
                         <div class="col justify-content-center">
-                            <span>Page <input type="number" value="{{ currentPage }}" id="currentPage" disabled/> / <span id="pages">{{ pages }}</span> </span>
+                            <span>Page
+                                <input type="number" id="currentPage" disabled />
+                                /
+                                <span id="pages"></span>
+                            </span>
                             <select id="perPage" onchange="choosePerPage()">
                                 <option value="5">5 record</option>
                                 <option value="10">10 record</option>
@@ -98,45 +105,50 @@
                 <div class="container">
                     <div class="card-body">
                         <form>
-                            <input type="hidden" value="{{ debtor._id }}" id="debtorId">
+                            <input type="hidden" value="{{debtor._id}}" id="debtorId" />
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Full name (*)</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="fullname" value="{{ debtor.fullname }}"
+                                    <input type="text" class="form-control" id="fullname" value="{{debtor.fullname}}"
                                         disabled />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Phone</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="phone" value="{{ debtor.phone }}" />
+                                    <input type="text" class="form-control" id="phone" value="{{debtor.phone}}" />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Address</label>
                                 <div class="col-sm-6">
                                     <textarea type="text" class="form-control"
-                                        id="address">{{ debtor.address }}</textarea>
+                                        id="address">{{debtor.address}}</textarea>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Email </label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="email" value="{{ debtor.email }}" />
+                                    <input type="text" class="form-control" id="email" value="{{debtor.email}}" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Ngày tạo </label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="createAt" disabled
+                                        value="{{debtor.createAt}}" />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Tổng nợ</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="liabitities"
-                                        value="{{ debtor.totalDebts }}" disabled />
+                                    <input type="text" class="form-control" id="totalDebts"
+                                        value="{{debtor.totalDebts}}" disabled />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label"></label>
-                                <div class="col-sm-6">
-                                    Không
-                                </div>
+                                <p class="col-sm-6" id="text"></p>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-3"></div>
@@ -165,9 +177,9 @@
                         </div>
                         <div class="card-body">
                             <form>
-                                <input type="hidden" value="{{ debtor.slug }}" id="slug">
-                                <input type="hidden" value="{{ debtor._id }}" id="debtorId">
-                                <input type="hidden" value="{{ debtor.fullname }}" id="debtorName">
+                                <input type="hidden" value="{{debtor.slug}}" id="slug" />
+                                <input type="hidden" value="{{debtor._id}}" id="debtorId" />
+                                <input type="hidden" value="{{debtor.fullname}}" id="debtorName" />
 
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Ghi chú</label>
@@ -179,8 +191,8 @@
                                     <label class="col-sm-3 col-form-label">Loại nợ </label>
                                     <div class="col-sm-9">
                                         <div class="row">
-                                            <input type="radio" name="type" id="+Debts" value="+" checked hidden>
-                                            <input type="radio" name="type" id="-Debts" value="-" hidden>
+                                            <input type="radio" name="type" id="+Debts" value="+" checked hidden />
+                                            <input type="radio" name="type" id="-Debts" value="-" hidden />
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-6">
@@ -199,7 +211,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Số tiền (*)</label>
                                     <div class="col-sm-9">
-                                        <input type="number" class="form-control" value="0" id="monney">
+                                        <input type="number" class="form-control" value="0" id="monney" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -211,13 +223,14 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Ngày lập phiếu </label>
                                     <div class="col-sm-9">
-                                        <input type="datetime-local" class="form-control" id="timeDebt">
+                                        <input type="datetime-local" class="form-control" id="timeDebt" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Hình ảnh chứng minh </label>
+                                    <label class="col-sm-3 col-form-label">Hình ảnh chứng minh
+                                    </label>
                                     <div class="col-sm-9">
-                                        <input type="file" class="form-control" id="imgDebt">
+                                        <input type="file" class="form-control" id="imgDebt" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -255,7 +268,7 @@
                                     <label class="col-sm-3 col-form-label">Ghi chú</label>
                                     <div class="col-sm-9">
                                         <textarea type="text" class="form-control" id="noteDetail" disabled>
-                                        </textarea>
+                    </textarea>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -278,8 +291,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Số tiền (*)</label>
                                     <div class="col-sm-9">
-                                        <input type="number" class="form-control" id="monneyDetail"
-                                            disabled>
+                                        <input type="text" class="form-control" id="monneyDetail" disabled />
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -289,14 +301,14 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Ngày lập phiếu </label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="timeDebtDetail"
-                                        disabled>
+                                        <input type="text" class="form-control" id="timeDebtDetail" disabled />
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Hình ảnh chứng minh </label>
+                                    <label class="col-sm-3 col-form-label">Hình ảnh chứng minh
+                                    </label>
                                     <div class="col-sm-9">
-                                        <input type="file" class="form-control" id="imgDebt">
+                                        <input type="file" class="form-control" id="imgDebt" />
                                     </div>
                                 </div>
                             </form>
@@ -321,7 +333,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                Khoản ghi nợ đã tạo ra sẽ không thể bị xóa mà nó sẽ được lưu trong thùng rác, bạn có muốn tiếp tục xóa
+                Khoản ghi nợ đã tạo ra sẽ không thể bị xóa mà nó sẽ được lưu trong thùng
+                rác, bạn có muốn tiếp tục xóa
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" id="deleteDebtBtn">Xóa</button>
@@ -335,12 +348,12 @@
 <form id="togglePage" method="GET"></form>
 
 <script>
-    const debts = document.querySelectorAll('.debts');
+    const debts = document.querySelectorAll('.debts'); 
     debts.forEach(debt => {
         debt.addEventListener('click', event => {
             debts.forEach(d => {
                 d.classList.remove('choose');
-            })
+            });
             event.target.classList.add('choose');
         })
     })
@@ -348,23 +361,14 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-
-        handleAddDebt();
-        handleUpdateDebtor();
-        handleSearchDebt();
-        handleDeleteDebt();
-        handleShowDebt();
-        nextPageDebt();
-        prePageDebt();
-
-        textErr()
-
+        addDebt();
+        handleUpdateDebtor(); searchDebt(); deleteDebt(); showDebt(); nextPageDebt();
+        prePageDebt(); formatInfo(); textErr()
     });
 </script>
 
 <script>
-    let monney = document.querySelector('#monney');
-    monney.oninput = function () {
+    let monney = document.querySelector('#monney'); monney.oninput = function () {
         setInterval(() => {
             let textMonney = document.querySelector('#textMonney');
             textMonney.innerText = convertMoneyToString(Number(monney.value));
