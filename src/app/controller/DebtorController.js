@@ -6,7 +6,7 @@ class DebtorController {
     show(req, res) {
         if (req.session.user) {
             const user = req.session.user;
-            Debtor.find({ UserId: user._id })
+            Debtor.find({ createBy: user._id })
                 .then(data => {
                     data = data.map(d => d.toObject());
                     data = data.map(d => {
@@ -33,7 +33,7 @@ class DebtorController {
     addNew(req, res) {
         let debtor = req.body;
         const user = req.session.user;
-        debtor.UserId = user._id;
+        debtor.createBy = user._id;
         debtor.totalDebts = 0;
         if (debtor.fullname) {
             const newDebtor = new Debtor(debtor);
