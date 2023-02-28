@@ -104,6 +104,7 @@ class DebtController {
     addNew(req, res) {
         const user = req.session.user;
         let debt = req.body;
+        let options = {};
         if (Number(debt.monney) > 0) {
             if (!debt.timeDebt) debt.timeDebt = Date.now();
             debt.isDelete = false;
@@ -117,7 +118,7 @@ class DebtController {
                             let totalDebts = totalDebt(debt, data[0].totalDebts);
                             Debtor.findOneAndUpdate({ _id: debt.debtorId }, { totalDebts, updateAt: Date.now() })
                                 .then(() => {
-                                    res.json({ message: 'Thêm thông tin khoản nợ thành công!' });
+                                    show(data[0].slug, req, res, options, Number(debt.perPage), 1);
                                 })
                                 .catch(err => {
                                     console.log(err);
