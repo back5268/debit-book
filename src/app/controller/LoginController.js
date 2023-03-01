@@ -29,7 +29,7 @@ class LoginController {
                                                 res.status(200).json({ user: data });
                                             })
                                             .catch(err => {
-                                                console.log();
+                                                console.log(err);
                                             })
                                     } else {
                                         res.status(403).json({ message: 'Mật khẩu không chính xác!' });

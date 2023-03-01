@@ -33,11 +33,13 @@ function convertMoneyToString(amount) {
                         partWords += ones[onesDigit];
                     } else if (tensDigit === 1 && onesDigit !== 0) {
                         partWords += 'mười ' + ones[onesDigit];
+                    } else if (tensDigit === 1 && onesDigit === 0) {
+                        partWords += 'mười ';
                     } else if (tensDigit > 1 && onesDigit === 0) {
                         partWords += tens[tensDigit];
                     } else if (tensDigit > 1 && onesDigit !== 0) {
                         partWords += tens[tensDigit] + ' ' + ones[onesDigit];
-                    } else if (tensDigit === 0 && onesDigit === 0 && i === 0) {
+                    } else if (hundredsDigit === 0 && tensDigit === 0 && onesDigit === 0 && i === 0) {
                         partWords += 'không';
                     }
                 }

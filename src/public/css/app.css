@@ -395,6 +395,8 @@
     font-size: 12px;
     margin-left: 12px;
     margin-bottom: 8px; }
+  .card-group .card-header span {
+    color: #b4c2d4; }
   .card-group .card-header button {
     margin-left: 12px; }
 

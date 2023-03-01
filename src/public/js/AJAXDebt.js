@@ -65,7 +65,7 @@ function show(data, count, page) {
 
     document.getElementById('currentPage').value = page;
     document.getElementById('pages').textContent = pages;
-    document.getElementById('totalRecord').textContent = `Total: ${count} record(s)`;
+    document.getElementById('totalRecord').textContent = count;
 
     if (page >= pages) {
         document.getElementById('nextPage').disabled = true;
@@ -82,16 +82,17 @@ function show(data, count, page) {
 
 }
 
-function getOptions() {
-    const type = document.querySelector('#type').value;
+function getOptionsFilter() {
+    const note = document.querySelector('#noteFilter').value;
+    const type = document.querySelector('#typeFilter').value;
     const minMonney = document.querySelector('#minMonney').value;
     const maxMonney = document.querySelector('#maxMonney').value;
     const minTimeDebt = document.querySelector('#minTimeDebt').value;
     const maxTimeDebt = document.querySelector('#maxTimeDebt').value;
     const minTimeCreate = document.querySelector('#minTimeCreate').value;
     const maxTimeCreate = document.querySelector('#maxTimeCreate').value;
-    const options = { type, minMonney, maxMonney, minTimeCreate, maxTimeCreate, minTimeDebt, maxTimeDebt }
-    return options;
+    const perPage = document.querySelector('#perPage').value;
+    return { note, type, minMonney, maxMonney, minTimeCreate, maxTimeCreate, minTimeDebt, maxTimeDebt, perPage };
 }
 
 function showDebt() {
@@ -109,58 +110,6 @@ function showDebt() {
     };
 
     xhr.send();
-}
-
-function nextPageDebt() {
-    document.getElementById('nextPage').addEventListener('click', () => {
-        const slug = document.querySelector('#slug').value;
-        let options = getOptions();
-        if (options.type === '+') options.type = 1;
-        else if (options.type === '-') options.type = 0;
-        else options.type = '';
-
-        let perPage = Number(document.getElementById('perPage').value);
-        let currentPage = Number(document.getElementById('currentPage').value);
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', `${window.location.origin}/finance/detail/debt/${slug}/?perPage=${perPage}&page=${currentPage + 1}&minMonney=${options.minMonney}&maxMonney=${options.maxMonney}&type=${options.type}`);
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                let data = response.data;
-                let count = response.count;
-                let page = response.page;
-                show(data, count, page);
-            }
-        };
-
-        xhr.send();
-    })
-}
-
-function prePageDebt() {
-    document.getElementById('prePage').addEventListener('click', () => {
-        const slug = document.querySelector('#slug').value;
-        let options = getOptions();
-        if (options.type === '+') options.type = 1;
-        else if (options.type === '-') options.type = 0;
-        else options.type = '';
-
-        let perPage = Number(document.getElementById('perPage').value);
-        let currentPage = Number(document.getElementById('currentPage').value);
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', `${window.location.origin}/finance/detail/debt/${slug}/?perPage=${perPage}&page=${currentPage - 1}&minMonney=${options.minMonney}&maxMonney=${options.maxMonney}&type=${options.type}`);
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                let data = response.data;
-                let count = response.count;
-                let page = response.page;
-                show(data, count, page);
-            }
-        };
-
-        xhr.send();
-    })
 }
 
 function addDebt() {
@@ -193,28 +142,58 @@ function addDebt() {
     })
 }
 
-function searchDebt() {
-    document.getElementById("searchDebt").addEventListener("click", function (event) {
-        event.preventDefault();
+function filterDebt(page) {
+    let { note, type, minMonney, maxMonney, minTimeCreate, maxTimeCreate, minTimeDebt, maxTimeDebt, perPage } = getOptionsFilter();
+    if (type === '+') type = 1;
+    else if (type === '-') type = 0;
+    else type = '';
+    const slug = document.querySelector('#slug').value;
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `${window.location.origin}/finance/detail/debt/${slug}/?note=${note}&type=${type}&minMonney=${minMonney}&maxMonney=${maxMonney}&minTimeDebt=${minTimeDebt}&maxTimeDebt=${maxTimeDebt}&minTimeCreate=${minTimeCreate}&maxTimeCreate=${maxTimeCreate}&perPage=${perPage}&page=${page}`);
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            let data = response.data;
+            let count = response.count;
+            let page = response.page;
+            show(data, count, page);
+        }
+    };
 
-        const slug = document.querySelector('#slug').value;
-        const options = getOptions();
-        let data = { options, slug };
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', `${window.location.origin}/finance/searchDebt`, true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                let data = response.data;
-                let count = response.count;
-                let page = response.page;
-                show(data, count, page);
-            }
-        };
+    xhr.send();
+}
 
-        xhr.send(JSON.stringify(data));
-    })
+function clearFilter() {
+    document.querySelector('#noteFilter').value = '';
+    document.querySelector('#typeFilter').value = 'all';
+    document.querySelector('#minMonney').value = '';
+    document.querySelector('#maxMonney').value = '';
+    document.querySelector('#minTimeDebt').value = '';
+    document.querySelector('#maxTimeDebt').value = '';
+    document.querySelector('#minTimeCreate').value = '';
+    document.querySelector('#maxTimeCreate').value = '';
+    filterDebt();
+}
+
+function prePage() {
+    let page = Number(document.querySelector('#currentPage').value);
+    page = (page === 1) ? 1 : (page - 1);
+    filterDebt(page);
+}
+
+function nextPage() {
+    let page = Number(document.querySelector('#currentPage').value);
+    let pages = Number(document.querySelector('#pages').value);
+    page = (page === pages) ? pages : (page + 1);
+    filterDebt(page);
+}
+
+function choosePage() {
+    let page = Number(document.querySelector('#currentPage').value);
+    let pages = Number(document.querySelector('#pages').value);
+    if (page >= pages) page = pages;
+    if (page <= 1) page = 1;
+    filterDebt(page);
 }
 
 function deleteDebt() {
@@ -272,24 +251,6 @@ function showDetailDebt() {
     })
 }
 
-function choosePerPage() {
-    let perPage = document.getElementById('perPage').value;
-    const slug = document.querySelector('#slug').value;
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', `${window.location.origin}/finance/detail/debt/${slug}?perPage=${perPage}&page=1`);
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
-            let data = response.data;
-            let count = response.count;
-            let page = response.page;
-            show(data, count, page);
-        }
-    };
-
-    xhr.send();
-}
-
 function formatInfo() {
     let createAt = document.querySelector('#createAt').value;
     let totalDebts = document.querySelector('#totalDebts').value;
@@ -302,45 +263,4 @@ function formatInfo() {
     document.querySelector('#createAt').value = createAt;
     document.querySelector('#totalDebts').value = totalDebts;
     document.querySelector('#text').textContent = textMonney
-}
-
-function chooseType() {
-    let type = document.querySelector('#type').value;
-    if (type === '+') type = 1;
-    else if (type === '-') type = 0;
-    else type = '';
-    const slug = document.querySelector('#slug').value;
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', `${window.location.origin}/finance/detail/debt/${slug}?type=${type}`);
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
-            let data = response.data;
-            let count = response.count;
-            let page = response.page;
-            show(data, count, page);
-        }
-    };
-
-    xhr.send();
-}
-
-function chooseMonney() {
-    let minMonney = document.querySelector('#minMonney').value;
-    let maxMonney = document.querySelector('#maxMonney').value;
-
-    const slug = document.querySelector('#slug').value;
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', `${window.location.origin}/finance/detail/debt/${slug}?minMonney=${minMonney}&maxMonney=${maxMonney}`);
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
-            let data = response.data;
-            let count = response.count;
-            let page = response.page;
-            show(data, count, page);
-        }
-    };
-
-    xhr.send();
 }

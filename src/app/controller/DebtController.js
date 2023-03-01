@@ -7,13 +7,14 @@ function show(slug, res, options, perPage, page) {
     perPage = perPage || 5;
     page = Number(page) || 1;
     options = formatOption(options);
+    console.log(options);
     Debtor.find({ slug })
         .then(data => {
             const debtorId = data[0]._id;
-            Debt.find({ debtorId, isDelete: false, type: { $ne: options.type }, 
+            Debt.find({ debtorId, isDelete: false, note: { $regex: options.note }, type: { $ne: options.type }, 
                         monney: {$gte: options.minMonney, $lte: options.maxMonney},
-                        // timeDebt: {$gte: options.minTimeDebt, $lte: options.maxTimeDebt},
-                        // createAt: {$gte: options.minTimeCreate, $lte: options.maxTimeCreate},
+                        timeDebt: {$gte: options.minTimeDebt, $lte: options.maxTimeDebt},
+                        createAt: {$gte: options.minTimeCreate, $lte: options.maxTimeCreate},
                      })
                 .skip((perPage * page) - perPage)
                 .limit(perPage)
@@ -24,7 +25,7 @@ function show(slug, res, options, perPage, page) {
                         return d;
                     });
 
-                    Debt.countDocuments({ debtorId, isDelete: false, type: { $ne: options.type }, 
+                    Debt.countDocuments({ debtorId, isDelete: false, note: { $regex: options.note }, type: { $ne: options.type }, 
                                           monney: {$gte: options.minMonney, $lte: options.maxMonney},
                                         })
                         .then(count => {
@@ -69,13 +70,17 @@ class DebtController {
     showDebts(req, res) {
         const { slug } = req.params;
         let options = {};
+        options.note = req.query.note;
         options.type = req.query.type;
         if (options.type == '0') options.type = '-';
         else if (options.type == '1') options.type = '+';
         else options.type = '';
-
         options.minMonney = req.query.minMonney;
         options.maxMonney = req.query.maxMonney;
+        options.minTimeDebt = req.query.minTimeDebt;
+        options.maxTimeDebt = req.query.maxTimeDebt;
+        options.minTimeCreate = req.query.minTimeCreate;
+        options.maxTimeCreate = req.query.maxTimeCreate;
         console.log(options);
         let perPage = req.query.perPage || 5;
         let page = req.query.page || 1;

@@ -4,7 +4,7 @@
             <div class="header">
                 <div>
                     <h5>{{debtor.fullname}}</h5>
-                    <p id="totalRecord"></p>
+                    <p> Total: <span id="totalRecord"></span> Record(s)</p>
                 </div>
                 <ul class="nav nav-tabs">
                     <li class="nav-item" id="showDebt">
@@ -46,57 +46,55 @@
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td></td>
+                                    <td>
+                                        <input type="text" id="noteFilter" oninput="filterDebt()"/>
+                                    </td>
                                     <td>
                                         <input type="hidden" value="{{debtor.slug}}" id="slug" />
-                                        <select id="type" onchange="chooseType()">
+                                        <select id="typeFilter" onchange="filterDebt()">
                                             <option value="all">All</option>
                                             <option value="+">+</option>
                                             <option value="-">-</option>
                                         </select>
                                     </td>
                                     <td>
-                                        <input type="number" id="minMonney" placeholder="from" oninput="chooseMonney()"/>
-                                        <input type="number" id="maxMonney" placeholder="to" oninput="chooseMonney()"/>
+                                        <input type="number" id="minMonney" placeholder="from" oninput="filterDebt()"/>
+                                        <input type="number" id="maxMonney" placeholder="to" oninput="filterDebt()"/>
                                     </td>
                                     <td>
-                                        <input type="datetime-local" id="minTimeDebt" />
-                                        <input type="datetime-local" id="maxTimeDebt" />
+                                        <input type="datetime-local" id="minTimeDebt" onchange="filterDebt()"/>
+                                        <input type="datetime-local" id="maxTimeDebt" onchange="filterDebt()"/>
                                     </td>
                                     <td>
-                                        <input type="datetime-local" id="minTimeCreate" />
-                                        <input type="datetime-local" id="maxTimeCreate" />
+                                        <input type="datetime-local" id="minTimeCreate" onchange="filterDebt()"/>
+                                        <input type="datetime-local" id="maxTimeCreate" onchange="filterDebt()"/>
                                     </td>
                                     <td colspan="2">
-                                        <button type="button" class="btn btn-info" id="searchDebt">
-                                            Tìm kiếm</button>
+                                        <button type="button" class="btn btn-info" id="filterDebt" onclick="clearFilter()">
+                                            Clear filter</button>
                                     </td>
                                 </tr>
                             </thead>
-                            <tbody class="showDebts">
-
-                            </tbody>
+                            <tbody></tbody>
                         </table>
                     </div>
                 </div>
                 <div class="card-footer">
                     <div class="row">
                         <div class="col-sm-4 justify-content-center">
-                            <button class="btn btn-light" id="prePage" disabled>Previous</button>
+                            <button class="btn btn-light" onclick="prePage()" id="prePage" disabled>Previous</button>
                         </div>
                         <div class="col justify-content-center">
                             <span>Page
-                                <input type="number" id="currentPage" disabled />
-                                /
-                                <span id="pages"></span>
+                                <input type="number" id="currentPage" onchange="choosePage()"/>/<span id="pages"></span>
                             </span>
-                            <select id="perPage" onchange="choosePerPage()">
+                            <select id="perPage" onchange="filterDebt()">
                                 <option value="5">5 record</option>
                                 <option value="10">10 record</option>
                             </select>
                         </div>
                         <div class="col-sm-4 justify-content-center">
-                            <button class="btn btn-light" id="nextPage">Next</button>
+                            <button class="btn btn-light" onclick="nextPage()" id="nextPage">Next</button>
                         </div>
                     </div>
                 </div>
@@ -362,8 +360,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         addDebt();
-        handleUpdateDebtor(); searchDebt(); deleteDebt(); showDebt(); nextPageDebt();
-        prePageDebt(); formatInfo(); textErr()
+        handleUpdateDebtor(); deleteDebt(); showDebt(); formatInfo(); textErr();
     });
 </script>
 
