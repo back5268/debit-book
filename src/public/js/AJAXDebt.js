@@ -5,7 +5,7 @@ function dateTimeHelper(time) {
     let month = date.getMonth() + 1;
     month = month < 10 ? '0' + month : month;
     let year = date.getFullYear();
-    let hours = date.getHours() + 7;
+    let hours = date.getHours();
     hours = hours < 10 ? '0' + hours : hours;
     let minutes = date.getMinutes();
     minutes = minutes < 10 ? '0' + minutes : minutes;
@@ -112,36 +112,6 @@ function showDebt() {
     xhr.send();
 }
 
-function addDebt() {
-    document.getElementById("addNewDebt").addEventListener("click", function (event) {
-        event.preventDefault();
-        const debtorId = document.querySelector('#debtorId').value;
-        const debtorName = document.querySelector('#debtorName').value;
-        const note = document.querySelector('#note').value;
-        const type = document.querySelector('input[name="type"]:checked').value;
-        const monney = document.querySelector('#monney').value;
-        const timeDebt = document.querySelector('#timeDebt').value;
-        const perPage = document.getElementById('perPage').value;
-
-        const data = { debtorId, debtorName, note, type, monney, timeDebt, perPage };
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', `${window.location.origin}/finance/addNewDebt`, true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                alert('Thêm thông tin khoản nợ thành công!');
-                let data = response.data;
-                let count = response.count;
-                let page = response.page;
-                show(data, count, page);
-            }
-        };
-
-        xhr.send(JSON.stringify(data));
-    })
-}
-
 function filterDebt(page, sort) {
     let { note, type, minMonney, maxMonney, minTimeCreate, maxTimeCreate, minTimeDebt, maxTimeDebt, perPage } = getOptionsFilter();
     if (type === '+') type = 1;
@@ -232,6 +202,36 @@ function sortByCreateAt() {
     filterDebt(page, sort);
 }
 
+function addDebt() {
+    document.getElementById("addNewDebt").addEventListener("click", function (event) {
+        event.preventDefault();
+        const debtorId = document.querySelector('#debtorId').value;
+        const debtorName = document.querySelector('#debtorName').value;
+        const note = document.querySelector('#note').value;
+        const type = document.querySelector('input[name="type"]:checked').value;
+        const monney = document.querySelector('#monney').value;
+        const timeDebt = document.querySelector('#timeDebt').value;
+        const perPage = document.getElementById('perPage').value;
+
+        const data = { debtorId, debtorName, note, type, monney, timeDebt, perPage };
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', `${window.location.origin}/finance/addNewDebt`, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                alert('Thêm thông tin khoản nợ thành công!');
+                let data = response.data;
+                let count = response.count;
+                let page = response.page;
+                show(data, count, page);
+            }
+        };
+
+        xhr.send(JSON.stringify(data));
+    })
+}
+
 function deleteDebt() {
     var debtId;
 
@@ -241,18 +241,19 @@ function deleteDebt() {
     })
 
     document.getElementById("deleteDebtBtn").addEventListener("click", function (event) {
-        const slug = document.querySelector('#slug').value;
+        const perPage = document.getElementById('perPage').value;
         const data = { debtId };
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', `${window.location.origin}/finance/debt/delete`, true);
+        xhr.open('POST', `${window.location.origin}/finance/debt/delete/?perPage=${perPage}`, true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onload = function () {
             if (xhr.status === 200) {
                 var response = JSON.parse(xhr.responseText);
-                window.location.href = `/finance/detail/${slug}`;
-            } else {
-                var response = JSON.parse(xhr.responseText);
-                alert(response.message);
+                alert('Xóa thông tin khoản nợ thành công!');
+                let data = response.data;
+                let count = response.count;
+                let page = response.page;
+                show(data, count, page);
             }
         };
 
@@ -288,15 +289,23 @@ function showDetailDebt() {
 }
 
 function formatInfo() {
-    let createAt = document.querySelector('#createAt').value;
-    let totalDebts = document.querySelector('#totalDebts').value;
-    let totalDebt = Number(totalDebts);
-    let textMonney = convertMoneyToString(Math.abs(totalDebt));
+    const slug = document.querySelector('#slug').value;
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `${window.location.origin}/finance/${slug}`);
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            let data = response.data;
+            document.querySelector('#fullname').value = data.fullname;
+            document.querySelector('#email').value = data.email;
+            document.querySelector('#phone').value = data.phone;
+            document.querySelector('#address').value = data.address;
+            document.querySelector('#createAt').value = dateTimeHelper(data.createAt);
+            document.querySelector('#updateAt').value = dateTimeHelper(data.updateAt);
+            document.querySelector('#totalDebts').value = formatMonney(data.totalDebts);
+            document.querySelector('#text').innerHTML = convertMoneyToString(Math.abs(data.totalDebts));
+        }
+    };
 
-    createAt = dateTimeHelper(createAt);
-    totalDebts = formatMonney(totalDebt);
-
-    document.querySelector('#createAt').value = createAt;
-    document.querySelector('#totalDebts').value = totalDebts;
-    document.querySelector('#text').textContent = textMonney
+    xhr.send();
 }

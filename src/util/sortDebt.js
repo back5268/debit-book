@@ -1,6 +1,5 @@
 module.exports = {
     sortDebt: function (data, sort) {
-        console.log(sort);
         switch (sort) {
             case 1:
                 data.sort((a, b) => a.id - b.id);

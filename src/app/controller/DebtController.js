@@ -67,6 +67,20 @@ class DebtController {
         }
     }
 
+    getDebtor(req, res, next) {
+        if (req.session.user) {
+            const { slug } = req.params;
+            Debtor.find({ slug })
+                .then(data => {
+                    data = data[0].toObject();
+                    res.json({ data });
+                })
+                .catch(next);
+        } else {
+            res.render('form/login');
+        }
+    }
+
     showDebts(req, res) {
         const { slug } = req.params;
         let options = {};
@@ -87,11 +101,6 @@ class DebtController {
         show(slug, res, options, perPage, page, sort);
     }
 
-    search(req, res) {
-        let data = req.body;
-        show(data.slug, res, data.options);
-    }
-
     addNew(req, res) {
         const user = req.session.user;
         let debt = req.body;
@@ -109,7 +118,7 @@ class DebtController {
                             let totalDebts = totalDebt(debt, data[0].totalDebts);
                             Debtor.findOneAndUpdate({ _id: debt.debtorId }, { totalDebts, updateAt: Date.now() })
                                 .then(() => {
-                                    show(data[0].slug, res, options, Number(debt.perPage), 1);
+                                    show(data[0].slug, res, options, Number(debt.perPage), 1, 1);
                                 })
                                 .catch(err => {
                                     console.log(err);
@@ -131,6 +140,8 @@ class DebtController {
     }
 
     delete(req, res) {
+        let options = {};
+        let perPage = req.query.perPage || 5;
         Debt.findOneAndUpdate({ _id: req.body.debtId }, { isDelete: true, deleteAt: Date.now() })
             .then(data => {
                 let debt = data;
@@ -140,7 +151,7 @@ class DebtController {
                         let totalDebts = totalDebt(debt, data[0].totalDebts);
                         Debtor.findOneAndUpdate({ _id: debt.debtorId }, { totalDebts, updateAt: Date.now() })
                             .then(() => {
-                                res.status(200).json({ message: 'Xóa khoản nợ thành công!' });
+                                show(data[0].slug, res, options, perPage, 1, 1);
                             })
                             .catch(err => {
                                 console.log(err);

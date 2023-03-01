@@ -11,7 +11,7 @@
                         <a class="nav-link active" data-toggle="tab" href="#debts">Debts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#infomation">Information</a>
+                        <a class="nav-link" data-toggle="tab" href="#infomation" onclick="formatInfo()">Information</a>
                     </li>
                 </ul>
             </div>
@@ -106,50 +106,51 @@
                 <div class="container">
                     <div class="card-body">
                         <form>
-                            <input type="hidden" value="{{debtor._id}}" id="debtorId" />
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Full name (*)</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="fullname" value="{{debtor.fullname}}"
-                                        disabled />
+                                    <input type="text" class="form-control" id="fullname" disabled />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Phone</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="phone" value="{{debtor.phone}}" />
+                                    <input type="text" class="form-control" id="phone"/>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Address</label>
                                 <div class="col-sm-6">
-                                    <textarea type="text" class="form-control"
-                                        id="address">{{debtor.address}}</textarea>
+                                    <textarea type="text" class="form-control" id="address"></textarea>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Email </label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="email" value="{{debtor.email}}" />
+                                    <input type="text" class="form-control" id="email"/>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Ngày tạo </label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="createAt" disabled
-                                        value="{{debtor.createAt}}" />
+                                    <input type="text" class="form-control" id="createAt" disabled/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Cập nhật </label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="updateAt" disabled/>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Tổng nợ</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="totalDebts"
-                                        value="{{debtor.totalDebts}}" disabled />
+                                    <input type="text" class="form-control" id="totalDebts" disabled />
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label"></label>
-                                <p class="col-sm-6" id="text"></p>
+                                <span class="col-sm-6" id="text"></span>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-3"></div>
@@ -178,7 +179,6 @@
                         </div>
                         <div class="card-body">
                             <form>
-                                <input type="hidden" value="{{debtor.slug}}" id="slug" />
                                 <input type="hidden" value="{{debtor._id}}" id="debtorId" />
                                 <input type="hidden" value="{{debtor.fullname}}" id="debtorName" />
 
@@ -363,7 +363,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         addDebt();
-        handleUpdateDebtor(); deleteDebt(); showDebt(); formatInfo(); textErr();
+        handleUpdateDebtor(); deleteDebt(); showDebt(); textErr();
     });
 </script>
 
