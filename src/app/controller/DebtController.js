@@ -2,12 +2,12 @@ const Debtor = require('../models/Debtor');
 const Debt = require('../models/Debt');
 const { formatOption } = require('../../util/formatOption');
 const { totalDebt } = require('../../util/totalDebts');
+const { sortDebt } = require('../../util/sortDebt');
 
-function show(slug, res, options, perPage, page) {
+function show(slug, res, options, perPage, page, sort) {
     perPage = perPage || 5;
     page = Number(page) || 1;
     options = formatOption(options);
-    console.log(options);
     Debtor.find({ slug })
         .then(data => {
             const debtorId = data[0]._id;
@@ -24,13 +24,13 @@ function show(slug, res, options, perPage, page) {
                         d.stt = index + perPage * (page - 1) + 1;
                         return d;
                     });
-
+                    data = sortDebt(data, Number(sort));
                     Debt.countDocuments({ debtorId, isDelete: false, note: { $regex: options.note }, type: { $ne: options.type }, 
                                           monney: {$gte: options.minMonney, $lte: options.maxMonney},
+                                          timeDebt: {$gte: options.minTimeDebt, $lte: options.maxTimeDebt},
+                                          createAt: {$gte: options.minTimeCreate, $lte: options.maxTimeCreate},
                                         })
                         .then(count => {
-                            let pages = Math.ceil(count / perPage);
-                            pages = (pages === 0) ? 1 : pages;
                             res.status(200).json({ data, count, page });
                         })
                         .catch(err => {
@@ -81,10 +81,10 @@ class DebtController {
         options.maxTimeDebt = req.query.maxTimeDebt;
         options.minTimeCreate = req.query.minTimeCreate;
         options.maxTimeCreate = req.query.maxTimeCreate;
-        console.log(options);
         let perPage = req.query.perPage || 5;
         let page = req.query.page || 1;
-        show(slug, res, options, perPage, page);
+        let sort = req.query.sort || 1;
+        show(slug, res, options, perPage, page, sort);
     }
 
     search(req, res) {

@@ -78,6 +78,14 @@
           max-width: 148px;
         }
       }
+
+      .sortDebt {
+        cursor: pointer;
+      }
+
+      .chooseSort {
+        border-bottom: 4px solid #17a2b8;
+      }
     }
 
     .body {

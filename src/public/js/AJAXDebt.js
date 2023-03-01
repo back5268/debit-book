@@ -142,14 +142,14 @@ function addDebt() {
     })
 }
 
-function filterDebt(page) {
+function filterDebt(page, sort) {
     let { note, type, minMonney, maxMonney, minTimeCreate, maxTimeCreate, minTimeDebt, maxTimeDebt, perPage } = getOptionsFilter();
     if (type === '+') type = 1;
     else if (type === '-') type = 0;
     else type = '';
     const slug = document.querySelector('#slug').value;
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', `${window.location.origin}/finance/detail/debt/${slug}/?note=${note}&type=${type}&minMonney=${minMonney}&maxMonney=${maxMonney}&minTimeDebt=${minTimeDebt}&maxTimeDebt=${maxTimeDebt}&minTimeCreate=${minTimeCreate}&maxTimeCreate=${maxTimeCreate}&perPage=${perPage}&page=${page}`);
+    xhr.open('GET', `${window.location.origin}/finance/detail/debt/${slug}/?note=${note}&type=${type}&minMonney=${minMonney}&maxMonney=${maxMonney}&minTimeDebt=${minTimeDebt}&maxTimeDebt=${maxTimeDebt}&minTimeCreate=${minTimeCreate}&maxTimeCreate=${maxTimeCreate}&perPage=${perPage}&page=${page}&sort=${sort}`);
     xhr.onload = function () {
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
@@ -183,17 +183,53 @@ function prePage() {
 
 function nextPage() {
     let page = Number(document.querySelector('#currentPage').value);
-    let pages = Number(document.querySelector('#pages').value);
+    let pages = Number(document.querySelector('#pages').innerHTML);
     page = (page === pages) ? pages : (page + 1);
     filterDebt(page);
 }
 
 function choosePage() {
     let page = Number(document.querySelector('#currentPage').value);
-    let pages = Number(document.querySelector('#pages').value);
+    let pages = Number(document.querySelector('#pages').innerHTML);
     if (page >= pages) page = pages;
     if (page <= 1) page = 1;
     filterDebt(page);
+}
+
+function sortById() {
+    let page = Number(document.querySelector('#currentPage').value);
+    let sort = 1;
+    filterDebt(page, sort);
+}
+
+function sortByNote() {
+    let page = Number(document.querySelector('#currentPage').value);
+    let sort = 2;
+    filterDebt(page, sort);
+}
+
+function sortByType() {
+    let page = Number(document.querySelector('#currentPage').value);
+    let sort = 3;
+    filterDebt(page, sort);
+}
+
+function sortByMonney() {
+    let page = Number(document.querySelector('#currentPage').value);
+    let sort = 4;
+    filterDebt(page, sort);
+}
+
+function sortByTimeDebt() {
+    let page = Number(document.querySelector('#currentPage').value);
+    let sort = 5;
+    filterDebt(page, sort);
+}
+
+function sortByCreateAt() {
+    let page = Number(document.querySelector('#currentPage').value);
+    let sort = 6;
+    filterDebt(page, sort);
 }
 
 function deleteDebt() {

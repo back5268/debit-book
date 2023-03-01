@@ -420,6 +420,12 @@
     border: 1px solid #c7d5e6;
     max-width: 148px; }
 
+.card-group .card-body table .sortDebt {
+  cursor: pointer; }
+
+.card-group .card-body table .chooseSort {
+  border-bottom: 4px solid #17a2b8; }
+
 .card-group .card-body .body {
   min-height: 65vh;
   max-height: 65vh;

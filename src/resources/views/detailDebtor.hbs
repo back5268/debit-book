@@ -36,18 +36,18 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th scope="col">STT</th>
-                                    <th scope="col">Ghi chú</th>
-                                    <th scope="col">Loại nợ</th>
-                                    <th scope="col">Số tiền</th>
-                                    <th scope="col">Ngày lập phiếu</th>
-                                    <th scope="col">Thời gian tạo</th>
+                                    <th scope="col" class="sortDebt chooseSort" onclick="sortById()">ID</th>
+                                    <th scope="col" class="sortDebt" onclick="sortByNote()">Ghi chú</th>
+                                    <th scope="col" class="sortDebt" onclick="sortByType()">Loại nợ</th>
+                                    <th scope="col" class="sortDebt" onclick="sortByMonney()">Số tiền</th>
+                                    <th scope="col" class="sortDebt" onclick="sortByTimeDebt()">Ngày lập phiếu</th>
+                                    <th scope="col" class="sortDebt" onclick="sortByCreateAt()">Thời gian tạo</th>
                                     <th scope="col" colspan="2">Action</th>
                                 </tr>
                                 <tr>
                                     <td></td>
                                     <td>
-                                        <input type="text" id="noteFilter" oninput="filterDebt()"/>
+                                        <input type="text" id="noteFilter" oninput="filterDebt()" />
                                     </td>
                                     <td>
                                         <input type="hidden" value="{{debtor.slug}}" id="slug" />
@@ -58,19 +58,20 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <input type="number" id="minMonney" placeholder="from" oninput="filterDebt()"/>
-                                        <input type="number" id="maxMonney" placeholder="to" oninput="filterDebt()"/>
+                                        <input type="number" id="minMonney" placeholder="from" oninput="filterDebt()" />
+                                        <input type="number" id="maxMonney" placeholder="to" oninput="filterDebt()" />
                                     </td>
                                     <td>
-                                        <input type="datetime-local" id="minTimeDebt" onchange="filterDebt()"/>
-                                        <input type="datetime-local" id="maxTimeDebt" onchange="filterDebt()"/>
+                                        <input type="datetime-local" id="minTimeDebt" onchange="filterDebt()" />
+                                        <input type="datetime-local" id="maxTimeDebt" onchange="filterDebt()" />
                                     </td>
                                     <td>
-                                        <input type="datetime-local" id="minTimeCreate" onchange="filterDebt()"/>
-                                        <input type="datetime-local" id="maxTimeCreate" onchange="filterDebt()"/>
+                                        <input type="datetime-local" id="minTimeCreate" onchange="filterDebt()" />
+                                        <input type="datetime-local" id="maxTimeCreate" onchange="filterDebt()" />
                                     </td>
                                     <td colspan="2">
-                                        <button type="button" class="btn btn-info" id="filterDebt" onclick="clearFilter()">
+                                        <button type="button" class="btn btn-info" id="filterDebt"
+                                            onclick="clearFilter()">
                                             Clear filter</button>
                                     </td>
                                 </tr>
@@ -86,11 +87,13 @@
                         </div>
                         <div class="col justify-content-center">
                             <span>Page
-                                <input type="number" id="currentPage" onchange="choosePage()"/>/<span id="pages"></span>
+                                <input type="number" id="currentPage" onchange="choosePage()" />/<span
+                                    id="pages"></span>
                             </span>
                             <select id="perPage" onchange="filterDebt()">
                                 <option value="5">5 record</option>
                                 <option value="10">10 record</option>
+                                <option value="50">50 record</option>
                             </select>
                         </div>
                         <div class="col-sm-4 justify-content-center">
@@ -346,7 +349,7 @@
 <form id="togglePage" method="GET"></form>
 
 <script>
-    const debts = document.querySelectorAll('.debts'); 
+    const debts = document.querySelectorAll('.debts');
     debts.forEach(debt => {
         debt.addEventListener('click', event => {
             debts.forEach(d => {
@@ -371,4 +374,16 @@
             textMonney.innerText = convertMoneyToString(Number(monney.value));
         }, 1000);
     }
+</script>
+
+<script>
+    const sortDebt = document.querySelectorAll('.sortDebt');
+    sortDebt.forEach(s => {
+        s.addEventListener('click', e => {
+            sortDebt.forEach(s => {
+                s.classList.remove('chooseSort');
+            })
+            e.target.classList.add('chooseSort');
+        })
+    })
 </script>
