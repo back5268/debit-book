@@ -3,7 +3,19 @@
     <div class="card-header">
       <div>
         <h5>Danh sách người nợ</h5>
-        <p>Total: {{totalRecord}} record(s)</p>
+        <p> Total: <span id="totalRecord"></span> Record(s)</p>
+      </div>
+      <div class="row">
+        <label class="col-5 col-form-label">Sort By</label>
+        <div class="col-7">
+          <select id="sortDebtors">
+            <option value="1">ID</option>
+            <option value="2">Name</option>
+            <option value="3">Toral Debt</option>
+            <option value="4">Create At</option>
+            <option value="5">Update At</option>
+          </select>
+        </div>
       </div>
       <div>
         <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addDebtorModal">
@@ -13,46 +25,116 @@
       </div>
     </div>
     <div class="card-body">
-      <div class="card-links">
-        <div class="row">
-          {{#each debtors}}
-          <div class="col-sm-6 col-lg-4">
-            <div class="card card-link">
-              <a href="/finance/detail/{{ this.slug }}">
-                <div class="card-body">
-                  <h5 class="card-title">{{ sum @index 1 }}. {{ this.fullname }}</h5>
-                  <div class="row">
-                    <div class="col-sm-4 card-text">Ngày tạo:</div>
-                    <div class="col-sm-8 card-text"> {{ this.createAt }} </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-4 card-text">Cập nhật:</div>
-                    <div class="col-sm-8 card-text"> {{ this.updateAt }} </div>
-                  </div>
-                </div>
-                <div class="card-body card-body-hover">
-                  <h5 class="card-title">{{sum @index 1}}. {{ this.fullname }} </h5>
-                  <div class="row">
-                    <div class="col-sm-3 card-text">SĐT:</div>
-                    <div class="col-sm-9 card-text"> {{ this.phone }} </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-3 card-text">Email:</div>
-                    <div class="col-sm-9 card-text"> {{ this.email }} </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-3 card-text">Địa chỉ:</div>
-                    <div class="col-sm-9 card-text"> {{ this.address }} </div>
-                  </div>
-                </div>
-                <div class="card-footer">
-                  <h5>Tổng nợ:</h5>
-                  <h5> {{ this.totalDebts }} </h5>
-                </div>
-              </a>
+      <div class="row">
+        <div class="col-lg-3">
+          <div class="filterDebtor">
+            <div class="row mt-2">
+              <button type="button" class="btn btn-info" id="filterDebt">Clear filter</button>
+            </div>
+            <div class="row mt-3">
+              <label class="col-5 col-form-label">Name</label>
+              <div class="col-7">
+                <input type="text" class="form-control" id="name" />
+              </div>
+            </div>
+            <div class="row mt-2">
+              <label class="col-5 col-form-label">Address</label>
+              <div class="col-7">
+                <input type="text" class="form-control" id="address" />
+              </div>
+            </div>
+            <div class="row mt-2">
+              <label class="col-5 col-form-label">Phone</label>
+              <div class="col-7">
+                <input type="number" class="form-control" id="phoneFilter" />
+              </div>
+            </div>
+            <div class="row mt-2">
+              <label class="col-5 col-form-label">Email</label>
+              <div class="col-7">
+                <input type="number" class="form-control" id="email" />
+              </div>
+            </div>
+            <div class="row mt-2">
+              <label class="col-5 col-form-label">TotalDebt</label>
+              <div class="col-7">
+                <input type="number" class="form-control" placeholder="from" id="minMonney" />
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-5 col-form-label"></label>
+              <div class="col-7">
+                <input type="number" class="form-control" placeholder="to" id="maxMonney" />
+              </div>
+            </div>
+            <div class="row mt-2">
+              <label class="col-5 col-form-label">CreateAt</label>
+              <div class="col-7">
+                <input type="datetime-local" class="form-control" id="minCreateAt" />
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-5 col-form-label"></label>
+              <div class="col-7">
+                <input type="datetime-local" class="form-control" id="maxCreateAt" />
+              </div>
+            </div>
+            <div class="row mt-3">
+              <label class="col-5 col-form-label">updateAt</label>
+              <div class="col-7">
+                <input type="datetime-local" class="form-control" id="minUpdateAt" />
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-5 col-form-label"></label>
+              <div class="col-7">
+                <input type="datetime-local" class="form-control" id="maxUpdateAt" />
+              </div>
             </div>
           </div>
-          {{/each}}
+        </div>
+        <div class="col-lg-9">
+          <div class="card-links">
+            <div class="row">
+
+              <div class="col-sm-6 col-lg-4">
+                <div class="card card-link">
+                  <a id="URIDebtor">
+                    <div class="card-body">
+                      <h5 class="card-title" class="fullname"></h5>
+                      <div class="row">
+                        <div class="col-sm-4 card-text">Ngày tạo:</div>
+                        <div class="col-sm-8 card-text" id="createAt"></div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-4 card-text">Cập nhật:</div>
+                        <div class="col-sm-8 card-text" id="updateAt"></div>
+                      </div>
+                    </div>
+                    <div class="card-body card-body-hover">
+                      <h5 class="card-title" class="fullname"></h5>
+                      <div class="row">
+                        <div class="col-sm-3 card-text">SĐT:</div>
+                        <div class="col-sm-9 card-text" id="phone"></div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-3 card-text">Email:</div>
+                        <div class="col-sm-9 card-text" id="email"></div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-3 card-text">Địa chỉ:</div>
+                        <div class="col-sm-9 card-text" id="address"></div>
+                      </div>
+                    </div>
+                    <div class="card-footer">
+                      <h5>Tổng nợ:</h5>
+                      <h5 id="totalDebts"></h5>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -60,13 +142,20 @@
     <div class="card-footer">
       <div class="row">
         <div class="col-sm-4 justify-content-center">
-          <button class="btn">Previous</button>
+          <button class="btn btn-light" onclick="prePage()" id="prePage" disabled>Previous</button>
         </div>
         <div class="col justify-content-center">
-          <span>Page <input type="number" value="1" /> /2</span>
+          <span>Page
+            <input type="number" id="currentPage" onchange="choosePage()" />/<span id="pages"></span>
+          </span>
+          <select id="perPage" onchange="filterDebt()">
+            <option value="5">5 record</option>
+            <option value="10">10 record</option>
+            <option value="50">50 record</option>
+          </select>
         </div>
         <div class="col-sm-4 justify-content-center">
-          <button class="btn">Next</button>
+          <button class="btn btn-light" onclick="nextPage()" id="nextPage">Next</button>
         </div>
       </div>
     </div>
@@ -87,31 +176,31 @@
                 <div class="form-group row">
                   <label class="col-sm-3 col-form-label">Full name (*)</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" id="fullname">
+                    <input type="text" class="form-control" id="fullnameAdd">
                   </div>
                 </div>
                 <div class="form-group row">
                   <label class="col-sm-3 col-form-label">Phone</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" id="phone">
+                    <input type="text" class="form-control" id="phoneAdd">
                   </div>
                 </div>
                 <div class="form-group row">
                   <label class="col-sm-3 col-form-label">Address</label>
                   <div class="col-sm-9">
-                    <textarea type="text" class="form-control" id="address"></textarea>
+                    <textarea type="text" class="form-control" id="addressAdd"></textarea>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label class="col-sm-3 col-form-label">Email </label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" id="email">
+                    <input type="text" class="form-control" id="emailAdd">
                   </div>
                 </div>
                 <div class="form-group row">
                   <label class="col-sm-3 col-form-label">Tổng nợ</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" id="liabitities" value="0" disabled>
+                    <input type="text" class="form-control" value="0" disabled>
                   </div>
                 </div>
                 <div class="form-group row">
@@ -142,6 +231,7 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    handleAddDebtor();
+    addDebtor();
+    showDebt();
   });
 </script>

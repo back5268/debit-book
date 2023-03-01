@@ -501,6 +501,17 @@
   .card-group .card-body .card-links .card-link:hover a {
     text-decoration: none; }
 
+.card-group .card-body .filterDebtor {
+  width: 100%;
+  border: 1px solid #c7d5e6;
+  min-height: 68vh;
+  max-height: 68vh;
+  padding: 0 16px;
+  border-radius: 8px; }
+  .card-group .card-body .filterDebtor button {
+    width: 100%;
+    margin: 0 16px; }
+
 .card-group .card-body label {
   text-align: right;
   font-weight: 500; }
@@ -513,8 +524,7 @@
   min-width: 96px;
   padding: 5px 8px;
   border-radius: 4px;
-  border: 1px solid #c7d5e6;
-  margin: 0 16px; }
+  border: 1px solid #c7d5e6; }
 
 .card-group .card-footer {
   padding: 4px 8px; }

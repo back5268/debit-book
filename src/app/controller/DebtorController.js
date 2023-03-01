@@ -1,33 +1,48 @@
 const Debtor = require('../models/Debtor');
-const { dateTimeHelper, formatMonney } = require('../../util/dateTimeHelper');
+
+function show(user, res, perPage, page) {
+    perPage = Number(perPage) || 5;
+    page = Number(page) || 1;
+    Debtor.find({ createBy: user._id })
+        .skip((perPage * page) - perPage)
+        .limit(perPage)
+        .then(data => {
+            data = data.map((d, index) => {
+                d = d.toObject();
+                d.stt = index + perPage * (page - 1) + 1;
+                return d;
+            });
+            Debtor.countDocuments({ createBy: user._id })
+                .then(count => {
+                    res.json({ data, count, page });
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.status(403).json({ message: 'Not found!' });
+                })
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(403).json({ message: 'Not found!' });
+        })
+}
 
 class DebtorController {
 
     show(req, res) {
         if (req.session.user) {
             const user = req.session.user;
-            Debtor.find({ createBy: user._id })
-                .then(data => {
-                    data = data.map(d => d.toObject());
-                    data = data.map(d => {
-                        d.createAt = dateTimeHelper(d.createAt);
-                        d.updateAt = dateTimeHelper(d.updateAt);
-                        d.totalDebts = formatMonney(d.totalDebts);
-                        return d;
-                    })
-                    res.render('debtor', {
-                        user, title: 'Finance', debtors: data, totalRecord: data.length
-                    });
-                })
-                .catch(err => {
-                    console.log(err);
-                    res.render('debtor', {
-                        user, title: 'Finance'
-                    });
-                })
+            res.render('debtor', { user, title: 'Finance' });
         } else {
             res.render('form/login');
         }
+    }
+
+    showDebtors(req, res) {
+        let perPage = req.query.perPage || 5;
+        let page = req.query.page || 1;
+        const user = req.session.user;
+        show(user, res, perPage, page);
     }
 
     addNew(req, res) {
