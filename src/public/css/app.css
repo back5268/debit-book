@@ -457,10 +457,11 @@
             box-shadow: none; }
   .card-group .card-body .card-links {
     border: 1px solid #c7d5e6;
-    min-height: 68vh;
-    max-height: 68vh;
+    min-height: 70vh;
+    max-height: 70vh;
     padding: 0 16px;
-    border-radius: 8px; }
+    border-radius: 8px;
+    overflow: scroll; }
     .card-group .card-body .card-links .card-link {
       width: 100%;
       margin: 16px 0;
@@ -500,10 +501,12 @@
     min-height: 68vh;
     max-height: 68vh;
     padding: 0 16px;
-    border-radius: 8px; }
+    border-radius: 8px;
+    min-height: 70vh; }
     .card-group .card-body .filterDebtor button {
       width: 100%;
-      margin: 0 16px; }
+      margin: 0 16px;
+      min-height: 40px; }
   .card-group .card-body label {
     text-align: right;
     font-weight: 500; }
@@ -525,8 +528,7 @@
     align-items: center; }
   .card-group .card-footer button {
     width: 100%;
-    border: 1px solid #c7d5e6;
-    min-height: 50px; }
+    border: 1px solid #c7d5e6; }
   .card-group .card-footer input {
     padding: 4px 8px;
     margin: 0 4px;

@@ -138,12 +138,13 @@
       }
     }
 
-    .card-links {
+    .card-links { 
       border: 1px solid #c7d5e6;
-      min-height: 68vh;
-      max-height: 68vh;
+      min-height: 70vh;
+      max-height: 70vh;
       padding: 0 16px;
       border-radius: 8px;
+      overflow: scroll;
 
       .card-link {
         width: 100%;
@@ -211,10 +212,12 @@
       max-height: 68vh;
       padding: 0 16px;
       border-radius: 8px;
+      min-height: 70vh;
 
       button {
         width: 100%;
         margin: 0 16px;
+        min-height: 40px;
       }
     }
 
@@ -248,7 +251,6 @@
     button {
       width: 100%;
       border: 1px solid #c7d5e6;
-      min-height: 50px;
     }
 
     input {

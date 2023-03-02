@@ -172,28 +172,53 @@ function clearFilterDebtor() {
     filterDebtor();
 }
 
+function prePageDebtor() {
+    let page = Number(document.querySelector('#currentPage').value);
+    page = (page === 1) ? 1 : (page - 1);
+    filterDebtor(page);
+}
+
+function nextPageDebtor() {
+    let page = Number(document.querySelector('#currentPage').value);
+    let pages = Number(document.querySelector('#pages').innerHTML);
+    page = (page === pages) ? pages : (page + 1);
+    filterDebtor(page);
+}
+
+function choosePageDebtor() {
+    let page = Number(document.querySelector('#currentPage').value);
+    let pages = Number(document.querySelector('#pages').innerHTML);
+    if (page >= pages) page = pages;
+    if (page <= 1) page = 1;
+    filterDebtor(page);
+}
+
 function addDebtor() {
-    document.getElementById("addNewDebtor").addEventListener("click", function (event) {
-        event.preventDefault();
-        const fullname = document.querySelector('#fullnameAdd').value;
-        const phone = document.querySelector('#phoneAdd').value;
-        const address = document.querySelector('#addressAdd').value;
-        const email = document.querySelector('#emailAdd').value;
+    const fullname = document.querySelector('#fullname').value;
+    const phone = document.querySelector('#phone').value;
+    const address = document.querySelector('#address').value;
+    const email = document.querySelector('#email').value;
+    const page = document.querySelector('#currentPage').value;
+    const perPage = document.querySelector('#perPage').innerHTML;
 
-        const data = { fullname, phone, address, email };
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', `${window.location.origin}/finance/createNewDebtor`, true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                alert(response.message);
-                window.location.href = '/finance';
-            }
-        };
+    const data = { fullname, phone, address, email, page, perPage };
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', `${window.location.origin}/finance/createNewDebtor`, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            alert('Thêm thông tin người nợ thành công!');
+            var response = JSON.parse(xhr.responseText);
+            let data = response.data;
+            let count = response.count;
+            let page = response.page;
+            showDebtor(data, count, page);
+        }
+    };
 
-        xhr.send(JSON.stringify(data));
-    })
+    xhr.send(JSON.stringify(data));
+
 }
 
 function updateDebtor() {
@@ -210,7 +235,6 @@ function updateDebtor() {
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onload = function () {
             if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
                 alert(response.message);
             }
         };

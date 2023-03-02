@@ -5,7 +5,7 @@ function show(user, res, options, perPage, page) {
     console.log(options);
     options = formatOptionsDebtor(options);
     console.log(options);
-    perPage = Number(perPage) || 5;
+    perPage = Number(perPage) || 6;
     page = Number(page) || 1;
     Debtor.find({
         createBy: user._id, fullname: { $regex: options.name }, address: { $regex: options.address },
@@ -77,11 +77,12 @@ class DebtorController {
         const user = req.session.user;
         debtor.createBy = user._id;
         debtor.totalDebts = 0;
+        let options = {};
         if (debtor.fullname) {
             const newDebtor = new Debtor(debtor);
             newDebtor.save()
                 .then(() => {
-                    res.json({ message: 'Thêm thông tin người nợ thành công!' });
+                    show(user, res, options, Number(debtor.perPage), Number(debtor.page));
                 })
                 .catch(err => {
                     console.log(err);
