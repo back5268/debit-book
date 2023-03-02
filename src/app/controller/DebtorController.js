@@ -1,9 +1,19 @@
 const Debtor = require('../models/Debtor');
+const { formatOptionsDebtor } = require('../../util/fomatOptionsDebtor');
 
-function show(user, res, perPage, page) {
+function show(user, res, options, perPage, page) {
+    console.log(options);
+    options = formatOptionsDebtor(options);
+    console.log(options);
     perPage = Number(perPage) || 5;
     page = Number(page) || 1;
-    Debtor.find({ createBy: user._id })
+    Debtor.find({
+        createBy: user._id, fullname: { $regex: options.name }, address: { $regex: options.address },
+        email: { $regex: options.email }, phone: { $regex: options.phone },
+        totalDebts: { $gte: options.minMonney, $lte: options.maxMonney },
+        createAt: { $gte: options.minCreateAt, $lte: options.maxCreateAt },
+        updateAt: { $gte: options.minUpdateAt, $lte: options.maxUpdateAt },
+    })
         .skip((perPage * page) - perPage)
         .limit(perPage)
         .then(data => {
@@ -12,7 +22,13 @@ function show(user, res, perPage, page) {
                 d.stt = index + perPage * (page - 1) + 1;
                 return d;
             });
-            Debtor.countDocuments({ createBy: user._id })
+            Debtor.countDocuments({
+                createBy: user._id, fullname: { $regex: options.name }, address: { $regex: options.address },
+                email: { $regex: options.email }, phone: { $regex: options.phone },
+                totalDebts: { $gte: options.minMonney, $lte: options.maxMonney },
+                createAt: { $gte: options.minCreateAt, $lte: options.maxCreateAt },
+                updateAt: { $gte: options.minUpdateAt, $lte: options.maxUpdateAt },
+            })
                 .then(count => {
                     res.json({ data, count, page });
                 })
@@ -39,10 +55,21 @@ class DebtorController {
     }
 
     showDebtors(req, res) {
-        let perPage = req.query.perPage || 5;
+        let options = {};
+        options.name = req.query.name;
+        options.address = req.query.address;
+        options.phone = req.query.phone;
+        options.email = req.query.email;
+        options.minMonney = req.query.minMonney;
+        options.maxMonney = req.query.maxMonney;
+        options.minCreateAt = req.query.minCreateAt;
+        options.maxCreateAt = req.query.maxCreateAt;
+        options.minUpdateAt = req.query.minUpdateAt;
+        options.maxUpdateAt = req.query.maxUpdateAt;
+        let perPage = req.query.perPage || 6;
         let page = req.query.page || 1;
         const user = req.session.user;
-        show(user, res, perPage, page);
+        show(user, res, options, perPage, page);
     }
 
     addNew(req, res) {

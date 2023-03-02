@@ -5,18 +5,6 @@
         <h5>Danh sách người nợ</h5>
         <p> Total: <span id="totalRecord"></span> Record(s)</p>
       </div>
-      <div class="row">
-        <label class="col-5 col-form-label">Sort By</label>
-        <div class="col-7">
-          <select id="sortDebtors">
-            <option value="1">ID</option>
-            <option value="2">Name</option>
-            <option value="3">Toral Debt</option>
-            <option value="4">Create At</option>
-            <option value="5">Update At</option>
-          </select>
-        </div>
-      </div>
       <div>
         <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addDebtorModal">
           <i class="fa-solid fa-plus"></i>
@@ -29,110 +17,74 @@
         <div class="col-lg-3">
           <div class="filterDebtor">
             <div class="row mt-2">
-              <button type="button" class="btn btn-info" id="filterDebt">Clear filter</button>
+              <button type="button" class="btn btn-info" onclick="clearFilterDebtor()">Clear filter</button>
             </div>
-            <div class="row mt-3">
+            <div class="row mt-2">
               <label class="col-5 col-form-label">Name</label>
               <div class="col-7">
-                <input type="text" class="form-control" id="name" />
+                <input type="text" class="form-control" id="nameFilter" oninput="filterDebtor()"/>
               </div>
             </div>
             <div class="row mt-2">
               <label class="col-5 col-form-label">Address</label>
               <div class="col-7">
-                <input type="text" class="form-control" id="address" />
+                <input type="text" class="form-control" id="addressFilter" oninput="filterDebtor()"/>
               </div>
             </div>
             <div class="row mt-2">
               <label class="col-5 col-form-label">Phone</label>
               <div class="col-7">
-                <input type="number" class="form-control" id="phoneFilter" />
+                <input type="number" class="form-control" id="phoneFilter" oninput="filterDebtor()"/>
               </div>
             </div>
             <div class="row mt-2">
               <label class="col-5 col-form-label">Email</label>
               <div class="col-7">
-                <input type="number" class="form-control" id="email" />
+                <input type="number" class="form-control" id="emailFilter" oninput="filterDebtor()"/>
               </div>
             </div>
             <div class="row mt-2">
               <label class="col-5 col-form-label">TotalDebt</label>
               <div class="col-7">
-                <input type="number" class="form-control" placeholder="from" id="minMonney" />
+                <input type="number" class="form-control" placeholder="from" id="minMonney" oninput="filterDebtor()"/>
               </div>
             </div>
             <div class="row">
               <label class="col-5 col-form-label"></label>
               <div class="col-7">
-                <input type="number" class="form-control" placeholder="to" id="maxMonney" />
+                <input type="number" class="form-control" placeholder="to" id="maxMonney" oninput="filterDebtor()"/>
               </div>
             </div>
             <div class="row mt-2">
               <label class="col-5 col-form-label">CreateAt</label>
               <div class="col-7">
-                <input type="datetime-local" class="form-control" id="minCreateAt" />
+                <input type="datetime-local" class="form-control" id="minCreateAt" onchange="filterDebtor()"/>
               </div>
             </div>
             <div class="row">
               <label class="col-5 col-form-label"></label>
               <div class="col-7">
-                <input type="datetime-local" class="form-control" id="maxCreateAt" />
+                <input type="datetime-local" class="form-control" id="maxCreateAt" onchange="filterDebtor()"/>
               </div>
             </div>
-            <div class="row mt-3">
+            <div class="row mt-2">
               <label class="col-5 col-form-label">updateAt</label>
               <div class="col-7">
-                <input type="datetime-local" class="form-control" id="minUpdateAt" />
+                <input type="datetime-local" class="form-control" id="minUpdateAt" onchange="filterDebtor()"/>
               </div>
             </div>
             <div class="row">
               <label class="col-5 col-form-label"></label>
               <div class="col-7">
-                <input type="datetime-local" class="form-control" id="maxUpdateAt" />
+                <input type="datetime-local" class="form-control" id="maxUpdateAt" onchange="filterDebtor()"/>
               </div>
             </div>
           </div>
         </div>
         <div class="col-lg-9">
           <div class="card-links">
-            <div class="row">
+            <div class="row" id="cards">
 
-              <div class="col-sm-6 col-lg-4">
-                <div class="card card-link">
-                  <a id="URIDebtor">
-                    <div class="card-body">
-                      <h5 class="card-title" class="fullname"></h5>
-                      <div class="row">
-                        <div class="col-sm-4 card-text">Ngày tạo:</div>
-                        <div class="col-sm-8 card-text" id="createAt"></div>
-                      </div>
-                      <div class="row">
-                        <div class="col-sm-4 card-text">Cập nhật:</div>
-                        <div class="col-sm-8 card-text" id="updateAt"></div>
-                      </div>
-                    </div>
-                    <div class="card-body card-body-hover">
-                      <h5 class="card-title" class="fullname"></h5>
-                      <div class="row">
-                        <div class="col-sm-3 card-text">SĐT:</div>
-                        <div class="col-sm-9 card-text" id="phone"></div>
-                      </div>
-                      <div class="row">
-                        <div class="col-sm-3 card-text">Email:</div>
-                        <div class="col-sm-9 card-text" id="email"></div>
-                      </div>
-                      <div class="row">
-                        <div class="col-sm-3 card-text">Địa chỉ:</div>
-                        <div class="col-sm-9 card-text" id="address"></div>
-                      </div>
-                    </div>
-                    <div class="card-footer">
-                      <h5>Tổng nợ:</h5>
-                      <h5 id="totalDebts"></h5>
-                    </div>
-                  </a>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -149,9 +101,9 @@
             <input type="number" id="currentPage" onchange="choosePage()" />/<span id="pages"></span>
           </span>
           <select id="perPage" onchange="filterDebt()">
-            <option value="5">5 record</option>
-            <option value="10">10 record</option>
-            <option value="50">50 record</option>
+            <option value="5">6 record</option>
+            <option value="10">12 record</option>
+            <option value="50">60 record</option>
           </select>
         </div>
         <div class="col-sm-4 justify-content-center">
@@ -232,6 +184,6 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     addDebtor();
-    showDebt();
+    debtor();
   });
 </script>
