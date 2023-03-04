@@ -11,11 +11,13 @@ function show(slug, res, options, perPage, page, sort) {
     Debtor.find({ slug })
         .then(data => {
             const debtorId = data[0]._id;
+            let sortCriteria = sortDebt(Number(sort));
             Debt.find({ debtorId, isDelete: false, note: { $regex: options.note }, type: { $ne: options.type }, 
                         monney: {$gte: options.minMonney, $lte: options.maxMonney},
                         timeDebt: {$gte: options.minTimeDebt, $lte: options.maxTimeDebt},
                         createAt: {$gte: options.minTimeCreate, $lte: options.maxTimeCreate},
                      })
+                .sort( sortCriteria )
                 .skip((perPage * page) - perPage)
                 .limit(perPage)
                 .then(data => {
@@ -24,7 +26,6 @@ function show(slug, res, options, perPage, page, sort) {
                         d.stt = index + perPage * (page - 1) + 1;
                         return d;
                     });
-                    data = sortDebt(data, Number(sort));
                     Debt.countDocuments({ debtorId, isDelete: false, note: { $regex: options.note }, type: { $ne: options.type }, 
                                           monney: {$gte: options.minMonney, $lte: options.maxMonney},
                                           timeDebt: {$gte: options.minTimeDebt, $lte: options.maxTimeDebt},

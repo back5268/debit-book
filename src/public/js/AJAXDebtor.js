@@ -194,31 +194,35 @@ function choosePageDebtor() {
 }
 
 function addDebtor() {
-    const fullname = document.querySelector('#fullname').value;
-    const phone = document.querySelector('#phone').value;
-    const address = document.querySelector('#address').value;
-    const email = document.querySelector('#email').value;
-    const page = document.querySelector('#currentPage').value;
-    const perPage = document.querySelector('#perPage').innerHTML;
+    document.querySelector('#addNewDebtor').addEventListener('click', (e) => {
+        e.preventDefault();
+        const fullname = document.querySelector('#fullname').value;
+        const phone = document.querySelector('#phone').value;
+        const address = document.querySelector('#address').value;
+        const email = document.querySelector('#email').value;
+        const page = document.querySelector('#currentPage').value;
+        const perPage = document.querySelector('#perPage').value;
 
-    const data = { fullname, phone, address, email, page, perPage };
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', `${window.location.origin}/finance/createNewDebtor`, true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
-            alert('Thêm thông tin người nợ thành công!');
-            var response = JSON.parse(xhr.responseText);
-            let data = response.data;
-            let count = response.count;
-            let page = response.page;
-            showDebtor(data, count, page);
-        }
-    };
+        const data = { fullname, phone, address, email, page, perPage };
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', `${window.location.origin}/finance/createNewDebtor`, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                alert('Thêm thông tin người nợ thành công!');
+                var response = JSON.parse(xhr.responseText);
+                let data = response.data;
+                let count = response.count;
+                let page = response.page;
+                showDebtor(data, count, page);
+            } else {
+                var response = JSON.parse(xhr.responseText);
+                alert(response.message);
+            }
+        };
 
-    xhr.send(JSON.stringify(data));
-
+        xhr.send(JSON.stringify(data));
+    })
 }
 
 function updateDebtor() {

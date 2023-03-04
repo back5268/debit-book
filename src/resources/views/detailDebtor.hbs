@@ -47,27 +47,27 @@
                                 <tr>
                                     <td></td>
                                     <td>
-                                        <input type="text" id="noteFilter" oninput="filterDebt()" />
+                                        <input type="text" id="noteFilter" oninput="handleFilterDebt()" />
                                     </td>
                                     <td>
                                         <input type="hidden" value="{{debtor.slug}}" id="slug" />
-                                        <select id="typeFilter" onchange="filterDebt()">
+                                        <select id="typeFilter" onchange="handleFilterDebt()">
                                             <option value="all">All</option>
                                             <option value="+">+</option>
                                             <option value="-">-</option>
                                         </select>
                                     </td>
                                     <td>
-                                        <input type="number" id="minMonney" placeholder="from" oninput="filterDebt()" />
-                                        <input type="number" id="maxMonney" placeholder="to" oninput="filterDebt()" />
+                                        <input type="number" id="minMonney" placeholder="from" oninput="handleFilterDebt()" />
+                                        <input type="number" id="maxMonney" placeholder="to" oninput="handleFilterDebt()" />
                                     </td>
                                     <td>
-                                        <input type="datetime-local" id="minTimeDebt" onchange="filterDebt()" />
-                                        <input type="datetime-local" id="maxTimeDebt" onchange="filterDebt()" />
+                                        <input type="datetime-local" id="minTimeDebt" onchange="handleFilterDebt()" />
+                                        <input type="datetime-local" id="maxTimeDebt" onchange="handleFilterDebt()" />
                                     </td>
                                     <td>
-                                        <input type="datetime-local" id="minTimeCreate" onchange="filterDebt()" />
-                                        <input type="datetime-local" id="maxTimeCreate" onchange="filterDebt()" />
+                                        <input type="datetime-local" id="minTimeCreate" onchange="handleFilterDebt()" />
+                                        <input type="datetime-local" id="maxTimeCreate" onchange="handleFilterDebt()" />
                                     </td>
                                     <td colspan="2">
                                         <button type="button" class="btn btn-info" id="filterDebt"

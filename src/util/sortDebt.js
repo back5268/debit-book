@@ -1,25 +1,26 @@
 module.exports = {
-    sortDebt: function (data, sort) {
+    sortDebt: function (sort) {
+        let sortCriteria;
         switch (sort) {
             case 1:
-                data.sort((a, b) => a.id - b.id);
+                sortCriteria = { _id: 1};
                 break;
             case 2:
-                data.sort((a, b) => a.note.localeCompare(b.note));
+                sortCriteria = { note: 1};
                 break;
             case 3:
-                data.sort((a, b) => a.type.localeCompare(b.type));
+                sortCriteria = { type: 1};
                 break;
             case 4:
-                data.sort((a, b) => a.monney - b.monney);
+                sortCriteria = { monney: 1};
                 break;
             case 5:
-                data.sort((a, b) => new Date(a.timeDebt) - new Date(b.timeDebt));
+                sortCriteria = { timeDebt: 1};
                 break;
             case 6:
-                data.sort((a, b) => new Date(a.createAt) - new Date(b.createAt));
+                sortCriteria = { createAt: 1};
                 break;
         }
-        return data;
+        return sortCriteria;
     }
 }

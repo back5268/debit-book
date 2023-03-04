@@ -2,9 +2,7 @@ const Debtor = require('../models/Debtor');
 const { formatOptionsDebtor } = require('../../util/fomatOptionsDebtor');
 
 function show(user, res, options, perPage, page) {
-    console.log(options);
     options = formatOptionsDebtor(options);
-    console.log(options);
     perPage = Number(perPage) || 6;
     page = Number(page) || 1;
     Debtor.find({
@@ -74,15 +72,16 @@ class DebtorController {
 
     addNew(req, res) {
         let debtor = req.body;
+        console.log(debtor);
         const user = req.session.user;
         debtor.createBy = user._id;
         debtor.totalDebts = 0;
         let options = {};
-        if (debtor.fullname) {
+        if (debtor.fullname != '') {
             const newDebtor = new Debtor(debtor);
             newDebtor.save()
                 .then(() => {
-                    show(user, res, options, Number(debtor.perPage), Number(debtor.page));
+                    show(user, res, options, debtor.perPage, debtor.page);
                 })
                 .catch(err => {
                     console.log(err);
