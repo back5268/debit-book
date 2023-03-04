@@ -36,12 +36,34 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th scope="col" class="sortDebt chooseSort" onclick="sortById()">ID</th>
-                                    <th scope="col" class="sortDebt" onclick="sortByNote()">Ghi chú</th>
-                                    <th scope="col" class="sortDebt" onclick="sortByType()">Loại nợ</th>
-                                    <th scope="col" class="sortDebt" onclick="sortByMonney()">Số tiền</th>
-                                    <th scope="col" class="sortDebt" onclick="sortByTimeDebt()">Ngày lập phiếu</th>
-                                    <th scope="col" class="sortDebt" onclick="sortByCreateAt()">Thời gian tạo</th>
+                                    <th scope="col">
+                                        STT
+                                    </th>
+                                    <th scope="col" class="sortDebt">
+                                        <div class="sortDebtAsc" onclick="sortByNoteAsc()"></div>
+                                        <div class="sortDebtDesc" onclick="sortByNoteDesc()"></div>
+                                        Ghi chú
+                                    </th>
+                                    <th scope="col" class="sortDebt">
+                                        <div class="sortDebtAsc" onclick="sortByTypeAsc()"></div>
+                                        <div class="sortDebtDesc" onclick="sortByTypeDesc()"></div>
+                                        Loại nợ
+                                    </th>
+                                    <th scope="col" class="sortDebt">
+                                        <div class="sortDebtAsc" onclick="sortByMonneyAsc()"></div>
+                                        <div class="sortDebtDesc" onclick="sortByMonneyDesc()"></div>
+                                        Số tiền
+                                    </th>
+                                    <th scope="col" class="sortDebt">
+                                        <div class="sortDebtAsc" onclick="sortByTimeDebtAsc()"></div>
+                                        <div class="sortDebtDesc" onclick="sortByTimeDebtDesc()"></div>
+                                        Ngày lập phiếu
+                                    </th>
+                                    <th scope="col" class="sortDebt chooseSortAsc">
+                                        <div class="sortDebtAsc" onclick="sortByCreateAtAsc()"></div>
+                                        <div class="sortDebtDesc" onclick="sortByCreateAtDesc()"></div>
+                                        Thời gian tạo
+                                    </th>
                                     <th scope="col" colspan="2">Action</th>
                                 </tr>
                                 <tr>
@@ -379,13 +401,26 @@
 </script>
 
 <script>
+    const sortDebtAsc = document.querySelectorAll('.sortDebtAsc');
+    const sortDebtDesc = document.querySelectorAll('.sortDebtDesc');
     const sortDebt = document.querySelectorAll('.sortDebt');
-    sortDebt.forEach(s => {
-        s.addEventListener('click', e => {
+    sortDebtAsc.forEach(sa => {
+        sa.addEventListener('click', e => {
             sortDebt.forEach(s => {
-                s.classList.remove('chooseSort');
+                s.classList.remove('chooseSortAsc');
+                s.classList.remove('chooseSortDesc');
             })
-            e.target.classList.add('chooseSort');
+            e.target.parentNode.classList.add('chooseSortAsc');
         })
     })
+    sortDebtDesc.forEach(sd => {
+        sd.addEventListener('click', e => {
+            sortDebt.forEach(s => {
+                s.classList.remove('chooseSortAsc');
+                s.classList.remove('chooseSortDesc');
+            })
+            e.target.parentNode.classList.add('chooseSortDesc');
+        })
+    })
+    
 </script>

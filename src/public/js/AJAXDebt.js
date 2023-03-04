@@ -1,3 +1,6 @@
+var sort = 9;
+let page = Number(document.querySelector('#currentPage').value);
+
 function dateTimeHelper(time) {
     let date = new Date(time);
     let day = date.getDate();
@@ -68,6 +71,7 @@ function show(data, count, page) {
     document.getElementById('totalRecord').textContent = count;
 
     if (page >= pages) {
+        document.getElementById('currentPage').value = pages;
         document.getElementById('nextPage').disabled = true;
     };
     if (page === 1) {
@@ -134,8 +138,7 @@ function filterDebt(page, sort) {
 }
 
 function handleFilterDebt() {
-    let page = Number(document.querySelector('#currentPage').value);
-    filterDebt(page, sort);
+    filterDebt(1, sort);
 }
 
 function clearFilter() {
@@ -151,61 +154,70 @@ function clearFilter() {
 }
 
 function prePage() {
-    let page = Number(document.querySelector('#currentPage').value);
     page = (page === 1) ? 1 : (page - 1);
     filterDebt(page, sort);
 }
 
 function nextPage() {
-    let page = Number(document.querySelector('#currentPage').value);
     let pages = Number(document.querySelector('#pages').innerHTML);
     page = (page === pages) ? pages : (page + 1);
     filterDebt(page, sort);
 }
 
 function choosePage() {
-    let page = Number(document.querySelector('#currentPage').value);
     let pages = Number(document.querySelector('#pages').innerHTML);
     if (page >= pages) page = pages;
     if (page <= 1) page = 1;
     filterDebt(page, sort);
 }
 
-var sort = 1;
-
-function sortById() {
-    let page = Number(document.querySelector('#currentPage').value);
+function sortByNoteAsc() {
     sort = 1;
     filterDebt(page, sort);
 }
 
-function sortByNote() {
-    let page = Number(document.querySelector('#currentPage').value);
+function sortByNoteDesc() {
     sort = 2;
     filterDebt(page, sort);
 }
 
-function sortByType() {
-    let page = Number(document.querySelector('#currentPage').value);
+function sortByTypeAsc() {
     sort = 3;
     filterDebt(page, sort);
 }
 
-function sortByMonney() {
-    let page = Number(document.querySelector('#currentPage').value);
+function sortByTypeDesc() {
     sort = 4;
     filterDebt(page, sort);
 }
 
-function sortByTimeDebt() {
-    let page = Number(document.querySelector('#currentPage').value);
+function sortByMonneyAsc() {
     sort = 5;
     filterDebt(page, sort);
 }
 
-function sortByCreateAt() {
-    let page = Number(document.querySelector('#currentPage').value);
+function sortByMonneyDesc() {
     sort = 6;
+    filterDebt(page, sort);
+}
+
+function sortByTimeDebtAsc() {
+    sort = 7;
+    filterDebt(page, sort);
+}
+
+function sortByTimeDebtDesc() {
+    sort = 8;
+    filterDebt(page, sort);
+}
+
+function sortByCreateAtAsc() {
+    sort = 9;
+    filterDebt(page, sort);
+}
+
+function sortByCreateAtDesc() {
+    sort = 10;
     filterDebt(page, sort);
 }
 

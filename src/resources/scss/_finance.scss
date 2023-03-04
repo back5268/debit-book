@@ -83,9 +83,32 @@
 
       .sortDebt {
         cursor: pointer;
+        height: 100%;
+        width: 100%;
+        position: relative;
       }
 
-      .chooseSort {
+      .sortDebtAsc {
+        height: 50%;
+        width: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+
+      .sortDebtDesc {
+        height: 50%;
+        width: 100%;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+      }
+
+      .chooseSortAsc {
+        border-top: 4px solid #17a2b8;
+      }
+
+      .chooseSortDesc {
         border-bottom: 4px solid #17a2b8;
       }
     }
