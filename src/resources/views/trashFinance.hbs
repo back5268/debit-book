@@ -3,7 +3,7 @@
     <div class="card-header">
       <div>
         <h5>Danh sách khoản nợ đã xóa</h5>
-        <p>Total: {{totalRecord}} record(s)</p>
+        <p>Total: <span id="totalRecord"></span> record(s)</p>
       </div>
       <div>
         <a href="./">
@@ -15,56 +15,30 @@
       </div>
     </div>
     <div class="card-body">
+      <div class="row">
+        <div class="sort">
+        <label for="#nameDebtor">Tên người nợ</label>
+        <select id="nameDebtor" onchange="trash()">
+          {{#each data}}
+            <option value="{{ this.slug }}"> {{ this.fullname }} </option>
+          {{/each}}
+        </select>
+      </div>
       <div class="sort">
         <label for="#sort">Sắp xếp theo</label>
         <select id="sort">
           <option value="">Ngày xóa phiếu</option>
           <option value="">Ngày lập phiếu</option>
         </select>
+        <select id="sortType">
+          <option value="">Tăng dần</option>
+          <option value="">Giảm dần</option>
+        </select>
+      </div>
       </div>
       <div class="trash-body">
         <div id="accordion">
-          {{#each debts}}
-          <div class="card">
-            <div class="card-header" id="heading{{ this.id }}">
-              <h5>
-                <button class="btn btn-shows" data-toggle="collapse" data-target="#collapse{{ this.id }}">
-                  Mã số phiếu nợ: {{ this._id }}
-                </button>
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#restoreDebt"
-                  data-id="{{ this._id }}">
-                  Khôi phục
-                </button>
-              </h5>
-            </div>
-            <div id="collapse{{ this.id }}" class="collapse">
-              <div class="container">
-                <div class="card-body">
-                  <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th scope="col">Tên người nợ</th>
-                        <th scope="col">Số tiền</th>
-                        <th scope="col">Ghi chú</th>
-                        <th scope="col">Ngày lập phiếu</th>
-                        <th scope="col">Ngày xóa phiếu</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>{{ this.debtorName }}</td>
-                        <td>{{ this.monney }}</td>
-                        <td>{{ this.note }}</td>
-                        <td>{{ this.timeDebt }}</td>
-                        <td>{{ this.deleteAt }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-          {{/each}}
+          
         </div>
       </div>
     </div>
@@ -95,6 +69,9 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
+
+    trash();
+
     var debtId;
     var restoreDebtBtn = document.querySelector('#restoreDebtBtn');
     var restoreForm = document.forms['restoreForm'];

@@ -72,16 +72,26 @@ class DebtorController {
 
     addNew(req, res) {
         let debtor = req.body;
-        console.log(debtor);
         const user = req.session.user;
         debtor.createBy = user._id;
         debtor.totalDebts = 0;
         let options = {};
         if (debtor.fullname != '') {
-            const newDebtor = new Debtor(debtor);
-            newDebtor.save()
-                .then(() => {
-                    show(user, res, options, debtor.perPage, debtor.page);
+            Debtor.find({ fullname: debtor.fullname })
+                .then(data => {
+                    if (data[0]) {
+                        res.status(403).json({ message: 'Tên người nợ đã tồn tại!' });
+                    } else {
+                        const newDebtor = new Debtor(debtor);
+                        newDebtor.save()
+                            .then(() => {
+                                show(user, res, options, debtor.perPage, debtor.page);
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                res.status(403).json({ message: 'Không thể thêm người nợ!' });
+                            })
+                    }
                 })
                 .catch(err => {
                     console.log(err);

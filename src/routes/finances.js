@@ -11,6 +11,7 @@ router.post('/addNewDebt', debtController.addNew);
 router.get('/detail/debt/:slug', debtController.showDebts);
 router.get('/detail/:slug', debtController.show);
 router.get('/debtors', debtorController.showDebtors);
+router.get('/trash/:slug', trashController.showTrash);
 router.get('/trash', trashController.show);
 router.get('/:slug', debtController.getDebtor);
 router.post('/debt/delete', debtController.delete);
