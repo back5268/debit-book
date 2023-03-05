@@ -1,56 +1,31 @@
-function dateTimeHelper(time) {
-    let date = new Date(time);
-    let day = date.getDate();
-    day = day < 10 ? '0' + day : day;
-    let month = date.getMonth() + 1;
-    month = month < 10 ? '0' + month : month;
-    let year = date.getFullYear();
-    let hours = date.getHours();
-    hours = hours < 10 ? '0' + hours : hours;
-    let minutes = date.getMinutes();
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-    let seconds = date.getSeconds();
-    seconds = seconds < 10 ? '0' + seconds : seconds;
-
-    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
-}
-
-function formatMonney(num) {
-    let numStr = String(Math.abs(num));
-    let words = '';
-    let x = Math.ceil(numStr.length / 3);
-
-    if (x > 1) {
-        let i = 0;
-        while (i < x) {
-            if (words === '') {
-                words = numStr.slice(-3);
-            } else {
-                words = numStr.slice(-3) + ',' + words;
-            }
-            numStr = numStr.slice(0, -3);
-            i += 1;
-        }
+function getSortTrash() {
+    let sort = 1;
+    let sortBy = Number(document.querySelector('#sortBy').value);
+    let sortType = Number(document.querySelector('#sortType').value);
+    if (sortBy === 1) {
+        if (sortType === 1) sort = 1;
+        else sort = 2;
     } else {
-        words = numStr;
+        if (sortType === 1) sort = 3;
+        else sort = 4;
     }
-
-    words = words.trim();
-    if (num < 0) {
-        return '-' + words;
-    } else {
-        return words;
-    }
+    return sort;
 }
 
 function showTrash(data, count) {
     document.querySelector('#accordion').innerHTML = '';
     document.querySelector('#totalRecord').innerHTML = count;
+
+    if (!data.length) {
+        document.querySelector('#accordion').innerHTML = '<h1>Chưa có khoản nợ nào bị xóa!</h1>';
+    }
+
     for (let { _id, note, type, monney, timeDebt, deleteAt } of data) {
+        let card = '';
         monney = formatMonney(Number(monney));
         timeDebt = dateTimeHelper(timeDebt);
         deleteAt = dateTimeHelper(deleteAt);
-        let card = `<div class="card">
+        card = `<div class="card">
                     <div class="card-header" id="heading${_id}">
                     <h5>
                         <button class="btn btn-shows" data-toggle="collapse" data-target="#collapse${_id}">
@@ -77,9 +52,9 @@ function showTrash(data, count) {
                             <tbody>
                             <tr>
                                 <td>${type} ${monney}</td>
-                                <td>${ note }</td>
-                                <td>${ timeDebt }</td>
-                                <td>${ deleteAt }</td>
+                                <td>${note}</td>
+                                <td>${timeDebt}</td>
+                                <td>${deleteAt}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -92,9 +67,10 @@ function showTrash(data, count) {
 }
 
 function trash() {
+    let sort = getSortTrash();
     const slug = document.querySelector('#nameDebtor').value;
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', `${window.location.origin}/finance/trash/${slug}`);
+    xhr.open('GET', `${window.location.origin}/finance/trash/${slug}/?sort=${sort}`);
     xhr.onload = function () {
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
@@ -105,4 +81,32 @@ function trash() {
     };
 
     xhr.send();
+}
+
+function restoreDebt() {
+    var debtId;
+
+    $('#restoreDebt').on('show.bs.modal', event => {
+        var button = $(event.relatedTarget);
+        debtId = button.data('id');
+      });
+
+    document.getElementById("restoreDebtBtn").addEventListener("click", () => {
+        const data = { debtId };
+        let sort = getSortTrash();
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', `${window.location.origin}/finance/debt/restore/?sort=${sort}`, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                alert('Khôi phục khoản nợ thành công!');
+                let data = response.data;
+                let count = response.count;
+                showTrash(data, count);
+            }
+        };
+
+        xhr.send(JSON.stringify(data));
+    })
 }

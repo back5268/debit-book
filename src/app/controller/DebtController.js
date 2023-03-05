@@ -170,24 +170,6 @@ class DebtController {
             });
     }
 
-    restore(req, res, next) {
-        Debt.findOneAndUpdate({ _id: req.params.id }, { isDelete: false, deleteAt: null })
-            .then(data => {
-                let debt = data;
-                Debtor.find({ _id: debt.debtorId })
-                    .then(data => {
-                        let totalDebts = totalDebt(debt, data[0].totalDebts);
-                        Debtor.findOneAndUpdate({ _id: debt.debtorId }, { totalDebts, updateAt: Date.now() })
-                            .then(() => {
-                                res.redirect('back');
-                            })
-                            .catch(next)
-                    })
-                    .catch(next)
-            })
-            .catch(next);
-    }
-
 }
 
 module.exports = new DebtController;

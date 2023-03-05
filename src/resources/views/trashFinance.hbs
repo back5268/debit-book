@@ -26,13 +26,13 @@
       </div>
       <div class="sort">
         <label for="#sort">Sắp xếp theo</label>
-        <select id="sort">
-          <option value="">Ngày xóa phiếu</option>
-          <option value="">Ngày lập phiếu</option>
+        <select id="sortBy" onchange="trash()">
+          <option value="1">Ngày xóa phiếu</option>
+          <option value="2">Ngày lập phiếu</option>
         </select>
-        <select id="sortType">
-          <option value="">Tăng dần</option>
-          <option value="">Giảm dần</option>
+        <select id="sortType" onchange="trash()">
+          <option value="1">Tăng dần</option>
+          <option value="2">Giảm dần</option>
         </select>
       </div>
       </div>
@@ -65,26 +65,9 @@
   </div>
 </div>
 
-<form name="restoreForm" method="GET"></form>
-
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-
     trash();
-
-    var debtId;
-    var restoreDebtBtn = document.querySelector('#restoreDebtBtn');
-    var restoreForm = document.forms['restoreForm'];
-
-    $('#restoreDebt').on('show.bs.modal', event => {
-      var button = $(event.relatedTarget);
-      debtId = button.data('id');
-    });
-
-    restoreDebtBtn.onclick = function () {
-      restoreForm.action = '/finance/debt/restore/' + debtId;
-      restoreForm.submit(); 
-    };
-
+    restoreDebt();
   });
 </script>

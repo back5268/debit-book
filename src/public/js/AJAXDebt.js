@@ -1,56 +1,14 @@
 var sort = 9;
 
-function dateTimeHelper(time) {
-    let date = new Date(time);
-    let day = date.getDate();
-    day = day < 10 ? '0' + day : day;
-    let month = date.getMonth() + 1;
-    month = month < 10 ? '0' + month : month;
-    let year = date.getFullYear();
-    let hours = date.getHours();
-    hours = hours < 10 ? '0' + hours : hours;
-    let minutes = date.getMinutes();
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-    let seconds = date.getSeconds();
-    seconds = seconds < 10 ? '0' + seconds : seconds;
-
-    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
-}
-
-function formatMonney(num) {
-    let numStr = String(Math.abs(num));
-    let words = '';
-    let x = Math.ceil(numStr.length / 3);
-
-    if (x > 1) {
-        let i = 0;
-        while (i < x) {
-            if (words === '') {
-                words = numStr.slice(-3);
-            } else {
-                words = numStr.slice(-3) + ',' + words;
-            }
-            numStr = numStr.slice(0, -3);
-            i += 1;
-        }
-    } else {
-        words = numStr;
-    }
-
-    words = words.trim();
-    if (num < 0) {
-        return '-' + words;
-    } else {
-        return words;
-    }
-}
-
 function show(data, count, page) {
     let tbody = document.querySelector('tbody');
     let perPage = Number(document.querySelector('#perPage').value);
     let pages = Math.ceil(count / perPage);
     pages = (pages === 0) ? 1 : pages;
     tbody.innerHTML = '';
+    if (!data.length) {
+        tbody.innerHTML = '<h3>Chưa có khoản nợ nào được tạo!</h3>';
+    }
     for (let { _id, stt, note, type, monney, timeDebt, createAt } of data) {
         let row = tbody.insertRow();
         row.classList.add('perDebt');

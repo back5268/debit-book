@@ -15,7 +15,7 @@ router.get('/trash/:slug', trashController.showTrash);
 router.get('/trash', trashController.show);
 router.get('/:slug', debtController.getDebtor);
 router.post('/debt/delete', debtController.delete);
-router.get('/debt/restore/:id', debtController.restore);
+router.post('/debt/restore', trashController.restore);
 router.get('/', debtorController.show);
 
 module.exports = router;
