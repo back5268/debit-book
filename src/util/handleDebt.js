@@ -1,4 +1,14 @@
 module.exports = {
+    totalDebt: function (debt, totalDebts) {
+        if (debt.type === '+') {
+            totalDebts += Number(debt.monney);
+        } else if (debt.type === '-') {
+            totalDebts -= Number(debt.monney);
+        }
+
+        return totalDebts;
+    },
+
     sortDebt: function (sort) {
         let sortCriteria;
         switch (sort) {
@@ -31,6 +41,12 @@ module.exports = {
                 break;
             case 10:
                 sortCriteria = { createAt: -1 };
+                break;
+            case 11:
+                sortCriteria = { deleteAt: 1 };
+                break;
+            case 12:
+                sortCriteria = { deleteAt: -1 };
                 break;
         }
         return sortCriteria;

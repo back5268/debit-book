@@ -1,73 +1,32 @@
-function getSortTrash() {
-    let sort = 1;
-    let sortBy = Number(document.querySelector('#sortBy').value);
-    let sortType = Number(document.querySelector('#sortType').value);
-    if (sortBy === 1) {
-        if (sortType === 1) sort = 1;
-        else sort = 2;
-    } else {
-        if (sortType === 1) sort = 3;
-        else sort = 4;
-    }
-    return sort;
-}
+var sortTrash;
 
 function showTrash(data, count) {
-    document.querySelector('#accordion').innerHTML = '';
     document.querySelector('#totalRecord').innerHTML = count;
+    let tbody = document.querySelector('tbody');
 
+    tbody.innerHTML = '';
     if (!data.length) {
-        document.querySelector('#accordion').innerHTML = '<h1>Chưa có khoản nợ nào bị xóa!</h1>';
+        tbody.innerHTML = '<h5>Chưa có khoản nợ nào được tạo!</h5>';
     }
 
-    for (let { _id, note, type, monney, timeDebt, deleteAt } of data) {
-        let card = '';
+    for (let { _id, note, type, monney, timeDebt, createAt, deleteAt } of data) {
         monney = formatMonney(Number(monney));
         timeDebt = dateTimeHelper(timeDebt);
+        createAt = dateTimeHelper(createAt);
         deleteAt = dateTimeHelper(deleteAt);
-        card = `<div class="card">
-                    <div class="card-header" id="heading${_id}">
-                    <h5>
-                        <button class="btn btn-shows" data-toggle="collapse" data-target="#collapse${_id}">
-                        Mã số phiếu nợ: ${_id}
-                        </button>
-                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#restoreDebt"
-                        data-id="${_id}">
-                        Khôi phục
-                        </button>
-                    </h5>
-                    </div>
-                    <div id="collapse${_id}" class="collapse">
-                    <div class="container">
-                        <div class="card-body">
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th scope="col">Số tiền</th>
-                                <th scope="col">Ghi chú</th>
-                                <th scope="col">Ngày lập phiếu</th>
-                                <th scope="col">Ngày xóa phiếu</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>${type} ${monney}</td>
-                                <td>${note}</td>
-                                <td>${timeDebt}</td>
-                                <td>${deleteAt}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        </div>
-                    </div>
-                    </div>
-                    </div>`
-        document.querySelector('#accordion').innerHTML = document.querySelector('#accordion').innerHTML + card;
+        let row = tbody.insertRow();
+        row.insertCell().innerHTML = 1;
+        row.insertCell().innerHTML = note;
+        row.insertCell().innerHTML = type;
+        row.insertCell().innerHTML = monney;
+        row.insertCell().innerHTML = timeDebt;
+        row.insertCell().innerHTML = createAt;
+        row.insertCell().innerHTML = deleteAt;
+        row.insertCell().innerHTML = `<button type="button" class="btn btn-info" data-toggle="modal" data-target="#restoreDebt" data-id="${_id}"> Khôi phục</button>`;
     }
 }
 
-function trash() {
-    let sort = getSortTrash();
+function trash(sort) {
     const slug = document.querySelector('#nameDebtor').value;
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `${window.location.origin}/finance/trash/${slug}/?sort=${sort}`);
@@ -83,7 +42,11 @@ function trash() {
     xhr.send();
 }
 
-function restoreDebt() {
+function handleTrash() {
+    trash(sortTrash);
+}
+
+function restoreDebt(sort) {
     var debtId;
 
     $('#restoreDebt').on('show.bs.modal', event => {
@@ -93,7 +56,6 @@ function restoreDebt() {
 
     document.getElementById("restoreDebtBtn").addEventListener("click", () => {
         const data = { debtId };
-        let sort = getSortTrash();
         const xhr = new XMLHttpRequest();
         xhr.open('POST', `${window.location.origin}/finance/debt/restore/?sort=${sort}`, true);
         xhr.setRequestHeader('Content-Type', 'application/json');
@@ -109,4 +71,68 @@ function restoreDebt() {
 
         xhr.send(JSON.stringify(data));
     })
+}
+
+function handleRestoreDebt() {
+    restoreDebt(sortTrash);
+}
+
+function sortByNoteTrashAsc() {
+    sortTrash = 1;
+    trash(sortTrash);
+}
+
+function sortByNoteTrashDesc() {
+    sortTrash = 2;
+    trash(sortTrash);
+}
+
+function sortByTypeTrashAsc() {
+    sortTrash = 3;
+    trash(sortTrash);
+}
+
+function sortByTypeTrashDesc() {
+    sortTrash = 4;
+    trash(sortTrash);
+}
+
+function sortByMonneyTrashAsc() {
+    sortTrash = 5;
+    trash(sortTrash);
+}
+
+function sortByMonneyTrashDesc() {
+    sortTrash = 6;
+    trash(sortTrash);
+}
+
+function sortByTimeDebtTrashAsc() {
+    sortTrash = 7;
+    trash(sortTrash);
+}
+
+function sortByTimeDebtTrashDesc() {
+    sortTrash = 8;
+    trash(sortTrash);
+}
+
+function sortByCreateAtTrashAsc() {
+    sortTrash = 9;
+    trash(sortTrash);
+}
+
+function sortByCreateAtTrashDesc() {
+    sortTrash = 10;
+    trash(sortTrash);
+}
+
+function sortByDeleteAtTrashAsc() {
+    sortTrash = 11;
+    trash(sortTrash);
+}
+
+function sortByDeleteAtTrashDesc() {
+    sortTrash = 12;
+    trash(sortTrash);
 }

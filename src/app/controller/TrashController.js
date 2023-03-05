@@ -1,30 +1,16 @@
 const Debt = require('../models/Debt');
 const Debtor = require('../models/Debtor');
-const { totalDebt } = require('../../util/totalDebts');
+const { totalDebt, sortDebt } = require('../../util/handleDebt');
 
 function show(res, slug, sort, next) {
-    sort = Number(sort);
-    let sortCriteria;
-    switch (sort) {
-        case 1:
-            sortCriteria = { deleteAt: -1 }
-            break;
-        case 2:
-            sortCriteria = { deleteAt: 1 }
-            break;
-        case 3:
-            sortCriteria = { createAt: -1 }
-            break;
-        case 4:
-            sortCriteria = { createAt: 1 }
-            break;
-    }
+    let sortCriteria = sortDebt(Number(sort));
     Debtor.find({ slug })
         .then(data => {
-            Debt.find({ debtorId: data[0]._id, isDelete: true })
+            let debtorId = data[0]._id;
+            Debt.find({ debtorId, isDelete: true })
                 .sort(sortCriteria)
                 .then(data => {
-                    Debt.countDocuments({ slug, isDelete: true })
+                    Debt.countDocuments({ debtorId, isDelete: true })
                         .then(count => {
                             res.status(200).json({ data, count })
                         })

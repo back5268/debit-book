@@ -1,13 +1,12 @@
 const Debtor = require('../models/Debtor');
 const Debt = require('../models/Debt');
-const { formatOption } = require('../../util/formatOption');
-const { totalDebt } = require('../../util/totalDebts');
-const { sortDebt } = require('../../util/sortDebt');
+const { formatOptionDebt } = require('../../util/formatOptionFilter');
+const { totalDebt, sortDebt } = require('../../util/handleDebt');
 
 function show(slug, res, options, perPage, page, sort) {
     perPage = perPage || 5;
     page = Number(page) || 1;
-    options = formatOption(options);
+    options = formatOptionDebt(options);
     Debtor.find({ slug })
         .then(data => {
             const debtorId = data[0]._id;

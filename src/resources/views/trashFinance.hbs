@@ -17,29 +17,56 @@
     <div class="card-body">
       <div class="row">
         <div class="sort">
-        <label for="#nameDebtor">Tên người nợ</label>
-        <select id="nameDebtor" onchange="trash()">
-          {{#each data}}
+          <label for="#nameDebtor">Tên người nợ</label>
+          <select id="nameDebtor" onchange="handleTrash()">
+            {{#each data}}
             <option value="{{ this.slug }}"> {{ this.fullname }} </option>
-          {{/each}}
-        </select>
-      </div>
-      <div class="sort">
-        <label for="#sort">Sắp xếp theo</label>
-        <select id="sortBy" onchange="trash()">
-          <option value="1">Ngày xóa phiếu</option>
-          <option value="2">Ngày lập phiếu</option>
-        </select>
-        <select id="sortType" onchange="trash()">
-          <option value="1">Tăng dần</option>
-          <option value="2">Giảm dần</option>
-        </select>
-      </div>
+            {{/each}}
+          </select>
+        </div>
       </div>
       <div class="trash-body">
-        <div id="accordion">
-          
-        </div>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">
+                STT
+              </th>
+              <th scope="col" class="sortDebt">
+                <div class="sortDebtAsc" onclick="sortByNoteTrashAsc()"></div>
+                <div class="sortDebtDesc" onclick="sortByNoteTrashDesc()"></div>
+                Ghi chú
+              </th>
+              <th scope="col" class="sortDebt">
+                <div class="sortDebtAsc" onclick="sortByTypeTrashAsc()"></div>
+                <div class="sortDebtDesc" onclick="sortByTypeTrashDesc()"></div>
+                Loại nợ
+              </th>
+              <th scope="col" class="sortDebt">
+                <div class="sortDebtAsc" onclick="sortByMonneyTrashAsc()"></div>
+                <div class="sortDebtDesc" onclick="sortByMonneyTrashDesc()"></div>
+                Số tiền
+              </th>
+              <th scope="col" class="sortDebt">
+                <div class="sortDebtAsc" onclick="sortByTimeDebtTrashAsc()"></div>
+                <div class="sortDebtDesc" onclick="sortByTimeDebtTrashDesc()"></div>
+                Ngày lập phiếu
+              </th>
+              <th scope="col" class="sortDebt">
+                <div class="sortDebtAsc" onclick="sortByCreateAtTrashAsc()"></div>
+                <div class="sortDebtDesc" onclick="sortByCreateAtTrashDesc()"></div>
+                Thời gian tạo
+              </th>
+              <th scope="col" class="sortDebt chooseSortAsc">
+                <div class="sortDebtAsc" onclick="sortByDeleteAtTrashAsc()"></div>
+                <div class="sortDebtDesc" onclick="sortByDeleteAtTrashDesc()"></div>
+                Thời gian tạo
+              </th>
+              <th scope="col">Action</th>
+            </tr>
+            <tbody></tbody>
+          </thead>
+        </table>
       </div>
     </div>
   </div>
@@ -68,6 +95,31 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     trash();
-    restoreDebt();
+    handleRestoreDebt()
   });
+</script>
+
+<script>
+    const sortDebtAsc = document.querySelectorAll('.sortDebtAsc');
+    const sortDebtDesc = document.querySelectorAll('.sortDebtDesc');
+    const sortDebt = document.querySelectorAll('.sortDebt');
+    sortDebtAsc.forEach(sa => {
+        sa.addEventListener('click', e => {
+            sortDebt.forEach(s => {
+                s.classList.remove('chooseSortAsc');
+                s.classList.remove('chooseSortDesc');
+            })
+            e.target.parentNode.classList.add('chooseSortAsc');
+        })
+    })
+    sortDebtDesc.forEach(sd => {
+        sd.addEventListener('click', e => {
+            sortDebt.forEach(s => {
+                s.classList.remove('chooseSortAsc');
+                s.classList.remove('chooseSortDesc');
+            })
+            e.target.parentNode.classList.add('chooseSortDesc');
+        })
+    })
+    
 </script>

@@ -1,5 +1,5 @@
 const Debtor = require('../models/Debtor');
-const { formatOptionsDebtor } = require('../../util/fomatOptionsDebtor');
+const { formatOptionsDebtor } = require('../../util/formatOptionFilter');
 
 function show(user, res, options, perPage, page) {
     options = formatOptionsDebtor(options);

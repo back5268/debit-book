@@ -1,5 +1,4 @@
 const User = require('../models/User');
-const { dateTimeHelper } = require('../../util/dateTimeHelper');
 
 class SystemController {
 
@@ -10,11 +9,6 @@ class SystemController {
                 User.find({ verified: true })
                     .then(data => {
                         data = data.map(d => d.toObject());
-                        data = data.map(d => {
-                            d.lastLogin = dateTimeHelper(d.lastLogin);
-                            d.createAt = dateTimeHelper(d.createAt);
-                            return d;
-                        })
                         res.render('control', { 
                             user, title: 'Control', users: data, totalRecord: data.length 
                         });
