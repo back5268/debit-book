@@ -13,37 +13,37 @@
                 </div>
                 <div class="card-body">
                     <div class="header-calendar">
-                        <div>
+                        <div class="today">
                             <div class="arrows">
-                                <i class="fa-solid fa-angle-left icon prev arrow"></i>
-                                <i class="fa-solid fa-angle-right icon next arrow"></i>
+                                <i class="fa-solid fa-angle-left arrow prev"></i>
+                                <i class="fa-solid fa-angle-right arrow next"></i>
                             </div>
                             <a href="#today">
-                                <div class="title-today center sub-title">Today</div>
+                                <div class="title-today">Today</div>
                             </a>
                         </div>
                         <div class="months"><span></span></div>
                         <div class="view-mode">
                             <a href="#">
-                                <div class="mode center sub-title choose">Month</div>
+                                <div class="mode choose">Month</div>
                             </a>
                             <a href="#">
-                                <div class="mode center sub-title">Week</div>
+                                <div class="mode">Week</div>
                             </a>
                             <a href="#">
-                                <div class="mode center sub-title">List</div>
+                                <div class="mode">List</div>
                             </a>
                         </div>
                     </div>
                     <div class="body-calendar">
-                        <div class="center">
-                            <div class="week-days center">Sun</div>
-                            <div class="week-days center">Mon</div>
-                            <div class="week-days center">Tue</div>
-                            <div class="week-days center">Wed</div>
-                            <div class="week-days center">Thu</div>
-                            <div class="week-days center">Fri</div>
-                            <div class="week-days center">Sat</div>
+                        <div class="week-days">
+                            <div class="week-day">Sun</div>
+                            <div class="week-day">Mon</div>
+                            <div class="week-day">Tue</div>
+                            <div class="week-day">Wed</div>
+                            <div class="week-day">Thu</div>
+                            <div class="week-day">Fri</div>
+                            <div class="week-day">Sat</div>
                         </div>
                         <div class="days"></div>
                     </div>
@@ -51,6 +51,43 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="addNote">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="card-group">
+          <div class="card">
+            <div class="card-header">
+              <h5>Ghi chú ngày: </h5>
+            </div>
+            <div class="card-body">
+              <form>
+                <div class="form-group row">
+                  <label class="col-sm-3 col-form-label">Chi chú</label>
+                  <div class="col-sm-9">
+                    <textarea type="text" class="form-control" id="note"></textarea>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-3"></div>
+                  <div class="col-sm-9">
+                    <button type="submit" class="btn btn-info" id="addNewDebtor">
+                      Thêm ghi chú
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -82,19 +119,19 @@
         document.querySelector(".months span").innerHTML = months[date.getMonth()] + "  " + date.getFullYear();
         let days = "";
         for (let x = prevDays; x > 0; x--) {
-            days += `<div class="prev-date day">${prevLastDay - x + 1}</div>`;
+            days += `<div class="day"><button type="button" class="prev-date">${prevLastDay - x + 1}</button></div>`;
         }
 
         for (let i = 1; i <= lastDay; i++) {
             if (i === new Date().getDate() && date.getMonth() === new Date().getMonth()) {
-                days += `<div class="day" id="today">${i}</div>`;
+                days += `<div class="day"><button type="button" data-toggle="modal" data-target="#addNote" id="today">${i}</button></div>`;
             } else {
-                days += `<div class="day">${i}</div>`;
+                days += `<div class="day"><button type="button" data-toggle="modal" data-target="#addNote">${i}</button></div>`;
             }
         }
 
         for (let j = 1; j <= 7 - nextDays - 1; j++) {
-            days += `<div class="next-date day">${j}</div>`;
+            days += `<div class="day"><button type="button" class="next-date">${j}</button></div>`;
             monthDays.innerHTML = days;
         }
     };

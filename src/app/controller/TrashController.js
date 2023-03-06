@@ -2,17 +2,21 @@ const Debt = require('../models/Debt');
 const Debtor = require('../models/Debtor');
 const { totalDebt, sortDebt } = require('../../util/handleDebt');
 
-function show(res, slug, sort, next) {
+function show(res, slug, sort, next, page, perPage) {
     let sortCriteria = sortDebt(Number(sort));
+    page = Number(page) || 1;
+    perPage = Number(perPage) || 5;
     Debtor.find({ slug })
         .then(data => {
             let debtorId = data[0]._id;
             Debt.find({ debtorId, isDelete: true })
                 .sort(sortCriteria)
+                .skip((perPage * page) - perPage)
+                .limit(perPage)
                 .then(data => {
                     Debt.countDocuments({ debtorId, isDelete: true })
                         .then(count => {
-                            res.status(200).json({ data, count })
+                            res.status(200).json({ data, count, page })
                         })
                         .catch(next)
                 })
@@ -41,9 +45,11 @@ class TrashController {
 
     showTrash(req, res, next) {
         if (req.session.user) {
-            const { slug } = req.params;
-            let sort = req.query.sort;
-            show(res, slug, sort, next);
+            const { slug } = req.params;    
+            let perPage = req.query.perPage || 5;
+            let page = (req.query.page) ? req.query.page : 1;
+            let sort = (req.query.sort) ? req.query.sort : 11;
+            show(res, slug, sort, next, page, perPage);
         } else {
             res.render('form/login');
         }

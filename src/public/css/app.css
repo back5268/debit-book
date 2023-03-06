@@ -357,74 +357,120 @@
         gap: 4px; }
 
 .home #calendar {
-  width: 1232px;
-  height: 800px;
-  border-radius: 32px;
-  background-color: #1e1e2d; }
-  .home #calendar .arrows {
-    width: 120px;
-    height: 40px;
-    border-radius: 8px;
-    padding: 0 8px;
-    margin: 24px 16px 24px 32px;
-    background-color: var(--shadow-color); }
-
-.home #calendar .title-today {
-  height: 40px;
-  width: 96px;
-  border-radius: 8px;
-  background-color: var(--shadow-color); }
-
-.home #calendar .title-today:hover {
-  color: #fff; }
-
-.home #calendar .view-mode {
-  width: 288px;
-  height: 40px;
-  border-radius: 8px;
-  display: flex;
-  margin: 24px 32px;
-  background-color: var(--shadow-color); }
-
-.home #calendar .mode {
-  width: 96px;
-  height: 40px;
-  border-radius: 8px;
-  background-color: var(--shadow-color); }
-
-.home #calendar .right:hover {
-  color: #fff; }
-
-.home #calendar .choose {
-  color: #fff;
-  background-color: var(--over-color); }
-
-.home #calendar .content-calendar {
-  width: 1120px;
-  height: 576px;
-  border-radius: 16px;
-  margin: 16px 55px; }
-
-.home .content-calendar .week-days {
-  width: 160px;
-  height: 48px;
-  border: 1px solid var(--text-color2); }
-
-.home .content-calendar .days {
-  display: flex;
-  flex-wrap: wrap; }
-
-.home .content-calendar .day {
-  width: 160px;
-  height: 88px;
-  font-size: 12px;
-  padding: 4px 8px 0 0;
-  text-align: right;
-  border: 0.1px solid var(--text-color2); }
-
-.home .content-calendar #today {
-  color: #fff;
-  background-color: var(--bg-prime-color); }
+  width: 100%;
+  min-height: 70vh;
+  border-radius: 32px; }
+  .home #calendar button {
+    min-height: 40px; }
+  .home #calendar a {
+    text-decoration: none; }
+  .home #calendar .card-body {
+    padding: 16px;
+    padding-bottom: 24px; }
+    .home #calendar .card-body .header-calendar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      margin-top: 8px; }
+      .home #calendar .card-body .header-calendar .today {
+        height: 40px;
+        width: 270px;
+        display: flex;
+        gap: 12px; }
+        .home #calendar .card-body .header-calendar .today .arrows {
+          display: flex;
+          background-color: #3a4060;
+          width: fit-content;
+          height: 40px;
+          border-radius: 6px;
+          gap: 10px; }
+          .home #calendar .card-body .header-calendar .today .arrows .arrow {
+            width: 40px;
+            height: 40px;
+            background-color: #3a4060;
+            font-size: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 0; }
+          .home #calendar .card-body .header-calendar .today .arrows .arrow:hover {
+            background-color: #5a6085; }
+        .home #calendar .card-body .header-calendar .today .title-today {
+          width: 90px;
+          height: 40px;
+          background-color: #3a4060;
+          border-radius: 6px;
+          color: #fff;
+          display: flex;
+          justify-content: center;
+          align-items: center; }
+        .home #calendar .card-body .header-calendar .today .title-today:hover {
+          background-color: #5a6085; }
+      .home #calendar .card-body .header-calendar .months span {
+        color: #1e1e2d;
+        font-size: 24px;
+        font-weight: 600; }
+      .home #calendar .card-body .header-calendar .view-mode {
+        width: 270px;
+        height: 40px;
+        border-radius: 6px;
+        display: flex;
+        background-color: #3a4060; }
+        .home #calendar .card-body .header-calendar .view-mode .mode {
+          width: 90px;
+          height: 40px;
+          border-radius: 6px;
+          background-color: #3a4060;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: #fff; }
+        .home #calendar .card-body .header-calendar .view-mode .choose {
+          background-color: #5a6085; }
+    .home #calendar .card-body .body-calendar {
+      border: 1px solid #c7d5e6;
+      border-radius: 6px; }
+      .home #calendar .card-body .body-calendar .week-days {
+        display: flex; }
+        .home #calendar .card-body .body-calendar .week-days .week-day {
+          width: calc(100% / 7);
+          height: 56px;
+          border: 1px solid #c7d5e6;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 16px;
+          font-weight: 600; }
+      .home #calendar .card-body .body-calendar .days {
+        display: flex;
+        flex-wrap: wrap; }
+        .home #calendar .card-body .body-calendar .days .day {
+          width: calc(100% / 7);
+          height: 80px;
+          border: 1px solid #c7d5e6;
+          text-align: right; }
+          .home #calendar .card-body .body-calendar .days .day button {
+            outline: none;
+            height: 100%;
+            width: 100%;
+            background-color: #fff;
+            border: none;
+            cursor: pointer;
+            text-align: right;
+            padding-bottom: 60px;
+            padding-top: 4px;
+            padding-right: 8px; }
+          .home #calendar .card-body .body-calendar .days .day button:focus {
+            border: none;
+            box-shadow: rgba(3, 102, 214, 0.5) 5px 5px 5px 5px; }
+        .home #calendar .card-body .body-calendar .days .next-date, .home #calendar .card-body .body-calendar .days .prev-date {
+          color: #c7d5e6;
+          cursor: cell; }
+        .home #calendar .card-body .body-calendar .days #today {
+          background-color: #c7d5e6 !important; }
 
 .card-group .card-header {
   display: flex;
@@ -464,76 +510,69 @@
 
 .card-group .card-body {
   padding: 12px; }
-  .card-group .card-body table tr,
-  .card-group .card-body table td {
-    min-width: 100px;
-    font-size: 14px; }
-  .card-group .card-body table tr {
-    text-align: center;
-    align-items: center; }
-  .card-group .card-body table td {
-    vertical-align: middle;
-    text-align: center;
-    align-items: center; }
-    .card-group .card-body table td input {
-      padding: 6px 12px;
-      border-radius: 4px;
-      outline: none;
-      border: 1px solid #c7d5e6;
-      max-width: 148px; }
-  .card-group .card-body table .sortDebt {
-    cursor: pointer;
-    height: 100%;
+  .card-group .card-body table {
     width: 100%;
-    position: relative; }
-  .card-group .card-body table .sortDebtAsc {
-    height: 50%;
-    width: 100%;
-    position: absolute;
-    left: 0;
-    top: 0; }
-  .card-group .card-body table .sortDebtDesc {
-    height: 50%;
-    width: 100%;
-    position: absolute;
-    left: 0;
-    bottom: 0; }
-  .card-group .card-body table .chooseSortAsc {
-    border-top: 4px solid #17a2b8; }
-  .card-group .card-body table .chooseSortDesc {
-    border-bottom: 4px solid #17a2b8; }
+    border: 1px solid black; }
+    .card-group .card-body table thead {
+      background-color: #f5f5f5;
+      font-weight: bold;
+      position: sticky;
+      top: 0;
+      z-index: 10; }
+    .card-group .card-body table th,
+    .card-group .card-body table td {
+      min-width: 100px;
+      font-size: 14px; }
+    .card-group .card-body table tr {
+      text-align: center;
+      align-items: center; }
+    .card-group .card-body table td {
+      vertical-align: middle;
+      text-align: center;
+      align-items: center; }
+      .card-group .card-body table td input {
+        padding: 6px 12px;
+        border-radius: 4px;
+        outline: none;
+        border: 1px solid #c7d5e6;
+        max-width: 148px; }
+    .card-group .card-body table .sortDebt {
+      cursor: pointer;
+      height: 100%;
+      position: relative; }
+    .card-group .card-body table .sortDebtAsc {
+      height: 50%;
+      width: 100%;
+      position: absolute;
+      left: 0;
+      top: 0; }
+    .card-group .card-body table .sortDebtDesc {
+      height: 50%;
+      width: 100%;
+      position: absolute;
+      left: 0;
+      bottom: 0; }
+    .card-group .card-body table .chooseSortAsc {
+      border-top: 4px solid #17a2b8; }
+    .card-group .card-body table .chooseSortDesc {
+      border-bottom: 4px solid #17a2b8; }
   .card-group .card-body .body {
     min-height: 65vh;
     max-height: 65vh;
     position: relative;
     display: flex;
     flex-direction: column;
-    overflow: scroll;
-    border: 1px solid #c7d5e6; }
+    border: 1px solid #c7d5e6;
+    overflow-y: scroll; }
+  .card-group .card-body .center {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    margin-top: 60px; }
   .card-group .card-body .sort {
     margin-left: 16px;
     margin-bottom: 24px;
     gap: 16px; }
-  .card-group .card-body .trash-body {
-    min-height: 65vh;
-    max-height: 65vh;
-    overflow: scroll;
-    padding: 0 1rem; }
-    .card-group .card-body .trash-body .card {
-      margin-bottom: 16px; }
-      .card-group .card-body .trash-body .card .card-header {
-        background-color: #e4e9f7; }
-        .card-group .card-body .trash-body .card .card-header h5 {
-          display: flex;
-          justify-content: space-between;
-          width: 100%;
-          align-items: center; }
-          .card-group .card-body .trash-body .card .card-header h5 .btn-shows {
-            background-color: #e4e9f7;
-            width: 100%;
-            text-align: left; }
-          .card-group .card-body .trash-body .card .card-header h5 .btn-shows:focus {
-            box-shadow: none; }
   .card-group .card-body .card-links {
     border: 1px solid #c7d5e6;
     min-height: 70vh;

@@ -59,8 +59,8 @@
                                         <div class="sortDebtDesc" onclick="sortByTimeDebtDesc()"></div>
                                         Ngày lập phiếu
                                     </th>
-                                    <th scope="col" class="sortDebt chooseSortAsc">
-                                        <div class="sortDebtAsc" onclick="sortByCreateAtAsc()"></div>
+                                    <th scope="col" class="sortDebt">
+                                        <div class="sortDebtAsc chooseSortAsc" onclick="sortByCreateAtAsc()"></div>
                                         <div class="sortDebtDesc" onclick="sortByCreateAtDesc()"></div>
                                         Thời gian tạo
                                     </th>
@@ -100,6 +100,7 @@
                             </thead>
                             <tbody></tbody>
                         </table>
+                        <h5 class="center"></h5>
                     </div>
                 </div>
                 <div class="card-footer">
@@ -406,20 +407,24 @@
     const sortDebt = document.querySelectorAll('.sortDebt');
     sortDebtAsc.forEach(sa => {
         sa.addEventListener('click', e => {
-            sortDebt.forEach(s => {
-                s.classList.remove('chooseSortAsc');
-                s.classList.remove('chooseSortDesc');
+            sortDebtAsc.forEach(sa => {
+                sa.classList.remove('chooseSortAsc');
             })
-            e.target.parentNode.classList.add('chooseSortAsc');
+            sortDebtDesc.forEach(sd => {
+                sd.classList.remove('chooseSortDesc');
+            })
+            e.target.classList.add('chooseSortAsc');
         })
     })
     sortDebtDesc.forEach(sd => {
         sd.addEventListener('click', e => {
-            sortDebt.forEach(s => {
-                s.classList.remove('chooseSortAsc');
-                s.classList.remove('chooseSortDesc');
+            sortDebtAsc.forEach(sa => {
+                sa.classList.remove('chooseSortAsc');
             })
-            e.target.parentNode.classList.add('chooseSortDesc');
+            sortDebtDesc.forEach(sd => {
+                sd.classList.remove('chooseSortDesc');
+            })
+            e.target.classList.add('chooseSortDesc');
         })
     })
     

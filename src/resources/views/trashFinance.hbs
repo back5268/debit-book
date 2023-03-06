@@ -25,8 +25,8 @@
           </select>
         </div>
       </div>
-      <div class="trash-body">
-        <table class="table table-bordered">
+      <div class="body">
+        <table class="table table-bordered header-fixed">
           <thead>
             <tr>
               <th scope="col">
@@ -57,16 +57,37 @@
                 <div class="sortDebtDesc" onclick="sortByCreateAtTrashDesc()"></div>
                 Thời gian tạo
               </th>
-              <th scope="col" class="sortDebt chooseSortAsc">
-                <div class="sortDebtAsc" onclick="sortByDeleteAtTrashAsc()"></div>
+              <th scope="col" class="sortDebt">
+                <div class="sortDebtAsc chooseSortAsc" onclick="sortByDeleteAtTrashAsc()"></div>
                 <div class="sortDebtDesc" onclick="sortByDeleteAtTrashDesc()"></div>
                 Thời gian tạo
               </th>
               <th scope="col">Action</th>
             </tr>
-            <tbody></tbody>
           </thead>
+          <tbody class="scrollable"></tbody>
         </table>
+        <h5 class="center"></h5>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="row">
+        <div class="col-sm-4 justify-content-center">
+          <button class="btn btn-light" onclick="prePageTrash()" id="prePage" disabled>Previous</button>
+        </div>
+        <div class="col justify-content-center">
+          <span>Page
+            <input type="number" id="currentPage" onchange="choosePageTrash()" />/<span id="pages"></span>
+          </span>
+          <select id="perPage" onchange="handleTrash()">
+            <option value="5">5 record</option>
+            <option value="10">10 record</option>
+            <option value="50">50 record</option>
+          </select>
+        </div>
+        <div class="col-sm-4 justify-content-center">
+          <button class="btn btn-light" onclick="nextPageTrash()" id="nextPage">Next</button>
+        </div>
       </div>
     </div>
   </div>
@@ -95,7 +116,7 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     trash();
-    handleRestoreDebt()
+    handleRestoreDebt();
   });
 </script>
 
@@ -105,20 +126,24 @@
     const sortDebt = document.querySelectorAll('.sortDebt');
     sortDebtAsc.forEach(sa => {
         sa.addEventListener('click', e => {
-            sortDebt.forEach(s => {
-                s.classList.remove('chooseSortAsc');
-                s.classList.remove('chooseSortDesc');
+            sortDebtAsc.forEach(sa => {
+                sa.classList.remove('chooseSortAsc');
             })
-            e.target.parentNode.classList.add('chooseSortAsc');
+            sortDebtDesc.forEach(sd => {
+                sd.classList.remove('chooseSortDesc');
+            })
+            e.target.classList.add('chooseSortAsc');
         })
     })
     sortDebtDesc.forEach(sd => {
         sd.addEventListener('click', e => {
-            sortDebt.forEach(s => {
-                s.classList.remove('chooseSortAsc');
-                s.classList.remove('chooseSortDesc');
+            sortDebtAsc.forEach(sa => {
+                sa.classList.remove('chooseSortAsc');
             })
-            e.target.parentNode.classList.add('chooseSortDesc');
+            sortDebtDesc.forEach(sd => {
+                sd.classList.remove('chooseSortDesc');
+            })
+            e.target.classList.add('chooseSortDesc');
         })
     })
     

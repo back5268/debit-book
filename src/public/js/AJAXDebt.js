@@ -5,10 +5,13 @@ function show(data, count, page) {
     let perPage = Number(document.querySelector('#perPage').value);
     let pages = Math.ceil(count / perPage);
     pages = (pages === 0) ? 1 : pages;
+
     tbody.innerHTML = '';
+    document.querySelector('.center').innerHTML = '';
     if (!data.length) {
-        tbody.innerHTML = '<h3>Chưa có khoản nợ nào được tạo!</h3>';
+        document.querySelector('.center').innerHTML = 'Chưa có khoản nợ nào đã xóa!';
     }
+    
     for (let { _id, stt, note, type, monney, timeDebt, createAt } of data) {
         let row = tbody.insertRow();
         row.classList.add('perDebt');

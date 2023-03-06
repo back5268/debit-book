@@ -3,7 +3,7 @@
         <div class="card-header">
             <div>
                 <h5>Danh sách người dùng</h5>
-                <p>Total: {{totalRecord}} record(s)</p>
+                <p>Total: <span id="totalRecord"></span> record(s)</p>
             </div>
         </div>
         <div class="card-body">
@@ -11,7 +11,7 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
+                            <th scope="col">STT</th>
                             <th scope="col">account</th>
                             <th scope="col">Full name</th>
                             <th scope="col">email</th>
@@ -20,16 +20,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{#each users}}
-                        <tr>
-                            <td> {{ sum @index 1 }} </td>
-                            <td> {{ this.account }} </td>
-                            <td> {{ this.fullname }} </td>
-                            <td> {{ this.email }} </td>
-                            <td> {{ this.createAt }} </td>
-                            <td> {{ this.lastLogin }} </td>
-                        </tr>
-                        {{/each}}
+
                     </tbody>
                 </table>
             </div>
@@ -38,15 +29,75 @@
         <div class="card-footer">
             <div class="row">
                 <div class="col-sm-4 justify-content-center">
-                    <button class="btn">Previous</button>
+                    <button class="btn btn-light" onclick="prePageControl()" id="prePage" disabled>Previous</button>
                 </div>
                 <div class="col justify-content-center">
-                    <span>Page <input type="number" value="1" /> /2</span>
+                    <span>Page
+                        <input type="number" id="currentPage" onchange="choosePageControl()" />/<span id="pages"></span>
+                    </span>
+                    <select id="perPage" onchange="handleControl()">
+                        <option value="50">50 record</option>
+                    </select>
                 </div>
                 <div class="col-sm-4 justify-content-center">
-                    <button class="btn">Next</button>
+                    <button class="btn btn-light" onclick="nextPageControl()" id="nextPage">Next</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    function showControl() {
+        const perPage = Number(document.querySelector('#perPage').value);
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', `${window.location.origin}/control/show/?perPage=${perPage}`);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                let data = response.data;
+                let count = response.count;
+                let page = response.page;
+                let tbody = document.querySelector('tbody');
+                let perPage = Number(document.querySelector('#perPage').value);
+                let pages = Math.ceil(count / perPage);
+                pages = (pages === 0) ? 1 : pages;
+
+                tbody.innerHTML = '';
+
+                for (let { account, fullname, email, createAt, lastLogin } of data) {
+                    createAt = dateTimeHelper(createAt);
+                    lastLogin = dateTimeHelper(lastLogin);
+                    let row = tbody.insertRow();
+                    row.insertCell().innerHTML = 1;
+                    row.insertCell().innerHTML = account;
+                    row.insertCell().innerHTML = fullname;;
+                    row.insertCell().innerHTML = email;
+                    row.insertCell().innerHTML = createAt;
+                    row.insertCell().innerHTML = lastLogin;
+                }
+
+                document.getElementById('currentPage').value = page;
+                document.getElementById('pages').textContent = pages;
+                document.getElementById('totalRecord').textContent = count;
+
+                if (page >= pages) {
+                    document.getElementById('currentPage').value = pages;
+                    document.getElementById('nextPage').disabled = true;
+                };
+                if (page === 1) {
+                    document.getElementById('prePage').disabled = true;
+                };
+                if (page < pages) {
+                    document.getElementById('nextPage').disabled = false;
+                }
+                if (page > 1) {
+                    document.getElementById('prePage').disabled = false;
+                };
+            }
+        };
+
+        xhr.send();
+    }
+    showControl();
+</script>
