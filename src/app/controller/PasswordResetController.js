@@ -144,6 +144,7 @@ class PasswordResetController {
                                 .then(data => {
                                     const newPasswordReset = new PasswordReset({
                                         userId: user._id,
+                                        userAccount: user.account,
                                         resetString: data,
                                         createAt: Date.now(),
                                         expiresAt: Date.now() + 86400000,

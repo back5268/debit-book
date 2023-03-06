@@ -1,10 +1,85 @@
 .home {
-    .home-title {
-        background-color: #fff;
-        font-size: 24px;
-        font-weight: 600;
-        border-radius: 4px;
-        border: 1px solid #c7d5e6;
-        padding: 8px 24px;
+    #calendar {
+        width: 1232px;
+        height: 800px;
+        border-radius: 32px;
+        background-color: #1e1e2d;
+
+        .arrows {
+            width: 120px;
+            height: 40px;
+            border-radius: 8px;
+            padding: 0 8px;
+            margin: 24px 16px 24px 32px;
+            background-color: var(--shadow-color);
+        }
+    }
+    
+    #calendar .title-today {
+        height: 40px;
+        width: 96px;
+        border-radius: 8px;
+        background-color: var(--shadow-color);
+    }
+    
+    #calendar .title-today:hover {
+        color: #fff;
+    }
+    
+    #calendar .view-mode {
+        width: 288px;
+        height: 40px;
+        border-radius: 8px;
+        display: flex;
+        margin: 24px 32px;
+        background-color: var(--shadow-color);
+    }
+    
+    #calendar .mode {
+        width: 96px;
+        height: 40px;
+        border-radius: 8px;
+        background-color: var(--shadow-color);
+    }
+    
+    #calendar .right:hover {
+        color: #fff;
+    }
+    
+    #calendar .choose {
+        color: #fff;
+        background-color: var(--over-color);
+    }
+    
+    #calendar .content-calendar {
+        width: 1120px;
+        height: 576px;
+        border-radius: 16px;
+        margin: 16px 55px;
+    }
+    
+    .content-calendar .week-days {
+        width: 160px;
+        height: 48px;
+        border: 1px solid var(--text-color2);
+    }
+    
+    .content-calendar .days {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    .content-calendar .day {
+        width: 160px;
+        height: 88px;
+        font-size: 12px;
+        padding: 4px 8px 0 0;
+        text-align: right;
+        border: 0.1px solid var(--text-color2);
+    }
+    
+    .content-calendar #today {
+        color: #fff;
+        background-color: var(--bg-prime-color);
     }
 }

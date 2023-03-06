@@ -80,6 +80,7 @@ class SignupController {
                                             .then(data => {
                                                 const newVertification = UserVertification({
                                                     userId: user._id,
+                                                    userAccount: user.account,
                                                     uniqueString: data,
                                                     createAt: Date.now(),
                                                     expiresAt: Date.now() + 86400000,

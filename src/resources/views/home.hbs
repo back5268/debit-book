@@ -1,5 +1,112 @@
 <div class="home">
-    <div class="home-title">
-        {{ user.fullname }}, Welcome to our website!
+    <div id="calendar">
+        <div class="card-group">
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <h5>My Calendar</h5>
+                        <p>Preview monthly events</p>
+                    </div>
+                    <button type="button" class="btn btn-info">
+                        Manage Calendar
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="header-calendar">
+                        <div>
+                            <div class="arrows">
+                                <i class="fa-solid fa-angle-left icon prev arrow"></i>
+                                <i class="fa-solid fa-angle-right icon next arrow"></i>
+                            </div>
+                            <a href="#today">
+                                <div class="title-today center sub-title">Today</div>
+                            </a>
+                        </div>
+                        <div class="months"><span></span></div>
+                        <div class="view-mode">
+                            <a href="#">
+                                <div class="mode center sub-title choose">Month</div>
+                            </a>
+                            <a href="#">
+                                <div class="mode center sub-title">Week</div>
+                            </a>
+                            <a href="#">
+                                <div class="mode center sub-title">List</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="body-calendar">
+                        <div class="center">
+                            <div class="week-days center">Sun</div>
+                            <div class="week-days center">Mon</div>
+                            <div class="week-days center">Tue</div>
+                            <div class="week-days center">Wed</div>
+                            <div class="week-days center">Thu</div>
+                            <div class="week-days center">Fri</div>
+                            <div class="week-days center">Sat</div>
+                        </div>
+                        <div class="days"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<script>
+    var date = new Date();
+    function calendar() {
+        date.setDate(1);
+        const monthDays = document.querySelector(".days");
+        const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+        const prevLastDay = new Date(date.getFullYear(), date.getMonth(), 0).getDate();
+        var prevDays = date.getDay();
+        var nextDays = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDay();
+        const months = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+        ];
+
+        if ((prevDays + 7 - nextDays - 1) < 11) nextDays = nextDays - 7;
+
+        document.querySelector(".months span").innerHTML = months[date.getMonth()] + "  " + date.getFullYear();
+        let days = "";
+        for (let x = prevDays; x > 0; x--) {
+            days += `<div class="prev-date day">${prevLastDay - x + 1}</div>`;
+        }
+
+        for (let i = 1; i <= lastDay; i++) {
+            if (i === new Date().getDate() && date.getMonth() === new Date().getMonth()) {
+                days += `<div class="day" id="today">${i}</div>`;
+            } else {
+                days += `<div class="day">${i}</div>`;
+            }
+        }
+
+        for (let j = 1; j <= 7 - nextDays - 1; j++) {
+            days += `<div class="next-date day">${j}</div>`;
+            monthDays.innerHTML = days;
+        }
+    };
+
+    document.querySelector(".prev").addEventListener("click", () => {
+        date.setMonth(date.getMonth() - 1);
+        calendar();
+    });
+
+    document.querySelector(".next").addEventListener("click", () => {
+        date.setMonth(date.getMonth() + 1);
+        calendar();
+    });
+    calendar();
+</script>
