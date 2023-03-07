@@ -229,3 +229,47 @@ function handleSort() {
         })
     })
 }
+
+function formatPage(count, page) {
+    let perPage = Number(document.querySelector('#perPage').value);
+    let pages = Math.ceil(count / perPage);
+    pages = (pages === 0) ? 1 : pages;
+
+    document.getElementById('currentPage').value = page;
+    document.getElementById('pages').textContent = pages;
+    document.getElementById('totalRecord').textContent = count;
+
+    if (page >= pages) {
+        document.getElementById('nextPage').disabled = true;
+    };
+    if (page === 1) {
+        document.getElementById('prevPage').disabled = true;
+    };
+    if (page < pages) {
+        document.getElementById('nextPage').disabled = false;
+    };
+    if (page > 1) {
+        document.getElementById('prevPage').disabled = false;
+    };
+};
+
+function prevPage() {
+    let page = Number(document.querySelector('#currentPage').value);
+    page = (page === 1) ? 1 : (page - 1);
+    return page;
+};
+
+function nextPage() {
+    let page = Number(document.querySelector('#currentPage').value);
+    let pages = Number(document.querySelector('#pages').innerHTML);
+    page = (page === pages) ? pages : (page + 1);
+    return page;
+};
+
+function choosePage() {
+    let page = Number(document.querySelector('#currentPage').value);
+    let pages = Number(document.querySelector('#pages').innerHTML);
+    if (page >= pages) page = pages;
+    if (page <= 1) page = 1;
+    return page;
+};

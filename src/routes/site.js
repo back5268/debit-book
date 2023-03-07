@@ -36,10 +36,9 @@ router.post('/updateUserInfo', profileController.updateUserInfo);
 router.post('/updateUserAccount', profileController.updateUserAccount);
 
 // control
-router.get('/control', systemController.show);
-router.get('/control/show', systemController.showControl);
+router.get('/control/show', systemController.show);
+router.get('/control', systemController.render);
 
-router.get('/notification', siteController.notification);
 router.get('/', siteController.index);
 
 module.exports = router;

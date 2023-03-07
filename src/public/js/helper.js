@@ -48,15 +48,15 @@ function convertMoneyToString(amount) {
             }
             words = partWords + ' ' + words;
             i++;
-        }
+        };
 
         words = words.charAt(0).toUpperCase() + words.slice(1);
         words = words.trim() + ' đồng.';
     } else {
         words = 'Undefined'
-    }
+    };
     return words;
-}
+};
 
 function dateTimeHelper(time) {
     let date = new Date(time);
@@ -73,7 +73,7 @@ function dateTimeHelper(time) {
     seconds = seconds < 10 ? '0' + seconds : seconds;
 
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
-}
+};
 
 function formatMonney(num) {
     let numStr = String(Math.abs(num));
@@ -93,12 +93,12 @@ function formatMonney(num) {
         }
     } else {
         words = numStr;
-    }
+    };
 
     words = words.trim();
     if (num < 0) {
         return '-' + words;
     } else {
         return words;
-    }
-}
+    };
+};

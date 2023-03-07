@@ -3,59 +3,51 @@ const Debt = require('../models/Debt');
 const { formatOptionDebt } = require('../../util/formatOptionFilter');
 const { totalDebt, sortDebt } = require('../../util/handleDebt');
 
-function show(slug, res, options, perPage, page, sort) {
-    perPage = perPage || 5;
-    page = Number(page) || 1;
+function showDebt(res, next, slug, options, perPage, page, sort) {
     options = formatOptionDebt(options);
+    perPage = Number(perPage);
+    page = Number(page);
+    let sortCriteria = sortDebt(Number(sort));
     Debtor.find({ slug })
         .then(data => {
             const debtorId = data[0]._id;
-            let sortCriteria = sortDebt(Number(sort));
-            Debt.find({ debtorId, isDelete: false, note: { $regex: options.note }, type: { $ne: options.type }, 
-                        monney: {$gte: options.minMonney, $lte: options.maxMonney},
-                        timeDebt: {$gte: options.minTimeDebt, $lte: options.maxTimeDebt},
-                        createAt: {$gte: options.minTimeCreate, $lte: options.maxTimeCreate},
-                     })
-                .sort( sortCriteria )
+            Debt.find({
+                debtorId, isDelete: false, note: { $regex: options.note }, type: { $ne: options.type },
+                monney: { $gte: options.minMonney, $lte: options.maxMonney },
+                timeDebt: { $gte: options.minTimeDebt, $lte: options.maxTimeDebt },
+                createAt: { $gte: options.minTimeCreate, $lte: options.maxTimeCreate },
+            })
+                .sort(sortCriteria)
                 .skip((perPage * page) - perPage)
                 .limit(perPage)
                 .then(data => {
                     data = data.map(d => d = d.toObject());
-                    Debt.countDocuments({ debtorId, isDelete: false, note: { $regex: options.note }, type: { $ne: options.type }, 
-                                          monney: {$gte: options.minMonney, $lte: options.maxMonney},
-                                          timeDebt: {$gte: options.minTimeDebt, $lte: options.maxTimeDebt},
-                                          createAt: {$gte: options.minTimeCreate, $lte: options.maxTimeCreate},
-                                        })
+                    Debt.countDocuments({
+                        debtorId, isDelete: false, note: { $regex: options.note }, type: { $ne: options.type },
+                        monney: { $gte: options.minMonney, $lte: options.maxMonney },
+                        timeDebt: { $gte: options.minTimeDebt, $lte: options.maxTimeDebt },
+                        createAt: { $gte: options.minTimeCreate, $lte: options.maxTimeCreate },
+                    })
                         .then(count => {
                             res.status(200).json({ data, count, page });
                         })
-                        .catch(err => {
-                            console.log(err);
-                            res.status(403).json({ message: 'Not found!' });
-                        })
-
+                        .catch(next);
                 })
-                .catch(err => {
-                    console.log(err);
-                    res.status(403).json({ message: 'Not found!' });
-                })
+                .catch(next);
         })
-        .catch(err => {
-            console.log(err);
-            res.status(403).json({ message: 'Not found!' });
-        })
+        .catch(next);
 }
 
 class DebtController {
 
-    show(req, res, next) {
+    render(req, res, next) {
         if (req.session.user) {
             const user = req.session.user;
             const { slug } = req.params;
             Debtor.find({ slug })
                 .then(data => {
                     let debtor = data[0].toObject();
-                    res.render('detailDebtor', { user, title: 'Finance', title2: '/ Detail', debtor });
+                    res.render('debt', { user, title: 'Finance', title2: '/ Detail', debtor });
                 })
                 .catch(next);
         } else {
@@ -63,22 +55,7 @@ class DebtController {
         }
     }
 
-    getDebtor(req, res, next) {
-        if (req.session.user) {
-            const { slug } = req.params;
-            Debtor.find({ slug })
-                .then(data => {
-                    data = data[0].toObject();
-                    res.json({ data });
-                })
-                .catch(next);
-        } else {
-            res.render('form/login');
-        }
-    }
-
-    showDebts(req, res) {
-        const { slug } = req.params;
+    show(req, res, next) {
         let options = {};
         options.note = req.query.note;
         options.type = req.query.type;
@@ -93,14 +70,18 @@ class DebtController {
         options.maxTimeCreate = req.query.maxTimeCreate;
         let perPage = req.query.perPage || 5;
         let page = req.query.page || 1;
-        let sort = req.query.sort || 1;
-        show(slug, res, options, perPage, page, sort);
+        let sort = req.query.sort || 10;
+        const { slug } = req.params;
+        showDebt(res, next, slug, options, perPage, page, sort);
     }
 
-    addNew(req, res) {
-        const user = req.session.user;
+    add(req, res, next) {
         let debt = req.body;
         let options = {};
+        let perPage = req.query.perPage || 5;
+        let page = req.query.page || 1;
+        let sort = req.query.sort || 10;
+        const user = req.session.user;
         if (Number(debt.monney) > 0) {
             if (!debt.timeDebt) debt.timeDebt = Date.now();
             debt.isDelete = false;
@@ -114,30 +95,23 @@ class DebtController {
                             let totalDebts = totalDebt(debt, data[0].totalDebts);
                             Debtor.findOneAndUpdate({ _id: debt.debtorId }, { totalDebts, updateAt: Date.now() })
                                 .then(() => {
-                                    show(data[0].slug, res, options, Number(debt.perPage), 1, 1);
+                                    showDebt(res, next, data[0].slug, options, perPage, page, sort);
                                 })
-                                .catch(err => {
-                                    console.log(err);
-                                    res.status(403).json({ message: 'Không thể thêm Thông tin khoản nợ!' });
-                                })
+                                .catch(next);
                         })
-                        .catch(err => {
-                            console.log(err);
-                            res.status(403).json({ message: 'Không thể thêm Thông tin khoản nợ!' });
-                        })
+                        .catch(next);
                 })
-                .catch(err => {
-                    console.log(err);
-                    res.status(403).json({ message: 'Không thể thêm Thông tin khoản nợ!' });
-                })
+                .catch(next);
         } else {
             res.status(403).json({ message: 'Vui lòng nhập giá trị lớn hơn 0!' });
         }
     }
 
-    delete(req, res) {
+    delete(req, res, next) {
         let options = {};
         let perPage = req.query.perPage || 5;
+        let page = req.query.page || 1;
+        let sort = req.query.sort || 10;
         Debt.findOneAndUpdate({ _id: req.body.debtId }, { isDelete: true, deleteAt: Date.now() })
             .then(data => {
                 let debt = data;
@@ -147,22 +121,13 @@ class DebtController {
                         let totalDebts = totalDebt(debt, data[0].totalDebts);
                         Debtor.findOneAndUpdate({ _id: debt.debtorId }, { totalDebts, updateAt: Date.now() })
                             .then(() => {
-                                show(data[0].slug, res, options, perPage, 1, 1);
+                                showDebt(res, next, data[0].slug, options, perPage, page, sort);
                             })
-                            .catch(err => {
-                                console.log(err);
-                                res.status(400).json({ message: 'Không thể xóa khoản nợ!' })
-                            })
+                            .catch(next);
                     })
-                    .catch(err => {
-                        console.log(err);
-                        res.status(400).json({ message: 'Không thể xóa khoản nợ!' })
-                    })
+                    .catch(next);
             })
-            .catch(err => {
-                console.log(err);
-                res.status(400).json({ message: 'Không thể xóa khoản nợ!' })
-            });
+            .catch(next);
     }
 
 }

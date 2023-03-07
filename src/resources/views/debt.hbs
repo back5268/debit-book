@@ -4,14 +4,14 @@
             <div class="header">
                 <div>
                     <h5>{{debtor.fullname}}</h5>
-                    <p> Total: <span id="totalRecord"></span> Record(s)</p>
+                    <span> Total: <span id="totalRecord"></span> Record(s)</span>
                 </div>
                 <ul class="nav nav-tabs">
                     <li class="nav-item" id="showDebt">
                         <a class="nav-link active" data-toggle="tab" href="#debts">Debts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#infomation" onclick="formatInfo()">Information</a>
+                        <a class="nav-link" data-toggle="tab" href="#debtorInfo" onclick="formatInfo()">Information</a>
                     </li>
                 </ul>
             </div>
@@ -24,7 +24,7 @@
                 </a>
                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addDebt">
                     <i class="fa-solid fa-plus"></i>
-                    Tạo phiếu nợ
+                    Thêm phiếu nợ
                 </button>
             </div>
         </div>
@@ -33,12 +33,11 @@
             <div id="debts" class="tab-pane active">
                 <div class="card-body">
                     <div class="body">
+                        <input type="hidden" value="{{debtor.slug}}" id="slug" />
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th scope="col">
-                                        STT
-                                    </th>
+                                    <th scope="col">STT</th>
                                     <th scope="col" class="sortDebt">
                                         <div class="sortDebtAsc" onclick="sortByNoteAsc()"></div>
                                         <div class="sortDebtDesc" onclick="sortByNoteDesc()"></div>
@@ -68,11 +67,8 @@
                                 </tr>
                                 <tr>
                                     <td></td>
+                                    <td><input type="text" id="noteFilter" oninput="handleFilterDebt()" /></td>
                                     <td>
-                                        <input type="text" id="noteFilter" oninput="handleFilterDebt()" />
-                                    </td>
-                                    <td>
-                                        <input type="hidden" value="{{debtor.slug}}" id="slug" />
                                         <select id="typeFilter" onchange="handleFilterDebt()">
                                             <option value="all">All</option>
                                             <option value="+">+</option>
@@ -80,8 +76,10 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <input type="number" id="minMonney" placeholder="from" oninput="handleFilterDebt()" />
-                                        <input type="number" id="maxMonney" placeholder="to" oninput="handleFilterDebt()" />
+                                        <input type="number" id="minMonney" placeholder="from"
+                                            oninput="handleFilterDebt()" />
+                                        <input type="number" id="maxMonney" placeholder="to"
+                                            oninput="handleFilterDebt()" />
                                     </td>
                                     <td>
                                         <input type="datetime-local" id="minTimeDebt" onchange="handleFilterDebt()" />
@@ -106,84 +104,82 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="col-sm-4 justify-content-center">
-                            <button class="btn btn-light" onclick="prePage()" id="prePage" disabled>Previous</button>
+                            <button class="btn btn-light" onclick="prevPageDebt()" id="prevPage" disabled>Previous</button>
                         </div>
                         <div class="col justify-content-center">
                             <span>Page
-                                <input type="number" id="currentPage" onchange="choosePage()" />/<span
-                                    id="pages"></span>
+                                <input type="number" id="currentPage" value="1" onchange="choosePageDebt()" />/
+                                <span id="pages"></span>
                             </span>
-                            <select id="perPage" onchange="filterDebt()">
+                            <select id="perPage" onchange="handleFilterDebt()">
                                 <option value="5">5 record</option>
                                 <option value="10">10 record</option>
                                 <option value="50">50 record</option>
                             </select>
                         </div>
                         <div class="col-sm-4 justify-content-center">
-                            <button class="btn btn-light" onclick="nextPage()" id="nextPage">Next</button>
+                            <button class="btn btn-light" onclick="nextPageDebt()" id="nextPage">Next</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="infomation" class="tab-pane fade">
+            <div id="debtorInfo" class="tab-pane fade">
                 <div class="container">
                     <div class="card-body">
-                        <form>
-                            <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Full name (*)</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="fullname" disabled />
-                                </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Full name (*)</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="fullname" disabled />
                             </div>
-                            <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Phone</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="phone" />
-                                </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Phone</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="phone" />
                             </div>
-                            <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Address</label>
-                                <div class="col-sm-6">
-                                    <textarea type="text" class="form-control" id="address"></textarea>
-                                </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Address</label>
+                            <div class="col-sm-6">
+                                <textarea type="text" class="form-control" id="address"></textarea>
                             </div>
-                            <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Email </label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="email" />
-                                </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Email </label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="email" />
                             </div>
-                            <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Ngày tạo </label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="createAt" disabled />
-                                </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Ngày tạo </label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="createAt" disabled />
                             </div>
-                            <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Cập nhật </label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="updateAt" disabled />
-                                </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Cập nhật </label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="updateAt" disabled />
                             </div>
-                            <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Tổng nợ</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="totalDebts" disabled />
-                                </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Tổng nợ</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="totalDebts" disabled />
                             </div>
-                            <div class="form-group row">
-                                <label class="col-sm-3 col-form-label"></label>
-                                <span class="col-sm-6" id="text"></span>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label"></label>
+                            <span class="col-sm-6" id="textTotalDebts"></span>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-6">
+                                <button type="button" class="btn btn-info" onclick="updateDebtor()">
+                                    Cập nhật
+                                </button>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-sm-3"></div>
-                                <div class="col-sm-6">
-                                    <button type="submit" class="btn btn-info" id="updateDebtor">
-                                        Update
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -201,71 +197,67 @@
                             <h5>Thông tin người nợ</h5>
                         </div>
                         <div class="card-body">
-                            <form>
-                                <input type="hidden" value="{{debtor._id}}" id="debtorId" />
-                                <input type="hidden" value="{{debtor.fullname}}" id="debtorName" />
-
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Ghi chú</label>
-                                    <div class="col-sm-9">
-                                        <textarea type="text" class="form-control" id="note"></textarea>
-                                    </div>
+                            <input type="hidden" value="{{debtor._id}}" id="debtorId" />
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Ghi chú</label>
+                                <div class="col-sm-9">
+                                    <textarea type="text" class="form-control" id="note"></textarea>
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Loại nợ </label>
-                                    <div class="col-sm-9">
-                                        <div class="row">
-                                            <input type="radio" name="type" id="+Debts" value="+" checked hidden />
-                                            <input type="radio" name="type" id="-Debts" value="-" hidden />
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Loại nợ </label>
+                                <div class="col-sm-9">
+                                    <div class="row">
+                                        <input type="radio" name="type" id="+Debts" value="+" checked hidden />
+                                        <input type="radio" name="type" id="-Debts" value="-" hidden />
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label class="form-check-label" for="+Debts">
+                                                <div class="form-control debt debts choose">+</div>
+                                            </label>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <label class="form-check-label" for="+Debts">
-                                                    <div class="form-control debt debts choose">+</div>
-                                                </label>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <label class="form-check-label" for="-Debts">
-                                                    <div class="form-control debt debts">-</div>
-                                                </label>
-                                            </div>
+                                        <div class="col-sm-6">
+                                            <label class="form-check-label" for="-Debts">
+                                                <div class="form-control debt debts">-</div>
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Số tiền (*)</label>
-                                    <div class="col-sm-9">
-                                        <input type="number" class="form-control" value="0" id="monney" />
-                                    </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Số tiền (*)</label>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control" value="0" id="monney" />
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label"></label>
-                                    <div id="textMonney" class="col-sm-9">
-                                        Không
-                                    </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label"></label>
+                                <div id="textMonney" class="col-sm-9">
+                                    Không
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Ngày lập phiếu </label>
-                                    <div class="col-sm-9">
-                                        <input type="datetime-local" class="form-control" id="timeDebt" />
-                                    </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Ngày lập phiếu </label>
+                                <div class="col-sm-9">
+                                    <input type="datetime-local" class="form-control" id="timeDebt" />
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Hình ảnh chứng minh
-                                    </label>
-                                    <div class="col-sm-9">
-                                        <input type="file" class="form-control" id="imgDebt" />
-                                    </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Hình ảnh chứng minh
+                                </label>
+                                <div class="col-sm-9">
+                                    <input type="file" class="form-control" id="imgDebt" />
                                 </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-3"></div>
-                                    <div class="col-sm-9">
-                                        <button type="submit" class="btn btn-info" id="addNewDebt">
-                                            Thêm phiếu nợ
-                                        </button>
-                                    </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-9">
+                                    <button type="submit" class="btn btn-info" onclick="addDebt()">
+                                        Thêm phiếu nợ
+                                    </button>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -291,8 +283,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Ghi chú</label>
                                     <div class="col-sm-9">
-                                        <textarea type="text" class="form-control" id="noteDetail" disabled>
-                    </textarea>
+                                        <textarea type="text" class="form-control" id="noteDetail" disabled></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -332,7 +323,7 @@
                                     <label class="col-sm-3 col-form-label">Hình ảnh chứng minh
                                     </label>
                                     <div class="col-sm-9">
-                                        <input type="file" class="form-control" id="imgDebt" />
+                                        <input type="file" class="form-control" id="imgDebtDetail" />
                                     </div>
                                 </div>
                             </form>
@@ -347,8 +338,8 @@
     </div>
 </div>
 
-<div class="modal fade" id="deleteDebt" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document" style="width: 30vw;">
+<div class="modal fade" id="deleteDebt">
+    <div class="modal-dialog" style="width: 30vw;">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Xóa khoản ghi nợ</h5>
@@ -358,7 +349,7 @@
             </div>
             <div class="modal-body">
                 Khoản ghi nợ đã tạo ra sẽ không thể bị xóa mà nó sẽ được lưu trong thùng
-                rác, bạn có muốn tiếp tục xóa
+                rác, bạn có muốn tiếp tục
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" id="deleteDebtBtn" data-dismiss="modal">Xóa</button>
@@ -368,8 +359,7 @@
     </div>
 </div>
 
-<form name="deleteForm" method="GET"></form>
-<form id="togglePage" method="GET"></form>
+<script src="/js/debt.js"></script>
 
 <script>
     const debts = document.querySelectorAll('.debts');
@@ -385,16 +375,15 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        addDebt();
-        updateDebtor();
+        debt();
         deleteDebt();
-        showDebt();
         handleSort();
     });
 </script>
 
 <script>
-    let monney = document.querySelector('#monney'); monney.oninput = function () {
+    let monney = document.querySelector('#monney');
+    monney.oninput = function () {
         setInterval(() => {
             let textMonney = document.querySelector('#textMonney');
             textMonney.innerText = convertMoneyToString(Number(monney.value));

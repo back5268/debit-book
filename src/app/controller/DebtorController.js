@@ -1,10 +1,12 @@
 const Debtor = require('../models/Debtor');
 const { formatOptionsDebtor } = require('../../util/formatOptionFilter');
+const { sortDebtor } = require('../../util/handleDebt');
 
-function show(user, res, options, perPage, page) {
+function showDebtor(res, next, user, options, perPage, page, sort) {
     options = formatOptionsDebtor(options);
-    perPage = Number(perPage) || 6;
-    page = Number(page) || 1;
+    perPage = Number(perPage);
+    page = Number(page);
+    let sortCriteria = sortDebtor(Number(sort));
     Debtor.find({
         createBy: user._id, fullname: { $regex: options.name }, address: { $regex: options.address },
         email: { $regex: options.email }, phone: { $regex: options.phone },
@@ -12,14 +14,11 @@ function show(user, res, options, perPage, page) {
         createAt: { $gte: options.minCreateAt, $lte: options.maxCreateAt },
         updateAt: { $gte: options.minUpdateAt, $lte: options.maxUpdateAt },
     })
+        .sort(sortCriteria)
         .skip((perPage * page) - perPage)
         .limit(perPage)
         .then(data => {
-            data = data.map((d, index) => {
-                d = d.toObject();
-                d.stt = index + perPage * (page - 1) + 1;
-                return d;
-            });
+            data = data.map(d => d.toObject());
             Debtor.countDocuments({
                 createBy: user._id, fullname: { $regex: options.name }, address: { $regex: options.address },
                 email: { $regex: options.email }, phone: { $regex: options.phone },
@@ -30,29 +29,23 @@ function show(user, res, options, perPage, page) {
                 .then(count => {
                     res.json({ data, count, page });
                 })
-                .catch(err => {
-                    console.log(err);
-                    res.status(403).json({ message: 'Not found!' });
-                })
+                .catch(next);
         })
-        .catch(err => {
-            console.log(err);
-            res.status(403).json({ message: 'Not found!' });
-        })
-}
+        .catch(next);
+};
 
 class DebtorController {
 
-    show(req, res) {
+    render(req, res) {
         if (req.session.user) {
             const user = req.session.user;
             res.render('debtor', { user, title: 'Finance' });
         } else {
             res.render('form/login');
-        }
-    }
+        };
+    };
 
-    showDebtors(req, res) {
+    show(req, res, next) {
         let options = {};
         options.name = req.query.name;
         options.address = req.query.address;
@@ -66,18 +59,22 @@ class DebtorController {
         options.maxUpdateAt = req.query.maxUpdateAt;
         let perPage = req.query.perPage || 6;
         let page = req.query.page || 1;
+        let sort = req.query.sort || 12;
         const user = req.session.user;
-        show(user, res, options, perPage, page);
-    }
+        showDebtor(res, next, user, options, perPage, page, sort);
+    };
 
-    addNew(req, res) {
-        let debtor = req.body;
+    add(req, res, next) {
         const user = req.session.user;
+        let debtor = req.body;
         debtor.createBy = user._id;
         debtor.totalDebts = 0;
         let options = {};
+        let perPage = req.query.perPage || 6;
+        let page = req.query.page || 1;
+        let sort = req.query.sort || 12;
         if (debtor.fullname != '') {
-            Debtor.find({ fullname: debtor.fullname })
+            Debtor.find({ fullname: debtor.fullname, createBy: user._id })
                 .then(data => {
                     if (data[0]) {
                         res.status(403).json({ message: 'Tên người nợ đã tồn tại!' });
@@ -85,33 +82,34 @@ class DebtorController {
                         const newDebtor = new Debtor(debtor);
                         newDebtor.save()
                             .then(() => {
-                                show(user, res, options, debtor.perPage, debtor.page);
+                                showDebtor(res, next, user, options, perPage, page, sort);
                             })
-                            .catch(err => {
-                                console.log(err);
-                                res.status(403).json({ message: 'Không thể thêm người nợ!' });
-                            })
+                            .catch(next);
                     }
                 })
-                .catch(err => {
-                    console.log(err);
-                    res.status(403).json({ message: 'Không thể thêm người nợ!' });
-                })
+                .catch(next);
         } else {
-            res.status(403).json({ message: 'Vui lòng nhập tên đầy đủ của người nợ!' });
+            res.status(403).json({ message: 'Vui lòng nhập tên của người nợ!' });
         }
     }
 
-    update(req, res) {
+    info(req, res, next) {
+        const { slug } = req.params;
+        Debtor.find({ slug })
+            .then(data => {
+                data = data[0].toObject();
+                res.json({ data });
+            })
+            .catch(next);
+    }
+
+    update(req, res, next) {
         let { debtorId, email, phone, address } = req.body;
         Debtor.findByIdAndUpdate({ _id: debtorId }, { email, phone, address })
             .then(() => {
                 res.status(200).json({ message: 'Update successful!' });
             })
-            .catch(err => {
-                console.log(err);
-                res.status(403).json({ message: 'Update failed!' });
-            })
+            .catch(next);
     }
 
 }

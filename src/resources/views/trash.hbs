@@ -3,7 +3,7 @@
     <div class="card-header">
       <div>
         <h5>Danh sách khoản nợ đã xóa</h5>
-        <p>Total: <span id="totalRecord"></span> record(s)</p>
+        <span>Total: <span id="totalRecord"></span> record(s)</span>
       </div>
       <div>
         <a href="./">
@@ -17,7 +17,7 @@
     <div class="card-body">
       <div class="body">
         <div class="row">
-          <div class="sort">
+          <div class="nameDebtor">
             <label for="#nameDebtor">Tên người nợ</label>
             <select id="nameDebtor" onchange="handleTrash()">
               {{#each data}}
@@ -26,12 +26,10 @@
             </select>
           </div>
         </div>
-        <table class="table table-bordered header-fixed">
+        <table class="table table-bordered">
           <thead>
             <tr>
-              <th scope="col">
-                STT
-              </th>
+              <th scope="col"> STT</th>
               <th scope="col" class="sortDebt">
                 <div class="sortDebtAsc" onclick="sortByNoteTrashAsc()"></div>
                 <div class="sortDebtDesc" onclick="sortByNoteTrashDesc()"></div>
@@ -65,7 +63,7 @@
               <th scope="col">Action</th>
             </tr>
           </thead>
-          <tbody class="scrollable"></tbody>
+          <tbody></tbody>
         </table>
         <h5 class="center"></h5>
       </div>
@@ -73,28 +71,28 @@
     <div class="card-footer">
       <div class="row">
         <div class="col-sm-4 justify-content-center">
-          <button class="btn btn-light" onclick="prePageTrash()" id="prePage" disabled>Previous</button>
+          <button class="btn btn-light" onclick="prevPage()" id="prevPage" disabled>Previous</button>
         </div>
         <div class="col justify-content-center">
           <span>Page
-            <input type="number" id="currentPage" onchange="choosePageTrash()" />/<span id="pages"></span>
+            <input type="number" id="currentPage" onchange="choosePage()" />/<span id="pages"></span>
           </span>
-          <select id="perPage" onchange="handleTrash()">
+          <select id="perPage" onchange="handle()">
             <option value="5">5 record</option>
             <option value="10">10 record</option>
             <option value="50">50 record</option>
           </select>
         </div>
         <div class="col-sm-4 justify-content-center">
-          <button class="btn btn-light" onclick="nextPageTrash()" id="nextPage">Next</button>
+          <button class="btn btn-light" onclick="nextPage()" id="nextPage">Next</button>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal fade" id="restoreDebt" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog" role="document" style="width: 30vw;">
+<div class="modal fade" id="restoreDebt">
+  <div class="modal-dialog" style="width: 30vw;">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Khôi phục khoản nợ</h5>
@@ -103,20 +101,21 @@
         </button>
       </div>
       <div class="modal-body">
-        Bạn có chắc chắn muốn khôi phục khoản nợ này hay không
+        Bạn có chắc chắn muốn khôi phục khoản nợ này không
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" id="restoreDebtBtn" data-dismiss="modal">Khôi phục</button>
+        <button type="button" class="btn btn-danger" onclick="handleRestoreDebt()" data-dismiss="modal">Khôi phục</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
 </div>
 
+<script src="/js/trash.js"></script>
+
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     trash();
-    handleRestoreDebt();
     handleSort();
   });
 </script>

@@ -2,10 +2,10 @@ const Debt = require('../models/Debt');
 const Debtor = require('../models/Debtor');
 const { totalDebt, sortDebt } = require('../../util/handleDebt');
 
-function show(res, slug, sort, next, page, perPage) {
+function showTrash(res, next, slug, perPage, page, sort) {
+    perPage = Number(perPage);
+    page = Number(page);
     let sortCriteria = sortDebt(Number(sort));
-    page = Number(page) || 1;
-    perPage = Number(perPage) || 5;
     Debtor.find({ slug })
         .then(data => {
             let debtorId = data[0]._id;
@@ -18,41 +18,35 @@ function show(res, slug, sort, next, page, perPage) {
                         .then(count => {
                             res.status(200).json({ data, count, page })
                         })
-                        .catch(next)
+                        .catch(next);
                 })
-                .catch(next)
+                .catch(next);
         })
-        .catch(next)
+        .catch(next);
 }
 
 class TrashController {
 
-    show(req, res, next) {
+    render(req, res, next) {
         if (req.session.user) {
             const user = req.session.user;
             Debtor.find({ createBy: user._id })
                 .then(data => {
                     data = data.map(d => d.toObject())
-                    res.render('trashFinance', {
-                        user, title: 'Finance', title2: '/ Trash', data
-                    });
+                    res.render('trash', { user, title: 'Finance', title2: '/ Trash', data });
                 })
-                .catch(next)
+                .catch(next);
         } else {
             res.render('form/login');
         }
     }
 
-    showTrash(req, res, next) {
-        if (req.session.user) {
-            const { slug } = req.params;    
-            let perPage = req.query.perPage || 5;
-            let page = (req.query.page) ? req.query.page : 1;
-            let sort = (req.query.sort) ? req.query.sort : 11;
-            show(res, slug, sort, next, page, perPage);
-        } else {
-            res.render('form/login');
-        }
+    show(req, res, next) {
+        let perPage = req.query.perPage || 5;
+        let page = req.query.page || 1;
+        let sort = req.query.sort || 12;
+        const { slug } = req.params;
+        showTrash(res, next, slug, perPage, page, sort);
     }
 
     restore(req, res, next) {
@@ -64,11 +58,11 @@ class TrashController {
                         let totalDebts = totalDebt(debt, data[0].totalDebts);
                         Debtor.findOneAndUpdate({ _id: debt.debtorId }, { totalDebts, updateAt: Date.now() })
                             .then(() => {
-                                show(res, data[0].slug, req.query.sort, next);
+                                showTrash(res, next, data[0].slug, perPage, page, sort);
                             })
-                            .catch(next)
+                            .catch(next);
                     })
-                    .catch(next)
+                    .catch(next);
             })
             .catch(next);
     }

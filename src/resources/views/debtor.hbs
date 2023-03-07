@@ -3,10 +3,10 @@
     <div class="card-header">
       <div>
         <h5>Danh sách người nợ</h5>
-        <p> Total: <span id="totalRecord"></span> Record(s)</p>
+        <span> Total: <span id="totalRecord"></span> Record(s)</span>
       </div>
       <div>
-        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addDebtorModal">
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addDebtor">
           <i class="fa-solid fa-plus"></i>
           Thêm người nợ
         </button>
@@ -21,64 +21,92 @@
                 <button type="button" class="btn btn-info" onclick="clearFilterDebtor()">Clear filter</button>
               </div>
               <div class="row mt-3">
-                <label class="col-5 col-form-label">Name</label>
-                <div class="col-7">
-                  <input type="text" class="form-control" id="nameFilter" oninput="filterDebtor()" />
+                <label class="col-6 col-form-label">
+                  Name
+                  <div class="sortDebtor">
+                    <i class="fa-solid fa-play" onclick="sortByNameAsc()"></i>
+                    <i class="fa-solid fa-play" onclick="sortByNameDesc()"></i>
+                  </div>
+                </label>
+                <div class="col-6">
+                  <input type="text" class="form-control" id="nameFilter" oninput="handleFilterDebtor()" />
                 </div>
               </div>
               <div class="row mt-3">
-                <label class="col-5 col-form-label">Address</label>
-                <div class="col-7">
-                  <input type="text" class="form-control" id="addressFilter" oninput="filterDebtor()" />
+                <label class="col-6 col-form-label">
+                  Address
+                  <div class="sortDebtor">
+                    <i class="fa-solid fa-play" onclick="sortByAddressAsc()"></i>
+                    <i class="fa-solid fa-play" onclick="sortByAddressDesc()"></i>
+                  </div>
+                </label>
+                <div class="col-6">
+                  <input type="text" class="form-control" id="addressFilter" oninput="handleFilterDebtor()" />
                 </div>
               </div>
               <div class="row mt-3">
-                <label class="col-5 col-form-label">Phone</label>
-                <div class="col-7">
-                  <input type="number" class="form-control" id="phoneFilter" oninput="filterDebtor()" />
+                <label class="col-6 col-form-label">
+                  Phone
+                  <div class="sortDebtor">
+                    <i class="fa-solid fa-play" onclick="sortByPhoneAsc()"></i>
+                    <i class="fa-solid fa-play" onclick="sortByPhoneDesc()"></i>
+                  </div>
+                </label>
+                <div class="col-6">
+                  <input type="number" class="form-control" id="phoneFilter" oninput="handleFilterDebtor()" />
                 </div>
               </div>
               <div class="row mt-3">
-                <label class="col-5 col-form-label">Email</label>
-                <div class="col-7">
-                  <input type="number" class="form-control" id="emailFilter" oninput="filterDebtor()" />
+                <label class="col-6 col-form-label">
+                  Email
+                  <div class="sortDebtor">
+                    <i class="fa-solid fa-play" onclick="sortByEmailAsc()"></i>
+                    <i class="fa-solid fa-play" onclick="sortByEmailDesc()"></i>
+                  </div>
+                </label>
+                <div class="col-6">
+                  <input type="number" class="form-control" id="emailFilter" oninput="handleFilterDebtor()" />
                 </div>
               </div>
               <div class="row mt-3">
-                <label class="col-5 col-form-label">TotalDebt</label>
-                <div class="col-7">
+                <label class="col-6 col-form-label">
+                  TotalDebt
+                  <div class="sortDebtor">
+                    <i class="fa-solid fa-play" onclick="sortByTotalDebtsAsc()"></i>
+                    <i class="fa-solid fa-play" onclick="sortByTotalDebtsDesc()"></i>
+                  </div>
+                </label>
+                <div class="col-6">
                   <input type="number" class="form-control" placeholder="from" id="minMonney"
-                    oninput="filterDebtor()" />
-                </div>
-              </div>
-              <div class="row">
-                <label class="col-5 col-form-label"></label>
-                <div class="col-7">
-                  <input type="number" class="form-control" placeholder="to" id="maxMonney" oninput="filterDebtor()" />
+                    oninput="handleFilterDebtor()" />
+                  <input type="number" class="form-control" placeholder="to" id="maxMonney"
+                    oninput="handleFilterDebtor()" />
                 </div>
               </div>
               <div class="row mt-3">
-                <label class="col-5 col-form-label">CreateAt</label>
-                <div class="col-7">
-                  <input type="datetime-local" class="form-control" id="minCreateAt" onchange="filterDebtor()" />
-                </div>
-              </div>
-              <div class="row">
-                <label class="col-5 col-form-label"></label>
-                <div class="col-7">
-                  <input type="datetime-local" class="form-control" id="maxCreateAt" onchange="filterDebtor()" />
+                <label class="col-6 col-form-label">
+                  CreateAt
+                  <div class="sortDebtor">
+                    <i class="fa-solid fa-play" onclick="sortByCreateAtAsc()"></i>
+                    <i class="fa-solid fa-play" onclick="sortByCreateAtDesc()"></i>
+                  </div>
+                </label>
+                <div class="col-6">
+                  <input type="datetime-local" class="form-control" id="minCreateAt" onchange="handleFilterDebtor()" />
+                  <input type="datetime-local" class="form-control" id="maxCreateAt" onchange="handleFilterDebtor()" />
                 </div>
               </div>
               <div class="row mt-3">
-                <label class="col-5 col-form-label">updateAt</label>
-                <div class="col-7">
-                  <input type="datetime-local" class="form-control" id="minUpdateAt" onchange="filterDebtor()" />
-                </div>
-              </div>
-              <div class="row">
-                <label class="col-5 col-form-label"></label>
-                <div class="col-7">
-                  <input type="datetime-local" class="form-control" id="maxUpdateAt" onchange="filterDebtor()" />
+                <label class="col-6 col-form-label">
+                  updateAt
+                  <div class="sortDebtor">
+                    <i class="fa-solid fa-play" onclick="sortByUpdateAtAsc()"></i>
+                    <i class="fa-solid fa-play" onclick="sortByUpdateAtDesc()"></i>
+                  </div>
+                </label>
+                <div class="col-6">
+                  <input type="datetime-local" class="form-control" id="minUpdateAt" onchange="handleFilterDebtor()" />
+                  <input type="datetime-local" class="form-control" id="maxUpdateAt" onchange="handleFilterDebtor()" />
                 </div>
               </div>
             </div>
@@ -92,18 +120,17 @@
           </div>
         </div>
       </div>
-
     </div>
     <div class="card-footer">
       <div class="row">
         <div class="col-sm-4 justify-content-center">
-          <button class="btn btn-light" onclick="prePageDebtor()" id="prePage" disabled>Previous</button>
+          <button class="btn btn-light" onclick="prevPageDebtor()" id="prevPage" disabled>Previous</button>
         </div>
         <div class="col justify-content-center">
           <span>Page
-            <input type="number" id="currentPage" onchange="choosePageDebtor()" />/<span id="pages"></span>
+            <input type="number" id="currentPage" value="1" onchange="choosePageDebtor()" />/<span id="pages"></span>
           </span>
-          <select id="perPage" onchange="filterDebtor()">
+          <select id="perPage" onchange="handleFilterDebtor()">
             <option value="6">6 record</option>
             <option value="12">12 record</option>
             <option value="60">60 record</option>
@@ -117,7 +144,7 @@
   </div>
 </div>
 
-<div class="modal fade" id="addDebtorModal">
+<div class="modal fade" id="addDebtor">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-body">
@@ -127,52 +154,50 @@
               <h5>Thông tin người nợ</h5>
             </div>
             <div class="card-body">
-              <form>
-                <div class="form-group row">
-                  <label class="col-sm-3 col-form-label">Full name (*)</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" id="fullname">
-                  </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Full name (*)</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="fullname">
                 </div>
-                <div class="form-group row">
-                  <label class="col-sm-3 col-form-label">Phone</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" id="phone">
-                  </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Phone</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="phone">
                 </div>
-                <div class="form-group row">
-                  <label class="col-sm-3 col-form-label">Address</label>
-                  <div class="col-sm-9">
-                    <textarea type="text" class="form-control" id="address"></textarea>
-                  </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Address</label>
+                <div class="col-sm-9">
+                  <textarea type="text" class="form-control" id="address"></textarea>
                 </div>
-                <div class="form-group row">
-                  <label class="col-sm-3 col-form-label">Email </label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" id="email">
-                  </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Email </label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="email">
                 </div>
-                <div class="form-group row">
-                  <label class="col-sm-3 col-form-label">Tổng nợ</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" value="0" disabled>
-                  </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Tổng nợ</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" value="0" disabled>
                 </div>
-                <div class="form-group row">
-                  <label class="col-sm-3 col-form-label"></label>
-                  <div class="col-sm-9">
-                    Không
-                  </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9">
+                  Không
                 </div>
-                <div class="form-group row">
-                  <div class="col-sm-3"></div>
-                  <div class="col-sm-9">
-                    <button type="submit" class="btn btn-info" id="addNewDebtor">
-                      Create New
-                    </button>
-                  </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-9">
+                  <button type="submit" class="btn btn-info" onclick="addDebtor()">
+                    Thêm người nợ
+                  </button>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>
@@ -184,9 +209,23 @@
   </div>
 </div>
 
+<script src="/js/debtor.js"></script>
+
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    addDebtor();
     debtor();
   });
+</script>
+
+<script>
+  const sortDebtor = document.querySelectorAll('.sortDebtor i');
+  sortDebtor.forEach(s => {
+    s.addEventListener('click', e => {
+      sortDebtor.forEach(s => {
+        s.classList.remove('chooseSortDebtor');
+      })
+      e.target.classList.add('chooseSortDebtor');
+    })
+  });
+  
 </script>
