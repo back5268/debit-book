@@ -4,8 +4,10 @@ module.exports = {
         options.maxMonney = options.maxMonney ? Number(options.maxMonney) : Number.MAX_VALUE;
         options.minTimeDebt = options.minTimeDebt ? new Date(options.minTimeDebt) : new Date('2020-01-01');
         options.maxTimeDebt = options.maxTimeDebt ? new Date(options.maxTimeDebt) : new Date('2030-01-01');
-        options.minTimeCreate = options.minTimeCreate ? new Date(options.minTimeCreate) : new Date('2020-01-01');
-        options.maxTimeCreate = options.maxTimeCreate ? new Date(options.maxTimeCreate) : new Date('2030-01-01');
+        options.minCreateAt = options.minCreateAt ? new Date(options.minCreateAt) : new Date('2020-01-01');
+        options.maxCreateAt = options.maxCreateAt ? new Date(options.maxCreateAt) : new Date('2030-01-01');
+        options.minDeleteAt = options.minDeleteAt ? new Date(options.minDeleteAt) : new Date('2020-01-01');
+        options.maxDeleteAt = options.maxDeleteAt ? new Date(options.maxDeleteAt) : new Date('2030-01-01');
         options.note = options.note ? options.note : '';
 
         if (options.type === '+') {

@@ -1,4 +1,6 @@
-var sortTrash;
+var sort = 9;
+var page = Number(document.querySelector('#currentPage').value);
+var perPage = Number(document.getElementById('perPage').value);
 
 function showTrash(data, count, page) {
     let tbody = document.querySelector('tbody');
@@ -25,11 +27,24 @@ function showTrash(data, count, page) {
     formatPage(count, page);
 };
 
-function trash(page, sort) {
+function getFilterDebt() {
+    const note = document.querySelector('#noteFilter').value;
+    const type = document.querySelector('#typeFilter').value;
+    const minMonney = document.querySelector('#minMonney').value;
+    const maxMonney = document.querySelector('#maxMonney').value;
+    const minTimeDebt = document.querySelector('#minTimeDebt').value;
+    const maxTimeDebt = document.querySelector('#maxTimeDebt').value;
+    const minCreateAt = document.querySelector('#minCreateAt').value;
+    const maxCreateAt = document.querySelector('#maxCreateAt').value;
+    const minDeleteAt = document.querySelector('#minDeleteAt').value;
+    const maxDeleteAt = document.querySelector('#maxDeleteAt').value;
+    return { note, type, minMonney, maxMonney, minCreateAt, maxCreateAt, minTimeDebt, maxTimeDebt, minDeleteAt, maxDeleteAt };
+};
+
+function trash() {
     const slug = document.querySelector('#nameDebtor').value;
-    const perPage = Number(document.querySelector('#perPage').value);
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', `${window.location.origin}/finance/trash/${slug}/?page=${page}&perPage=${perPage}&sort=${sort}`);
+    xhr.open('GET', `${window.location.origin}/finance/trash/${slug}`);
     xhr.onload = function () {
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
@@ -42,32 +57,60 @@ function trash(page, sort) {
     xhr.send();
 };
 
-function handleTrash() {
-    trash(1, sortTrash);
-}
+function filterTrash(page, sort) {
+    let { note, type, minMonney, maxMonney, minCreateAt, maxCreateAt, minTimeDebt, maxTimeDebt, minDeleteAt, maxDeleteAt } = getFilterDebt();
+    if (type === '+') type = 1;
+    else if (type === '-') type = 0;
+    else type = '';
+    const slug = document.querySelector('#nameDebtor').value;
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `${window.location.origin}/finance/trash/${slug}/?note=${note}&type=${type}&minMonney=${minMonney}&maxMonney=${maxMonney}&minTimeDebt=${minTimeDebt}&maxTimeDebt=${maxTimeDebt}&minCreateAt=${minCreateAt}&maxCreateAt=${maxCreateAt}&minDeleteAt=${minDeleteAt}&maxDeleteAt=${maxDeleteAt}&perPage=${perPage}&page=${page}&perPage=${perPage}&sort=${sort}`);
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            let data = response.data;
+            let count = response.count;
+            let page = response.page;
+            showTrash(data, count, page);
+        };
+    };
+    xhr.send();
+};
+
+function clearFilter() {
+    document.querySelector('#noteFilter').value = '';
+    document.querySelector('#typeFilter').value = 'all';
+    document.querySelector('#minMonney').value = '';
+    document.querySelector('#maxMonney').value = '';
+    document.querySelector('#minTimeDebt').value = '';
+    document.querySelector('#maxTimeDebt').value = '';
+    document.querySelector('#minCreateAt').value = '';
+    document.querySelector('#maxCreateAt').value = '';
+    document.querySelector('#minDeleteAt').value = '';
+    document.querySelector('#maxDeleteAt').value = '';
+    filterDebt(1, sort);
+};
+
+function handlefilterTrash() {
+    filterTrash(1, sort);
+};
 
 function prevPageTrash() {
-    let page = Number(document.querySelector('#currentPage').value);
-    page = (page === 1) ? 1 : (page - 1);
-    trash(page, sortTrash);
-}
+    let page = prevPage();
+    filterTrash(page, sort);
+};
 
 function nextPageTrash() {
-    let page = Number(document.querySelector('#currentPage').value);
-    let pages = Number(document.querySelector('#pages').innerHTML);
-    page = (page === pages) ? pages : (page + 1);
-    trash(page, sortTrash);
-}
+    let page = nextPage();
+    filterTrash(page, sort);
+};
 
 function choosePageTrash() {
-    let page = Number(document.querySelector('#currentPage').value);
-    let pages = Number(document.querySelector('#pages').innerHTML);
-    if (page >= pages) page = pages;
-    if (page <= 1) page = 1;
-    trash(page, sortTrash);
-}
+    let page = choosePage();
+    filterTrash(page, sort);
+};
 
-function restoreDebt(page, sort) {
+function restoreDebt() {
     var debtId;
 
     $('#restoreDebt').on('show.bs.modal', event => {
@@ -75,97 +118,82 @@ function restoreDebt(page, sort) {
         debtId = button.data('id');
     });
 
-    const data = { debtId };
-    const perPage = Number(document.querySelector('#perPage').value);
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', `${window.location.origin}/finance/trash/restore/?page=${page}&perPage=${perPage}&sort=${sort}`, true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
-            alert('Khôi phục khoản nợ thành công!');
-            let data = response.data;
-            let count = response.count;
-            let page = response.page;
-            showTrash(data, count, page);
+    document.querySelector('#restoreDebtBtn').addEventListener('click', () => {
+        const data = { debtId };
+        const perPage = Number(document.querySelector('#perPage').value);
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', `${window.location.origin}/finance/trash/restore/?page=${page}&perPage=${perPage}&sort=${sort}`, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                alert('Khôi phục khoản nợ thành công!');
+                let data = response.data;
+                let count = response.count;
+                let page = response.page;
+                showTrash(data, count, page);
+            };
         };
-    };
-    xhr.send(JSON.stringify(data));
+        xhr.send(JSON.stringify(data));
+    });
 };
 
-function handleRestoreDebt() {
-    let page = Number(document.querySelector('#currentPage').value);
-    restoreDebt(page, sortTrash);
+function sortByNoteAsc() {
+    sort = 1;
+    filterTrash(page, sort);
 };
 
-function sortByNoteTrashAsc() {
-    let page = Number(document.querySelector('#currentPage').value);
-    sortTrash = 1;
-    trash(page, sortTrash);
-}
+function sortByNoteDesc() {
+    sort = 2;
+    filterTrash(page, sort);
+};
 
-function sortByNoteTrashDesc() {
-    let page = Number(document.querySelector('#currentPage').value);
-    sortTrash = 2;
-    trash(page, sortTrash);
-}
+function sortByTypeAsc() {
+    sort = 3;
+    filterTrash(page, sort);
+};
 
-function sortByTypeTrashAsc() {
-    let page = Number(document.querySelector('#currentPage').value);
-    sortTrash = 3;
-    trash(page, sortTrash);
-}
+function sortByTypeDesc() {
+    sort = 4;
+    filterTrash(page, sort);
+};
 
-function sortByTypeTrashDesc() {
-    let page = Number(document.querySelector('#currentPage').value);
-    sortTrash = 4;
-    trash(page, sortTrash);
-}
+function sortByMonneyAsc() {
+    sort = 5;
+    filterTrash(page, sort);
+};
 
-function sortByMonneyTrashAsc() {
-    let page = Number(document.querySelector('#currentPage').value);
-    sortTrash = 5;
-    trash(page, sortTrash);
-}
+function sortByMonneyDesc() {
+    sort = 6;
+    filterTrash(page, sort);
+};
 
-function sortByMonneyTrashDesc() {
-    let page = Number(document.querySelector('#currentPage').value);
-    sortTrash = 6;
-    trash(page, sortTrash);
-}
+function sortByTimeDebtAsc() {
+    sort = 7;
+    filterTrash(page, sort);
+};
 
-function sortByTimeDebtTrashAsc() {
-    let page = Number(document.querySelector('#currentPage').value);
-    sortTrash = 7;
-    trash(page, sortTrash);
-}
+function sortByTimeDebtDesc() {
+    sort = 8;
+    filterTrash(page, sort);
+};
 
-function sortByTimeDebtTrashDesc() {
-    let page = Number(document.querySelector('#currentPage').value);
-    sortTrash = 8;
-    trash(page, sortTrash);
-}
+function sortByCreateAtAsc() {
+    sort = 9;
+    filterTrash(page, sort);
+};
 
-function sortByCreateAtTrashAsc() {
-    let page = Number(document.querySelector('#currentPage').value);
-    sortTrash = 9;
-    trash(page, sortTrash);
-}
+function sortByCreateAtDesc() {
+    sort = 10;
+    filterTrash(page, sort);
+};
 
-function sortByCreateAtTrashDesc() {
-    let page = Number(document.querySelector('#currentPage').value);
-    sortTrash = 10;
-    trash(page, sortTrash);
-}
+function sortByDeleteAtAsc() {
+    sort = 11;
+    filterTrash(page, sort);
+};
 
-function sortByDeleteAtTrashAsc() {
-    let page = Number(document.querySelector('#currentPage').value);
-    sortTrash = 11;
-    trash(page, sortTrash);
-}
-
-function sortByDeleteAtTrashDesc() {
-    let page = Number(document.querySelector('#currentPage').value);
-    sortTrash = 12;
-    trash(page, sortTrash);
-}
+function sortByDeleteAtDesc() {
+    sort = 12;
+    filterTrash(page, sort);
+};

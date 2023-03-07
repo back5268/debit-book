@@ -34,9 +34,9 @@ function getFilterDebt() {
     const maxMonney = document.querySelector('#maxMonney').value;
     const minTimeDebt = document.querySelector('#minTimeDebt').value;
     const maxTimeDebt = document.querySelector('#maxTimeDebt').value;
-    const minTimeCreate = document.querySelector('#minTimeCreate').value;
-    const maxTimeCreate = document.querySelector('#maxTimeCreate').value;
-    return { note, type, minMonney, maxMonney, minTimeCreate, maxTimeCreate, minTimeDebt, maxTimeDebt };
+    const minCreateAt = document.querySelector('#minCreateAt').value;
+    const maxCreateAt = document.querySelector('#maxCreateAt').value;
+    return { note, type, minMonney, maxMonney, minCreateAt, maxCreateAt, minTimeDebt, maxTimeDebt };
 };
 
 function debt() {
@@ -56,13 +56,13 @@ function debt() {
 };
 
 function filterDebt(page, sort) {
-    let { note, type, minMonney, maxMonney, minTimeCreate, maxTimeCreate, minTimeDebt, maxTimeDebt } = getFilterDebt();
+    let { note, type, minMonney, maxMonney, minCreateAt, maxCreateAt, minTimeDebt, maxTimeDebt } = getFilterDebt();
     if (type === '+') type = 1;
     else if (type === '-') type = 0;
     else type = '';
     const slug = document.querySelector('#slug').value;
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', `${window.location.origin}/finance/debt/show/${slug}/?note=${note}&type=${type}&minMonney=${minMonney}&maxMonney=${maxMonney}&minTimeDebt=${minTimeDebt}&maxTimeDebt=${maxTimeDebt}&minTimeCreate=${minTimeCreate}&maxTimeCreate=${maxTimeCreate}&perPage=${perPage}&page=${page}&sort=${sort}`);
+    xhr.open('GET', `${window.location.origin}/finance/debt/show/${slug}/?note=${note}&type=${type}&minMonney=${minMonney}&maxMonney=${maxMonney}&minTimeDebt=${minTimeDebt}&maxTimeDebt=${maxTimeDebt}&minCreateAt=${minCreateAt}&maxCreateAt=${maxCreateAt}&perPage=${perPage}&page=${page}&sort=${sort}`);
     xhr.onload = function () {
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
@@ -73,7 +73,7 @@ function filterDebt(page, sort) {
         };
     };
     xhr.send();
-}
+};
 
 function handleFilterDebt() {
     filterDebt(1, sort);
@@ -86,8 +86,8 @@ function clearFilter() {
     document.querySelector('#maxMonney').value = '';
     document.querySelector('#minTimeDebt').value = '';
     document.querySelector('#maxTimeDebt').value = '';
-    document.querySelector('#minTimeCreate').value = '';
-    document.querySelector('#maxTimeCreate').value = '';
+    document.querySelector('#minCreateAt').value = '';
+    document.querySelector('#maxCreateAt').value = '';
     filterDebt(1, sort);
 };
 

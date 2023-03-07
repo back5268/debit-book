@@ -86,8 +86,8 @@
                                         <input type="datetime-local" id="maxTimeDebt" onchange="handleFilterDebt()" />
                                     </td>
                                     <td>
-                                        <input type="datetime-local" id="minTimeCreate" onchange="handleFilterDebt()" />
-                                        <input type="datetime-local" id="maxTimeCreate" onchange="handleFilterDebt()" />
+                                        <input type="datetime-local" id="minCreateAt" onchange="handleFilterDebt()" />
+                                        <input type="datetime-local" id="maxCreateAt" onchange="handleFilterDebt()" />
                                     </td>
                                     <td colspan="2">
                                         <button type="button" class="btn btn-info" id="filterDebt"
@@ -360,7 +360,6 @@
 </div>
 
 <script src="/js/debt.js"></script>
-
 <script>
     const debts = document.querySelectorAll('.debts');
     debts.forEach(debt => {
@@ -377,7 +376,6 @@
     document.addEventListener('DOMContentLoaded', function () {
         debt();
         deleteDebt();
-        handleSort();
     });
 </script>
 
@@ -389,4 +387,31 @@
             textMonney.innerText = convertMoneyToString(Number(monney.value));
         }, 1000);
     }
+</script>
+
+<script>
+    const sortDebtAsc = document.querySelectorAll('.sortDebtAsc');
+    const sortDebtDesc = document.querySelectorAll('.sortDebtDesc');
+    sortDebtAsc.forEach(sa => {
+        sa.addEventListener('click', e => {
+            sortDebtAsc.forEach(sa => {
+                sa.classList.remove('chooseSortAsc');
+            })
+            sortDebtDesc.forEach(sd => {
+                sd.classList.remove('chooseSortDesc');
+            })
+            e.target.classList.add('chooseSortAsc');
+        })
+    })
+    sortDebtDesc.forEach(sd => {
+        sd.addEventListener('click', e => {
+            sortDebtAsc.forEach(sa => {
+                sa.classList.remove('chooseSortAsc');
+            })
+            sortDebtDesc.forEach(sd => {
+                sd.classList.remove('chooseSortDesc');
+            })
+            e.target.classList.add('chooseSortDesc');
+        })
+    })
 </script>

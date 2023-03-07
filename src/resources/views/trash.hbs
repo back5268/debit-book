@@ -31,36 +31,67 @@
             <tr>
               <th scope="col"> STT</th>
               <th scope="col" class="sortDebt">
-                <div class="sortDebtAsc" onclick="sortByNoteTrashAsc()"></div>
-                <div class="sortDebtDesc" onclick="sortByNoteTrashDesc()"></div>
+                <div class="sortDebtAsc" onclick="sortByNoteAsc()"></div>
+                <div class="sortDebtDesc" onclick="sortByNoteDesc()"></div>
                 Ghi chú
               </th>
               <th scope="col" class="sortDebt">
-                <div class="sortDebtAsc" onclick="sortByTypeTrashAsc()"></div>
-                <div class="sortDebtDesc" onclick="sortByTypeTrashDesc()"></div>
+                <div class="sortDebtAsc" onclick="sortByTypeAsc()"></div>
+                <div class="sortDebtDesc" onclick="sortByTypeDesc()"></div>
                 Loại nợ
               </th>
               <th scope="col" class="sortDebt">
-                <div class="sortDebtAsc" onclick="sortByMonneyTrashAsc()"></div>
-                <div class="sortDebtDesc" onclick="sortByMonneyTrashDesc()"></div>
+                <div class="sortDebtAsc" onclick="sortByMonneyAsc()"></div>
+                <div class="sortDebtDesc" onclick="sortByMonneyDesc()"></div>
                 Số tiền
               </th>
               <th scope="col" class="sortDebt">
-                <div class="sortDebtAsc" onclick="sortByTimeDebtTrashAsc()"></div>
-                <div class="sortDebtDesc" onclick="sortByTimeDebtTrashDesc()"></div>
+                <div class="sortDebtAsc" onclick="sortByTimeDebtAsc()"></div>
+                <div class="sortDebtDesc" onclick="sortByTimeDebtDesc()"></div>
                 Ngày lập phiếu
               </th>
               <th scope="col" class="sortDebt">
-                <div class="sortDebtAsc" onclick="sortByCreateAtTrashAsc()"></div>
-                <div class="sortDebtDesc" onclick="sortByCreateAtTrashDesc()"></div>
+                <div class="sortDebtAsc" onclick="sortByCreateAtAsc()"></div>
+                <div class="sortDebtDesc" onclick="sortByCreateAtDesc()"></div>
                 Thời gian tạo
               </th>
               <th scope="col" class="sortDebt">
-                <div class="sortDebtAsc chooseSortAsc" onclick="sortByDeleteAtTrashAsc()"></div>
-                <div class="sortDebtDesc" onclick="sortByDeleteAtTrashDesc()"></div>
-                Thời gian tạo
+                <div class="sortDebtAsc chooseSortAsc" onclick="sortByDeleteAtAsc()"></div>
+                <div class="sortDebtDesc" onclick="sortByDeleteAtDesc()"></div>
+                Thời gian xóa
               </th>
               <th scope="col">Action</th>
+            </tr>
+            <tr>
+              <td></td>
+              <td><input type="text" id="noteFilter" oninput="handlefilterTrash()" /></td>
+              <td>
+                <select id="typeFilter" onchange="handlefilterTrash()">
+                  <option value="all">All</option>
+                  <option value="+">+</option>
+                  <option value="-">-</option>
+                </select>
+              </td>
+              <td>
+                <input type="number" id="minMonney" placeholder="from" oninput="handlefilterTrash()" />
+                <input type="number" id="maxMonney" placeholder="to" oninput="handlefilterTrash()" />
+              </td>
+              <td>
+                <input type="datetime-local" id="minTimeDebt" onchange="handlefilterTrash()" />
+                <input type="datetime-local" id="maxTimeDebt" onchange="handlefilterTrash()" />
+              </td>
+              <td>
+                <input type="datetime-local" id="minCreateAt" onchange="handlefilterTrash()" />
+                <input type="datetime-local" id="maxCreateAt" onchange="handlefilterTrash()" />
+              </td>
+              <td>
+                <input type="datetime-local" id="minDeleteAt" onchange="handlefilterTrash()" />
+                <input type="datetime-local" id="maxDeleteAt" onchange="handlefilterTrash()" />
+              </td>
+              <td>
+                <button type="button" class="btn btn-info" id="filterDebt" onclick="clearFilter()">
+                  Clear filter</button>
+              </td>
             </tr>
           </thead>
           <tbody></tbody>
@@ -71,20 +102,20 @@
     <div class="card-footer">
       <div class="row">
         <div class="col-sm-4 justify-content-center">
-          <button class="btn btn-light" onclick="prevPage()" id="prevPage" disabled>Previous</button>
+          <button class="btn btn-light" onclick="prevPageTrash()" id="prevPage" disabled>Previous</button>
         </div>
         <div class="col justify-content-center">
           <span>Page
-            <input type="number" id="currentPage" onchange="choosePage()" />/<span id="pages"></span>
+            <input type="number" id="currentPage" value="1" onchange="choosePageTrash()" />/<span id="pages"></span>
           </span>
-          <select id="perPage" onchange="handle()">
+          <select id="perPage" onchange="handlefilterTrash()">
             <option value="5">5 record</option>
             <option value="10">10 record</option>
             <option value="50">50 record</option>
           </select>
         </div>
         <div class="col-sm-4 justify-content-center">
-          <button class="btn btn-light" onclick="nextPage()" id="nextPage">Next</button>
+          <button class="btn btn-light" onclick="nextPageTrash()" id="nextPage">Next</button>
         </div>
       </div>
     </div>
@@ -104,7 +135,8 @@
         Bạn có chắc chắn muốn khôi phục khoản nợ này không
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" onclick="handleRestoreDebt()" data-dismiss="modal">Khôi phục</button>
+        <button type="button" class="btn btn-danger" id="restoreDebtBtn" data-dismiss="modal">Khôi
+          phục</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
@@ -112,10 +144,36 @@
 </div>
 
 <script src="/js/trash.js"></script>
-
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     trash();
-    handleSort();
+    restoreDebt();
   });
+</script>
+
+<script>
+  const sortDebtAsc = document.querySelectorAll('.sortDebtAsc');
+  const sortDebtDesc = document.querySelectorAll('.sortDebtDesc');
+  sortDebtAsc.forEach(sa => {
+    sa.addEventListener('click', e => {
+      sortDebtAsc.forEach(sa => {
+        sa.classList.remove('chooseSortAsc');
+      })
+      sortDebtDesc.forEach(sd => {
+        sd.classList.remove('chooseSortDesc');
+      })
+      e.target.classList.add('chooseSortAsc');
+    })
+  })
+  sortDebtDesc.forEach(sd => {
+    sd.addEventListener('click', e => {
+      sortDebtAsc.forEach(sa => {
+        sa.classList.remove('chooseSortAsc');
+      })
+      sortDebtDesc.forEach(sd => {
+        sd.classList.remove('chooseSortDesc');
+      })
+      e.target.classList.add('chooseSortDesc');
+    })
+  })
 </script>

@@ -15,7 +15,7 @@ function showDebt(res, next, slug, options, perPage, page, sort) {
                 debtorId, isDelete: false, note: { $regex: options.note }, type: { $ne: options.type },
                 monney: { $gte: options.minMonney, $lte: options.maxMonney },
                 timeDebt: { $gte: options.minTimeDebt, $lte: options.maxTimeDebt },
-                createAt: { $gte: options.minTimeCreate, $lte: options.maxTimeCreate },
+                createAt: { $gte: options.minCreateAt, $lte: options.maxCreateAt },
             })
                 .sort(sortCriteria)
                 .skip((perPage * page) - perPage)
@@ -26,7 +26,7 @@ function showDebt(res, next, slug, options, perPage, page, sort) {
                         debtorId, isDelete: false, note: { $regex: options.note }, type: { $ne: options.type },
                         monney: { $gte: options.minMonney, $lte: options.maxMonney },
                         timeDebt: { $gte: options.minTimeDebt, $lte: options.maxTimeDebt },
-                        createAt: { $gte: options.minTimeCreate, $lte: options.maxTimeCreate },
+                        createAt: { $gte: options.minCreateAt, $lte: options.maxCreateAt },
                     })
                         .then(count => {
                             res.status(200).json({ data, count, page });
@@ -66,8 +66,8 @@ class DebtController {
         options.maxMonney = req.query.maxMonney;
         options.minTimeDebt = req.query.minTimeDebt;
         options.maxTimeDebt = req.query.maxTimeDebt;
-        options.minTimeCreate = req.query.minTimeCreate;
-        options.maxTimeCreate = req.query.maxTimeCreate;
+        options.minCreateAt = req.query.minCreateAt;
+        options.maxCreateAt = req.query.maxCreateAt;
         let perPage = req.query.perPage || 5;
         let page = req.query.page || 1;
         let sort = req.query.sort || 10;
