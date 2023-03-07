@@ -65,11 +65,11 @@
 
                 tbody.innerHTML = '';
 
-                for (let { account, fullname, email, createAt, lastLogin } of data) {
+                for (let [index, { account, fullname, email, createAt, lastLogin }] of data.entries()) {
                     createAt = dateTimeHelper(createAt);
                     lastLogin = dateTimeHelper(lastLogin);
                     let row = tbody.insertRow();
-                    row.insertCell().innerHTML = 1;
+                    row.insertCell().innerHTML = index + 1 + (page - 1) * perPage;
                     row.insertCell().innerHTML = account;
                     row.insertCell().innerHTML = fullname;;
                     row.insertCell().innerHTML = email;

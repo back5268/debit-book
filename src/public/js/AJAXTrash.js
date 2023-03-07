@@ -9,16 +9,18 @@ function showTrash(data, count, page) {
     tbody.innerHTML = '';
     document.querySelector('.center').innerHTML = '';
     if (!data.length) {
+        document.querySelector('.center').style.display = 'block';
         document.querySelector('.center').innerHTML = 'Chưa có khoản nợ nào đã xóa!';
     }
 
-    for (let { _id, note, type, monney, timeDebt, createAt, deleteAt } of data) {
+    for (let [index, { _id, note, type, monney, timeDebt, createAt, deleteAt }] of data.entries()) {
+        document.querySelector('.center').style.display = 'none';
         monney = formatMonney(Number(monney));
         timeDebt = dateTimeHelper(timeDebt);
         createAt = dateTimeHelper(createAt);
         deleteAt = dateTimeHelper(deleteAt);
         let row = tbody.insertRow();
-        row.insertCell().innerHTML = 1;
+        row.insertCell().innerHTML = index + 1 + (page - 1) * perPage;
         row.insertCell().innerHTML = note;
         row.insertCell().innerHTML = type;
         row.insertCell().innerHTML = monney;
@@ -66,8 +68,7 @@ function trash(page, sort) {
 }
 
 function handleTrash() {
-    let page = Number(document.querySelector('#currentPage').value);
-    trash(page, sortTrash);
+    trash(1, sortTrash);
 }
 
 function prePageTrash() {
@@ -111,7 +112,8 @@ function restoreDebt(page, sort) {
                 alert('Khôi phục khoản nợ thành công!');
                 let data = response.data;
                 let count = response.count;
-                showTrash(data, count);
+                let page = response.page;
+                showTrash(data, count, page);
             }
         };
 

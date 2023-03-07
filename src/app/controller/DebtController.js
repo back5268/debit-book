@@ -20,11 +20,7 @@ function show(slug, res, options, perPage, page, sort) {
                 .skip((perPage * page) - perPage)
                 .limit(perPage)
                 .then(data => {
-                    data = data.map((d, index) => {
-                        d = d.toObject();
-                        d.stt = index + perPage * (page - 1) + 1;
-                        return d;
-                    });
+                    data = data.map(d => d = d.toObject());
                     Debt.countDocuments({ debtorId, isDelete: false, note: { $regex: options.note }, type: { $ne: options.type }, 
                                           monney: {$gte: options.minMonney, $lte: options.maxMonney},
                                           timeDebt: {$gte: options.minTimeDebt, $lte: options.maxTimeDebt},

@@ -15,17 +15,17 @@
       </div>
     </div>
     <div class="card-body">
-      <div class="row">
-        <div class="sort">
-          <label for="#nameDebtor">Tên người nợ</label>
-          <select id="nameDebtor" onchange="handleTrash()">
-            {{#each data}}
-            <option value="{{ this.slug }}"> {{ this.fullname }} </option>
-            {{/each}}
-          </select>
-        </div>
-      </div>
       <div class="body">
+        <div class="row">
+          <div class="sort">
+            <label for="#nameDebtor">Tên người nợ</label>
+            <select id="nameDebtor" onchange="handleTrash()">
+              {{#each data}}
+              <option value="{{ this.slug }}"> {{ this.fullname }} </option>
+              {{/each}}
+            </select>
+          </div>
+        </div>
         <table class="table table-bordered header-fixed">
           <thead>
             <tr>
@@ -106,7 +106,7 @@
         Bạn có chắc chắn muốn khôi phục khoản nợ này hay không
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" id="restoreDebtBtn">Khôi phục</button>
+        <button type="button" class="btn btn-danger" id="restoreDebtBtn" data-dismiss="modal">Khôi phục</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
@@ -117,34 +117,6 @@
   document.addEventListener('DOMContentLoaded', function () {
     trash();
     handleRestoreDebt();
+    handleSort();
   });
-</script>
-
-<script>
-    const sortDebtAsc = document.querySelectorAll('.sortDebtAsc');
-    const sortDebtDesc = document.querySelectorAll('.sortDebtDesc');
-    const sortDebt = document.querySelectorAll('.sortDebt');
-    sortDebtAsc.forEach(sa => {
-        sa.addEventListener('click', e => {
-            sortDebtAsc.forEach(sa => {
-                sa.classList.remove('chooseSortAsc');
-            })
-            sortDebtDesc.forEach(sd => {
-                sd.classList.remove('chooseSortDesc');
-            })
-            e.target.classList.add('chooseSortAsc');
-        })
-    })
-    sortDebtDesc.forEach(sd => {
-        sd.addEventListener('click', e => {
-            sortDebtAsc.forEach(sa => {
-                sa.classList.remove('chooseSortAsc');
-            })
-            sortDebtDesc.forEach(sd => {
-                sd.classList.remove('chooseSortDesc');
-            })
-            e.target.classList.add('chooseSortDesc');
-        })
-    })
-    
 </script>

@@ -361,7 +361,7 @@
                 rác, bạn có muốn tiếp tục xóa
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" id="deleteDebtBtn">Xóa</button>
+                <button type="button" class="btn btn-danger" id="deleteDebtBtn" data-dismiss="modal">Xóa</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -389,6 +389,7 @@
         updateDebtor();
         deleteDebt();
         showDebt();
+        handleSort();
     });
 </script>
 
@@ -399,33 +400,4 @@
             textMonney.innerText = convertMoneyToString(Number(monney.value));
         }, 1000);
     }
-</script>
-
-<script>
-    const sortDebtAsc = document.querySelectorAll('.sortDebtAsc');
-    const sortDebtDesc = document.querySelectorAll('.sortDebtDesc');
-    const sortDebt = document.querySelectorAll('.sortDebt');
-    sortDebtAsc.forEach(sa => {
-        sa.addEventListener('click', e => {
-            sortDebtAsc.forEach(sa => {
-                sa.classList.remove('chooseSortAsc');
-            })
-            sortDebtDesc.forEach(sd => {
-                sd.classList.remove('chooseSortDesc');
-            })
-            e.target.classList.add('chooseSortAsc');
-        })
-    })
-    sortDebtDesc.forEach(sd => {
-        sd.addEventListener('click', e => {
-            sortDebtAsc.forEach(sa => {
-                sa.classList.remove('chooseSortAsc');
-            })
-            sortDebtDesc.forEach(sd => {
-                sd.classList.remove('chooseSortDesc');
-            })
-            e.target.classList.add('chooseSortDesc');
-        })
-    })
-    
 </script>

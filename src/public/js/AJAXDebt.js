@@ -9,14 +9,16 @@ function show(data, count, page) {
     tbody.innerHTML = '';
     document.querySelector('.center').innerHTML = '';
     if (!data.length) {
+        document.querySelector('.center').style.display = 'block';
         document.querySelector('.center').innerHTML = 'Chưa có khoản nợ nào đã xóa!';
     }
     
-    for (let { _id, stt, note, type, monney, timeDebt, createAt } of data) {
+    for (let [index, { _id, note, type, monney, timeDebt, createAt }] of data.entries()) {
+        document.querySelector('.center').style.display = 'none';
         let row = tbody.insertRow();
         row.classList.add('perDebt');
         timeDebt = String(timeDebt);
-        row.insertCell().innerHTML = stt;
+        row.insertCell().innerHTML = index + 1 + (page - 1) * perPage; 
         row.insertCell().innerHTML = note;
         row.insertCell().innerHTML = type;
         row.insertCell().innerHTML = formatMonney(monney);
@@ -62,7 +64,7 @@ function getOptionsFilter() {
 function showDebt() {
     const slug = document.querySelector('#slug').value;
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', `${window.location.origin}/finance/detail/debt/${slug}`);
+    xhr.open('GET', `${window.location.origin}/finance/detail/debt/${slug}`); 
     xhr.onload = function () {
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);

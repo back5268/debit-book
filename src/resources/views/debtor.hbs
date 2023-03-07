@@ -13,78 +13,81 @@
       </div>
     </div>
     <div class="card-body">
-      <div class="row">
-        <div class="col-lg-3">
-          <div class="filterDebtor">
-            <div class="row mt-3">
-              <button type="button" class="btn btn-info" onclick="clearFilterDebtor()">Clear filter</button>
-            </div>
-            <div class="row mt-3">
-              <label class="col-5 col-form-label">Name</label>
-              <div class="col-7">
-                <input type="text" class="form-control" id="nameFilter" oninput="filterDebtor()"/>
+      <div class="body">
+        <div class="row">
+          <div class="col-lg-3">
+            <div class="filterDebtor">
+              <div class="row mt-3">
+                <button type="button" class="btn btn-info" onclick="clearFilterDebtor()">Clear filter</button>
               </div>
-            </div>
-            <div class="row mt-3">
-              <label class="col-5 col-form-label">Address</label>
-              <div class="col-7">
-                <input type="text" class="form-control" id="addressFilter" oninput="filterDebtor()"/>
+              <div class="row mt-3">
+                <label class="col-5 col-form-label">Name</label>
+                <div class="col-7">
+                  <input type="text" class="form-control" id="nameFilter" oninput="filterDebtor()" />
+                </div>
               </div>
-            </div>
-            <div class="row mt-3">
-              <label class="col-5 col-form-label">Phone</label>
-              <div class="col-7">
-                <input type="number" class="form-control" id="phoneFilter" oninput="filterDebtor()"/>
+              <div class="row mt-3">
+                <label class="col-5 col-form-label">Address</label>
+                <div class="col-7">
+                  <input type="text" class="form-control" id="addressFilter" oninput="filterDebtor()" />
+                </div>
               </div>
-            </div>
-            <div class="row mt-3">
-              <label class="col-5 col-form-label">Email</label>
-              <div class="col-7">
-                <input type="number" class="form-control" id="emailFilter" oninput="filterDebtor()"/>
+              <div class="row mt-3">
+                <label class="col-5 col-form-label">Phone</label>
+                <div class="col-7">
+                  <input type="number" class="form-control" id="phoneFilter" oninput="filterDebtor()" />
+                </div>
               </div>
-            </div>
-            <div class="row mt-3">
-              <label class="col-5 col-form-label">TotalDebt</label>
-              <div class="col-7">
-                <input type="number" class="form-control" placeholder="from" id="minMonney" oninput="filterDebtor()"/>
+              <div class="row mt-3">
+                <label class="col-5 col-form-label">Email</label>
+                <div class="col-7">
+                  <input type="number" class="form-control" id="emailFilter" oninput="filterDebtor()" />
+                </div>
               </div>
-            </div>
-            <div class="row">
-              <label class="col-5 col-form-label"></label>
-              <div class="col-7">
-                <input type="number" class="form-control" placeholder="to" id="maxMonney" oninput="filterDebtor()"/>
+              <div class="row mt-3">
+                <label class="col-5 col-form-label">TotalDebt</label>
+                <div class="col-7">
+                  <input type="number" class="form-control" placeholder="from" id="minMonney"
+                    oninput="filterDebtor()" />
+                </div>
               </div>
-            </div>
-            <div class="row mt-3">
-              <label class="col-5 col-form-label">CreateAt</label>
-              <div class="col-7">
-                <input type="datetime-local" class="form-control" id="minCreateAt" onchange="filterDebtor()"/>
+              <div class="row">
+                <label class="col-5 col-form-label"></label>
+                <div class="col-7">
+                  <input type="number" class="form-control" placeholder="to" id="maxMonney" oninput="filterDebtor()" />
+                </div>
               </div>
-            </div>
-            <div class="row">
-              <label class="col-5 col-form-label"></label>
-              <div class="col-7">
-                <input type="datetime-local" class="form-control" id="maxCreateAt" onchange="filterDebtor()"/>
+              <div class="row mt-3">
+                <label class="col-5 col-form-label">CreateAt</label>
+                <div class="col-7">
+                  <input type="datetime-local" class="form-control" id="minCreateAt" onchange="filterDebtor()" />
+                </div>
               </div>
-            </div>
-            <div class="row mt-3">
-              <label class="col-5 col-form-label">updateAt</label>
-              <div class="col-7">
-                <input type="datetime-local" class="form-control" id="minUpdateAt" onchange="filterDebtor()"/>
+              <div class="row">
+                <label class="col-5 col-form-label"></label>
+                <div class="col-7">
+                  <input type="datetime-local" class="form-control" id="maxCreateAt" onchange="filterDebtor()" />
+                </div>
               </div>
-            </div>
-            <div class="row">
-              <label class="col-5 col-form-label"></label>
-              <div class="col-7">
-                <input type="datetime-local" class="form-control" id="maxUpdateAt" onchange="filterDebtor()"/>
+              <div class="row mt-3">
+                <label class="col-5 col-form-label">updateAt</label>
+                <div class="col-7">
+                  <input type="datetime-local" class="form-control" id="minUpdateAt" onchange="filterDebtor()" />
+                </div>
+              </div>
+              <div class="row">
+                <label class="col-5 col-form-label"></label>
+                <div class="col-7">
+                  <input type="datetime-local" class="form-control" id="maxUpdateAt" onchange="filterDebtor()" />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-lg-9">
-          <div class="card-links">
-            <div class="row" id="cards">
+          <div class="col-lg-9">
+            <div class="card-links">
+              <div class="row" id="cards">
 
+              </div>
             </div>
           </div>
         </div>
