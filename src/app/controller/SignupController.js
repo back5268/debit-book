@@ -39,19 +39,27 @@ const sendVerification = async ({ _id, email, account }, uniqueString, res) => {
 
 class SignupController {
 
+    // [GET] /signup
     signupGet(req, res) {
         res.render('form/signup');
     }
 
+    // [POST] /signup
     signupPost(req, res) {
-        let { fullname, email, account, password, captcha } = req.body;
+        let { email, account, password, captcha } = req.body;
         if (captcha == req.session.captcha) {
-            fullname = fullname.trim();
             email = email.trim();
             account = account.trim();
             password = password.trim();
 
-            User.find({ account })
+            if (email == '' || account == '' || password == '') {
+                res.status(403).json({ message: 'Empty input fields!' });
+            } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+                res.status(403).json({ message: 'Invalid email entered!' });
+            } else if (password.length < 6) {
+                res.status(403).json({ message: 'Password is too short!' });
+            } else {
+                User.find({ account })
                 .then(data => {
                     if (data.length) {
                         res.status(403).json({ message: 'Tài khoản đã tồn tại!' });
@@ -117,6 +125,7 @@ class SignupController {
                     console.log(err);
                     res.status(403).json({ message: 'Tài khoản của bạn không thể xác nhận!' });
                 })
+            }
         } else {
             res.status(403).json({ message: 'Mã captcha không đúng!' });
         }

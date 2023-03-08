@@ -505,7 +505,8 @@
     margin-left: 12px;
     margin-bottom: 8px; }
   .card-group .card-header span {
-    color: #b4c2d4; }
+    color: #b4c2d4;
+    font-size: 12px; }
   .card-group .card-header button {
     margin-left: 12px; }
 
@@ -513,8 +514,7 @@
   padding: 12px;
   padding-bottom: 0; }
   .card-group .card-body table {
-    width: 100%;
-    border: 1px solid black; }
+    width: 100%; }
     .card-group .card-body table thead {
       background-color: #f5f5f5;
       font-weight: bold;
@@ -522,6 +522,15 @@
       top: 0;
       z-index: 10;
       box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px; }
+    .card-group .card-body table .actionTable, .card-group .card-body table .actionTableHeader {
+      position: sticky;
+      right: 0;
+      z-index: 5;
+      background-color: #f5f5f5; }
+    .card-group .card-body table .actionTable {
+      background-color: #fff;
+      display: flex;
+      gap: 16px; }
     .card-group .card-body table th,
     .card-group .card-body table td {
       min-width: 100px;

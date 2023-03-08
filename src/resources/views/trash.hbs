@@ -3,7 +3,7 @@
     <div class="card-header">
       <div>
         <h5>Danh sách khoản nợ đã xóa</h5>
-        <span>Total: <span id="totalRecord"></span> record(s)</span>
+        <p>Total: <span id="totalRecord"></span> record(s)</p>
       </div>
       <div>
         <a href="./">
@@ -60,7 +60,7 @@
                 <div class="sortDebtDesc" onclick="sortByDeleteAtDesc()"></div>
                 Thời gian xóa
               </th>
-              <th scope="col">Action</th>
+              <th scope="col" class="actionTableHeader">Action</th>
             </tr>
             <tr>
               <td></td>
@@ -88,7 +88,7 @@
                 <input type="datetime-local" id="minDeleteAt" onchange="handlefilterTrash()" />
                 <input type="datetime-local" id="maxDeleteAt" onchange="handlefilterTrash()" />
               </td>
-              <td>
+              <td class="actionTableHeader">
                 <button type="button" class="btn btn-info" onclick="clearFilter()">
                   Clear filter</button>
               </td>

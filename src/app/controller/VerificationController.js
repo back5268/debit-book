@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 
 class VerificationController {
 
+    // [GET] /verify/:userId/:uniqueString
     verify(req, res) {
         let { userId, uniqueString } = req.params;
         UserVeritification.find({ userId })

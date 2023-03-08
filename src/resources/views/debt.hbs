@@ -4,7 +4,7 @@
             <div class="header">
                 <div>
                     <h5>{{debtor.fullname}}</h5>
-                    <span> Total: <span id="totalRecord"></span> Record(s)</span>
+                    <p>Total: <span id="totalRecord"></span> Record(s)</p>
                 </div>
                 <ul class="nav nav-tabs">
                     <li class="nav-item" id="showDebt">
@@ -63,7 +63,7 @@
                                         <div class="sortDebtDesc" onclick="sortByCreateAtDesc()"></div>
                                         Thời gian tạo
                                     </th>
-                                    <th scope="col" colspan="2">Action</th>
+                                    <th scope="col" colspan="2" class="actionTableHeader">Action</th>
                                 </tr>
                                 <tr>
                                     <td></td>
@@ -89,7 +89,7 @@
                                         <input type="datetime-local" id="minCreateAt" onchange="handleFilterDebt()" />
                                         <input type="datetime-local" id="maxCreateAt" onchange="handleFilterDebt()" />
                                     </td>
-                                    <td colspan="2">
+                                    <td colspan="2" class="actionTableHeader">
                                         <button type="button" class="btn btn-info" id="filterDebt"
                                             onclick="clearFilter()">
                                             Clear filter</button>

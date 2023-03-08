@@ -83,6 +83,7 @@ function debtor() {
 
 function filterDebtor(page, sort) {
     let { name, address, phone, email, minMonney, maxMonney, minCreateAt, maxCreateAt, minUpdateAt, maxUpdateAt } = getFilterDebtor();
+    let perPage = Number(document.getElementById('perPage').value);
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `${window.location.origin}/finance/debtor/show/?name=${name}&address=${address}&phone=${phone}&email=${email}&minMonney=${minMonney}&maxMonney=${maxMonney}&minCreateAt=${minCreateAt}&maxCreateAt=${maxCreateAt}&minUpdateAt=${minUpdateAt}&maxUpdateAt=${maxUpdateAt}&perPage=${perPage}&page=${page}&sort=${sort}`);
     xhr.onload = function () {

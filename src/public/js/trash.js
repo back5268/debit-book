@@ -21,7 +21,9 @@ function showTrash(data, count, page) {
         row.insertCell().innerHTML = dateTimeHelper(timeDebt);
         row.insertCell().innerHTML = dateTimeHelper(createAt);
         row.insertCell().innerHTML = dateTimeHelper(deleteAt);
-        row.insertCell().innerHTML = `<button type="button" class="btn btn-info" data-toggle="modal" data-target="#restoreDebt" data-id="${_id}"> Khôi phục</button>`;
+        let actionTable =  row.insertCell(); 
+        actionTable.classList.add('actionTable');
+        actionTable.innerHTML = `<button type="button" class="btn btn-info" data-toggle="modal" data-target="#restoreDebt" data-id="${_id}"> Khôi phục</button>`;
     }
     formatPage(count, page);
 };

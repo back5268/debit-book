@@ -12,7 +12,9 @@ function showControl(data, count, page) {
         row.insertCell().innerHTML = email;
         row.insertCell().innerHTML = dateTimeHelper(createAt);
         row.insertCell().innerHTML = dateTimeHelper(lastLogin);
-        row.insertCell().innerHTML = '';
+        let actionTable =  row.insertCell(); 
+        actionTable.classList.add('actionTable');
+        actionTable.innerHTML = '';
     };
     formatPage(count, page);
 };

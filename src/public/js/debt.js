@@ -9,7 +9,7 @@ function showDebt(data, count, page) {
     document.querySelector('.center').innerHTML = '';
     if (!data.length) {
         document.querySelector('.center').style.display = 'block';
-        document.querySelector('.center').innerHTML = 'Chưa có khoản nợ nào đã xóa!';
+        document.querySelector('.center').innerHTML = 'Chưa có khoản nợ nào đã tạo!';
     };
 
     for (let [index, { _id, note, type, monney, timeDebt, createAt }] of data.entries()) {
@@ -21,8 +21,10 @@ function showDebt(data, count, page) {
         row.insertCell().innerHTML = formatMonney(monney);
         row.insertCell().innerHTML = dateTimeHelper(timeDebt);
         row.insertCell().innerHTML = dateTimeHelper(createAt);
-        row.insertCell().innerHTML = `<button type="button" class="btn btn-info detailDebtBtn" onclick="showDetailDebt()" data-toggle="modal" data-target="#detailDebt" data-note="${note}" data-type="${type}" data-monney="${monney}" data-time="${timeDebt}"> <i class="fa-solid fa-info"></i>Chi tiet</button>`;
-        row.insertCell().innerHTML = `<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteDebt" data-id="${_id}"> <i class="fa-sharp fa-solid fa-minus"></i> Xóa</button>`;
+        let actionTable =  row.insertCell(); 
+        actionTable.classList.add('actionTable');
+        actionTable.innerHTML = `<button type="button" class="btn btn-info detailDebtBtn" onclick="showDetailDebt()" data-toggle="modal" data-target="#detailDebt" data-note="${note}" data-type="${type}" data-monney="${monney}" data-time="${timeDebt}"> <i class="fa-solid fa-info"></i>Chi tiet</button>`
+        + `<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteDebt" data-id="${_id}"> <i class="fa-sharp fa-solid fa-minus"></i> Xóa</button>`;
     }
     formatPage(count, page);
 };
@@ -61,6 +63,7 @@ function filterDebt(page, sort) {
     else if (type === '-') type = 0;
     else type = '';
     const slug = document.querySelector('#slug').value;
+    let perPage = Number(document.getElementById('perPage').value);
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `${window.location.origin}/finance/debt/show/${slug}/?note=${note}&type=${type}&minMonney=${minMonney}&maxMonney=${maxMonney}&minTimeDebt=${minTimeDebt}&maxTimeDebt=${maxTimeDebt}&minCreateAt=${minCreateAt}&maxCreateAt=${maxCreateAt}&perPage=${perPage}&page=${page}&sort=${sort}`);
     xhr.onload = function () {
