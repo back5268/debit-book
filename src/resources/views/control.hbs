@@ -1,20 +1,63 @@
 <div class="card-group">
     <div class="card">
         <div class="card-header">
-            <h5>Danh sách người dùng</h5>
-            <p>Total: <span id="totalRecord"></span> record(s)</p>
+            <div>
+                <h5>Danh sách người dùng</h5>
+                <span>Total: <span id="totalRecord"></span> record(s)</span>
+            </div>
         </div>
         <div class="card-body">
             <div class="body">
                 <table class="table table-bordered">
                     <thead>
                         <tr>
+                            <th scope="col"> STT</th>
+                            <th scope="col" class="sortDebt">
+                                <div class="sortDebtAsc" onclick="sortByAccountAsc()"></div>
+                                <div class="sortDebtDesc" onclick="sortByAccountDesc()"></div>
+                                Account
+                            </th>
+                            <th scope="col" class="sortDebt">
+                                <div class="sortDebtAsc" onclick="sortByEmailAsc()"></div>
+                                <div class="sortDebtDesc" onclick="sortByEmailDesc()"></div>
+                                Email
+                            </th>
+                            <th scope="col" class="sortDebt">
+                                <div class="sortDebtAsc" onclick="sortByCreateAtAsc()"></div>
+                                <div class="sortDebtDesc" onclick="sortByCreateAtDesc()"></div>
+                                Ngày tạo tài khoản
+                            </th>
+                            <th scope="col" class="sortDebt">
+                                <div class="sortDebtAsc" onclick="sortByLastLoginAsc()"></div>
+                                <div class="sortDebtDesc" onclick="sortByLastLoginDesc()"></div>
+                                Lần đăng nhập cuối
+                            </th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><input type="text" id="accountFilter" oninput="handlefilterControl()" /></td>
+                            <td><input type="text" id="emailFilter" oninput="handlefilterControl()" /></td>
+                            <td>
+                                <input type="datetime-local" id="minCreateAt" onchange="handlefilterControl()" />
+                                <input type="datetime-local" id="maxCreateAt" onchange="handlefilterControl()" />
+                            </td>
+                            <td>
+                                <input type="datetime-local" id="minLastLogin" onchange="handlefilterControl()" />
+                                <input type="datetime-local" id="maxLastLogin" onchange="handlefilterControl()" />
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-info" onclick="clearFilter()">
+                                    Clear filter</button>
+                            </td>
+                        </tr>
+                        <tr>
                             <th scope="col">STT</th>
                             <th scope="col">account</th>
-                            <th scope="col">Full name</th>
                             <th scope="col">email</th>
                             <th scope="col">Ngày tạo tài khoản</th>
                             <th scope="col">Lần đăng nhập cuối</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -25,79 +68,32 @@
         <div class="card-footer">
             <div class="row">
                 <div class="col-sm-4 justify-content-center">
-                    <button class="btn btn-light" onclick="prevPage()" id="prevPage" disabled>Previous</button>
+                    <button class="btn btn-light" onclick="prevPageControl()" id="prevPage" disabled>Previous</button>
                 </div>
                 <div class="col justify-content-center">
                     <span>Page
-                        <input type="number" id="currentPage" onchange="choosePage()" />/<span id="pages"></span>
+                        <input type="number" id="currentPage" onchange="choosePageControl()" />/<span id="pages"></span>
                     </span>
-                    <select id="perPage" onchange="handle()">
+                    <select id="perPage" onchange="handlefilterControl()">
+                        <option value="5">5 record</option>
+                        <option value="10">10 record</option>
                         <option value="50">50 record</option>
                     </select>
                 </div>
                 <div class="col-sm-4 justify-content-center">
-                    <button class="btn btn-light" onclick="nextPage()" id="nextPage">Next</button>
+                    <button class="btn btn-light" onclick="nextPageControl()" id="nextPage">Next</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<script src="/js/control.js"></script>
 <script>
-    function showControl() {
-        const perPage = Number(document.querySelector('#perPage').value);
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', `${window.location.origin}/control/show/?perPage=${perPage}`);
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                let data = response.data;
-                let count = response.count;
-                let page = response.page;
-                let tbody = document.querySelector('tbody');
-                let perPage = Number(document.querySelector('#perPage').value);
-                let pages = Math.ceil(count / perPage);
-                pages = (pages === 0) ? 1 : pages;
-
-                tbody.innerHTML = '';
-
-                for (let [index, { account, fullname, email, createAt, lastLogin }] of data.entries()) {
-                    createAt = dateTimeHelper(createAt);
-                    lastLogin = dateTimeHelper(lastLogin);
-                    let row = tbody.insertRow();
-                    row.insertCell().innerHTML = index + 1 + (page - 1) * perPage;
-                    row.insertCell().innerHTML = account;
-                    row.insertCell().innerHTML = fullname;;
-                    row.insertCell().innerHTML = email;
-                    row.insertCell().innerHTML = createAt;
-                    row.insertCell().innerHTML = lastLogin;
-                }
-
-                document.getElementById('currentPage').value = page;
-                document.getElementById('pages').textContent = pages;
-                document.getElementById('totalRecord').textContent = count;
-
-                if (page >= pages) {
-                    document.getElementById('currentPage').value = pages;
-                    document.getElementById('nextPage').disabled = true;
-                };
-                if (page === 1) {
-                    document.getElementById('prePage').disabled = true;
-                };
-                if (page < pages) {
-                    document.getElementById('nextPage').disabled = false;
-                }
-                if (page > 1) {
-                    document.getElementById('prePage').disabled = false;
-                };
-            }
-        };
-
-        xhr.send();
-    }
-    showControl();
+    document.addEventListener('DOMContentLoaded', function () {
+        control();
+    });
 </script>
-
 <script>
     const sortDebtAsc = document.querySelectorAll('.sortDebtAsc');
     const sortDebtDesc = document.querySelectorAll('.sortDebtDesc');

@@ -28,5 +28,16 @@ module.exports = {
                 break;
         }
         return sortCriteria;
+    }, 
+
+    formatOptionsUser: function(options) {
+        options.minCreateAt = options.minCreateAt ? new Date(options.minCreateAt) : new Date('2020-01-01');
+        options.maxCreateAt = options.maxCreateAt ? new Date(options.maxCreateAt) : new Date('2030-01-01');
+        options.minLastLogin = options.minLastLogin ? new Date(options.minLastLogin) : new Date('2020-01-01');
+        options.maxLastLogin = options.maxLastLogin ? new Date(options.maxLastLogin) : new Date('2030-01-01');
+        options.account = options.account ? options.account : '';
+        options.email = options.email ? options.email : '';
+
+        return options;
     }
 }

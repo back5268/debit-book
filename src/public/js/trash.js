@@ -1,6 +1,5 @@
 var sort = 9;
 var page = Number(document.querySelector('#currentPage').value);
-var perPage = Number(document.getElementById('perPage').value);
 
 function showTrash(data, count, page) {
     let tbody = document.querySelector('tbody');
@@ -63,8 +62,9 @@ function filterTrash(page, sort) {
     else if (type === '-') type = 0;
     else type = '';
     const slug = document.querySelector('#nameDebtor').value;
+    let perPage = Number(document.getElementById('perPage').value);
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', `${window.location.origin}/finance/trash/${slug}/?note=${note}&type=${type}&minMonney=${minMonney}&maxMonney=${maxMonney}&minTimeDebt=${minTimeDebt}&maxTimeDebt=${maxTimeDebt}&minCreateAt=${minCreateAt}&maxCreateAt=${maxCreateAt}&minDeleteAt=${minDeleteAt}&maxDeleteAt=${maxDeleteAt}&perPage=${perPage}&page=${page}&perPage=${perPage}&sort=${sort}`);
+    xhr.open('GET', `${window.location.origin}/finance/trash/${slug}/?note=${note}&type=${type}&minMonney=${minMonney}&maxMonney=${maxMonney}&minTimeDebt=${minTimeDebt}&maxTimeDebt=${maxTimeDebt}&minCreateAt=${minCreateAt}&maxCreateAt=${maxCreateAt}&minDeleteAt=${minDeleteAt}&maxDeleteAt=${maxDeleteAt}&page=${page}&perPage=${perPage}&sort=${sort}`);
     xhr.onload = function () {
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
