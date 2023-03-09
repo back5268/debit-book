@@ -129,7 +129,7 @@ function restoreDebt() {
         xhr.onload = function () {
             if (xhr.status === 200) {
                 var response = JSON.parse(xhr.responseText);
-                alert('Khôi phục khoản nợ thành công!');
+                handleNotification('Khôi phục khoản nợ thành công!');
                 let data = response.data;
                 let count = response.count;
                 let page = response.page;

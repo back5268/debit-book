@@ -213,7 +213,7 @@ function addDebtor() {
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function () {
         if (xhr.status === 200) {
-            alert('Thêm thông tin người nợ thành công!');
+            handleNotification('Thêm thông tin người nợ thành công!');
             var response = JSON.parse(xhr.responseText);
             let data = response.data;
             let count = response.count;

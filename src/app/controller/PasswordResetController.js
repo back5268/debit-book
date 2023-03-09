@@ -1,26 +1,10 @@
 require('dotenv').config();
 const User = require('../models/User');
 const PasswordReset = require('../models/PasswordReset');
+const { addEmailToQueue } = require('../../util/emailQueue');
 const bcrypt = require('bcrypt');
-const nodemailer = require('nodemailer');
 const { v4: uuidv4 } = require('uuid');
 const currentUrl = process.env.CURRENT_URL;
-
-const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        user: process.env.AUTH_EMAIL,
-        pass: process.env.AUTH_PASS,
-    }
-})
-
-transporter.verify((err, success) => {
-    if (err) {
-        console.log('Connect to nodemailer Failed!');
-    } else {
-        console.log('Connect to nodemailer successfully!');
-    }
-})
 
 // Sent password reset email
 const senResetEmail = async ({ _id, email, account }, resetString) => {
@@ -36,14 +20,8 @@ const senResetEmail = async ({ _id, email, account }, resetString) => {
             <p>Trân trọng cảm ơn,</p> <br/> <p>------------------------------------------------------------</p>
             <p>Thanks and best regards,</p> <p><i>Development</i></p>`
     };
-
-    try {
-        let info = await transporter.sendMail(mailOptions);
-        console.log('Email sent: ' + info.response);
-    } catch (error) {
-        console.log('Error sending email: ' + error.message);
-    }
-}
+    addEmailToQueue(mailOptions);
+};
 
 class PasswordResetController {
 
@@ -90,7 +68,7 @@ class PasswordResetController {
                                                             // Update complete 
                                                             PasswordReset.deleteOne({ userId })
                                                                 .then(() => {
-                                                                    res.status(403).json({ message: 'Đổi mật khẩu thành công!' });
+                                                                    res.status(200).json({ message: 'Đổi mật khẩu thành công!' });
                                                                 })
                                                                 .catch(err => {
                                                                     console.log(err);
@@ -137,7 +115,7 @@ class PasswordResetController {
 
     // [POST] /passwordrr
     passwordrr(req, res) {
-        const { email, account, captcha } = req.body;
+        let { email, account, captcha } = req.body;
         if (req.session.captcha === captcha) {
             email = email.trim();
             account = account.trim();
@@ -153,21 +131,21 @@ class PasswordResetController {
                             if (!data[0].verified) {
                                 res.status(403).json({ message: 'Tài khoản chưa được xác minh!' });
                             } else {
-                                let user = data;
+                                let user = data[0];
                                 const resetString = uuidv4() + user._id;
                                 const saltRounds = 10;
                                 bcrypt.hash(resetString, saltRounds)
                                     .then(data => {
                                         const newPasswordReset = new PasswordReset({
                                             userId: user._id,
-                                            userAccount: user.account,
+                                            userAccount: account,
                                             resetString: data,
                                             createAt: Date.now(),
                                             expiresAt: Date.now() + 86400000,
                                         })
                                         newPasswordReset.save()
                                             .then(() => {
-                                                senResetEmail(user, resetString, res);
+                                                senResetEmail(user, resetString);
                                                 res.json({ message: 'Yêu cầu đã được gửi, vui lòng kiểm tra gmail!' });
                                             })
                                             .catch(err => {
@@ -179,7 +157,6 @@ class PasswordResetController {
                                         console.log(err);
                                         res.status(403).json({ message: 'Gửi mail xác nhận không thành công!' });
                                     })
-                                senResetEmail(data[0], res);
                             }
                         } else {
                             res.status(403).json({ message: 'Tài khoản không tồn tại!' });

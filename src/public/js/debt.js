@@ -173,7 +173,7 @@ function addDebt() {
     xhr.onload = function () {
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
-            alert('Thêm thông tin khoản nợ thành công!');
+            handleNotification('Thêm thông tin khoản nợ thành công!');
             let data = response.data;
             let count = response.count;
             let page = response.page;
@@ -197,7 +197,7 @@ function deleteDebt() {
         xhr.onload = function () {
             if (xhr.status === 200) {
                 var response = JSON.parse(xhr.responseText);
-                alert('Xóa thông tin khoản nợ thành công!');
+                handleNotification('Xóa thông tin khoản nợ thành công!');
                 let data = response.data;
                 let count = response.count;
                 let page = response.page;
@@ -268,7 +268,7 @@ function updateDebtor() {
     xhr.onload = function () {
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
-            alert(response.message);
+            handleNotification(response.message);
         };
     };
     xhr.send(JSON.stringify(data));

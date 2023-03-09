@@ -1,3 +1,9 @@
+function handleNotification(message) {
+    document.querySelector('#notification .modal-body').innerHTML = message;
+    let noti = document.querySelector('#showNoti');
+    noti.click();
+};
+
 function handleLogin() {
     const account = document.querySelector('#account').value;
     const password = document.querySelector('#password').value;
@@ -8,19 +14,18 @@ function handleLogin() {
     xhr.open('POST', `${window.location.origin}/login`, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function () {
+        var response = JSON.parse(xhr.responseText);
         if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
             window.location.href = '/';
         } else {
             changeCaptcha();
+            handleNotification(response.message);
             const captcha = document.querySelector('#captcha');
             captcha.value = '';
-            var response = JSON.parse(xhr.responseText);
-            alert(response.message);
-        }
+        };
     };
     xhr.send(JSON.stringify(data));
-}
+};
 
 function handleSignup() {
     const email = document.querySelector('#email').value;
@@ -33,20 +38,18 @@ function handleSignup() {
     xhr.open('POST', `${window.location.origin}/signup`, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function () {
+        var response = JSON.parse(xhr.responseText);
         if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
-            alert(response.message);
+            handleNotification(response.message);
+            document.querySelector('form').reset();
         } else {
             changeCaptcha();
+            handleNotification(response.message);
             const captcha = document.querySelector('#captcha');
             captcha.value = '';
-            var response = JSON.parse(xhr.responseText);
-            alert(response.message);
-        }
+        };
     };
-
     xhr.send(JSON.stringify(data));
-
 };
 
 function handleRequestResetPassword() {
@@ -59,20 +62,19 @@ function handleRequestResetPassword() {
     xhr.open('POST', `${window.location.origin}/passwordrr`, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function () {
+        var response = JSON.parse(xhr.responseText);
         if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
-            alert(response.message);
+            handleNotification(response.message);
+            document.querySelector('form').reset();
         } else {
             changeCaptcha();
+            handleNotification(response.message);
             const captcha = document.querySelector('#captcha');
             captcha.value = '';
-            var response = JSON.parse(xhr.responseText);
-            alert(response.message);
-        }
+        };
     };
-
     xhr.send(JSON.stringify(data));
-}
+};
 
 function handleResetPassword() {
     const userId = document.querySelector('#userId').value;
@@ -85,21 +87,19 @@ function handleResetPassword() {
     xhr.open('POST', `${window.location.origin}/resetPassword`, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function () {
+        var response = JSON.parse(xhr.responseText);
         if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
-            alert(response.message);
-            window.location.href = '/';
+            handleNotification(response.message);
+            document.querySelector('form').reset();
         } else {
             changeCaptcha();
+            handleNotification(response.message);
             const captcha = document.querySelector('#captcha');
             captcha.value = '';
-            var response = JSON.parse(xhr.responseText);
-            alert(response.message);
-        }
+        };
     };
-
     xhr.send(JSON.stringify(data));
-}
+};
 
 function handleUpdateProfile() {
     document.getElementById("update-info").addEventListener("click", function (event) {
@@ -112,23 +112,16 @@ function handleUpdateProfile() {
         const userId = document.querySelector('#userId').value;
 
         const data = { fullname, phone, email, address, description, userId };
-
         const xhr = new XMLHttpRequest();
         xhr.open('POST', `${window.location.origin}/updateUserInfo`, true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onload = function () {
-            if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                alert(response.message);
-            } else {
-                var response = JSON.parse(xhr.responseText);
-                alert(response.message);
-            }
+            var response = JSON.parse(xhr.responseText);
+            handleNotification(response.message);
         };
-
         xhr.send(JSON.stringify(data));
-    })
-}
+    });
+};
 
 function handleUpdateAccount() {
     document.getElementById("update-account").addEventListener("click", function (event) {
@@ -141,29 +134,27 @@ function handleUpdateAccount() {
 
         const data = { account, oldPassword, newPassword, captcha };
         if (reTypePassword != newPassword) {
-            alert('Re-entered password does not match');
+            handleNotification('Re-entered password does not match!');
             window.location.href = '/profile';
         } else {
             const xhr = new XMLHttpRequest();
             xhr.open('POST', `${window.location.origin}/updateUserAccount`, true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.onload = function () {
+                var response = JSON.parse(xhr.responseText);
                 if (xhr.status === 200) {
-                    var response = JSON.parse(xhr.responseText);
-                    alert(response.message);
+                    handleNotification(response.message);
                 } else {
                     changeCaptcha();
+                    handleNotification(response.message);
                     const captcha = document.querySelector('#captcha');
                     captcha.value = '';
-                    var response = JSON.parse(xhr.responseText);
-                    alert(response.message);
-                }
+                };
             };
-
             xhr.send(JSON.stringify(data));
-        }
+        };
     })
-}
+};
 
 function changeCaptcha() {
     const xhr = new XMLHttpRequest();
