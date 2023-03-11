@@ -165,3 +165,41 @@
     }
   }
 }
+
+.showEvents {
+  width: 100%;
+  min-height: 50vh;
+  max-height: 50vh;
+  overflow: scroll;
+  padding: 16px;
+  border: 1px solid #c7d5e6;
+  border-radius: 6px;
+
+  .card {
+    margin-bottom: 16px;
+
+    .card-header {
+      background-color: #c7d5e6;
+    }
+
+    h3 {
+      width: 100%;
+      cursor: pointer;
+      padding: 8px;
+      font-size: 20px;
+
+      a {
+        width: 100%;
+        display: block;
+      }
+    }
+  }
+}
+
+
+.event {
+  height: 20px;
+  width: calc(100% + 8px);
+  background-color: aqua;
+  margin-top: 20px;
+}

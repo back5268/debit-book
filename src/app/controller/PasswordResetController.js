@@ -50,7 +50,7 @@ class PasswordResetController {
                                     })
                                     .catch(err => {
                                         console.log(err);
-                                        res.status(403).json({ message: 'Cập nhật mật khẩu mới không thành công!' });
+                                        res.status(403).json({ message: 'Mật khẩu mới đã được cập nhật hoặc liên kết đã hết hạn!' });
 
                                     })
                             } else {
@@ -72,34 +72,34 @@ class PasswordResetController {
                                                                 })
                                                                 .catch(err => {
                                                                     console.log(err);
-                                                                    res.status(403).json({ message: 'Cập nhật mật khẩu mới không thành công!' });
+                                                                    res.status(403).json({ message: 'Mật khẩu mới đã được cập nhật hoặc liên kết đã hết hạn!' });
                                                                 })
                                                         })
                                                         .catch(err => {
                                                             console.log(err);
-                                                            res.status(403).json({ message: 'Cập nhật mật khẩu mới không thành công!' });
+                                                            res.status(403).json({ message: 'Mật khẩu mới đã được cập nhật hoặc liên kết đã hết hạn!' });
                                                         })
                                                 })
                                                 .catch(err => {
                                                     console.log(err);
-                                                    res.status(403).json({ message: 'Cập nhật mật khẩu mới không thành công!' });
+                                                    res.status(403).json({ message: 'Mật khẩu mới đã được cập nhật hoặc liên kết đã hết hạn!' });
                                                 })
                                         } else {
-                                            res.status(403).json({ message: 'Cập nhật mật khẩu mới không thành công!' });
+                                            res.status(403).json({ message: 'Mật khẩu mới đã được cập nhật hoặc liên kết đã hết hạn!' });
                                         }
                                     })
                                     .catch(err => {
                                         console.log(err);
-                                        res.status(403).json({ message: 'Cập nhật mật khẩu mới không thành công!' });
+                                        res.status(403).json({ message: 'Mật khẩu mới đã được cập nhật hoặc liên kết đã hết hạn!' });
                                     })
                             }
                         } else {
-                            res.status(403).json({ message: 'Cập nhật mật khẩu mới không thành công!' });
+                            res.status(403).json({ message: 'Mật khẩu mới đã được cập nhật hoặc liên kết đã hết hạn!' });
                         }
                     })
                     .catch(err => {
                         console.log(err);
-                        res.status(403).json({ message: 'Cập nhật mật khẩu mới không thành công!' });
+                        res.status(403).json({ message: 'Mật khẩu mới đã được cập nhật hoặc liên kết đã hết hạn!' });
                     })
             }
         } else {

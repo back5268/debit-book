@@ -72,7 +72,7 @@ function dateTimeHelper(time) {
     let seconds = date.getSeconds();
     seconds = seconds < 10 ? '0' + seconds : seconds;
 
-    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+    return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
 };
 
 function formatMonney(num) {

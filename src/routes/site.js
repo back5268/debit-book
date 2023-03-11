@@ -39,6 +39,11 @@ router.post('/updateUserAccount', profileController.updateUserAccount);
 router.get('/control/show', systemController.show);
 router.get('/control', systemController.render);
 
+// calendar
+router.post('/calendar/add', siteController.addEvent);
+router.get('/calendar/showAll', siteController.showAllEvent);
+router.get('/calendar/:date', siteController.showEvent);
+
 router.get('/', siteController.index);
 
 module.exports = router;

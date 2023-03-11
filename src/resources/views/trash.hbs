@@ -15,17 +15,17 @@
       </div>
     </div>
     <div class="card-body">
-      <div class="body">
-        <div class="row">
-          <div class="nameDebtor">
-            <label for="#nameDebtor">Tên người nợ</label>
-            <select id="nameDebtor" onchange="handleTrash()">
-              {{#each data}}
-              <option value="{{ this.slug }}"> {{ this.fullname }} </option>
-              {{/each}}
-            </select>
-          </div>
+      <div class="row">
+        <div class="nameDebtor">
+          <label for="#nameDebtor">Tên người nợ</label>
+          <select id="nameDebtor" onchange="handleTrash()">
+            {{#each data}}
+            <option value="{{ this.slug }}"> {{ this.fullname }} </option>
+            {{/each}}
+          </select>
         </div>
+      </div>
+      <div class="body">
         <table class="table table-bordered">
           <thead>
             <tr>

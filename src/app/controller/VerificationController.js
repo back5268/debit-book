@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 class VerificationController {
 
     // [GET] /verify/:userId/:uniqueString
-    verify(req, res) {
+    verify(req, res, next) {
         let { userId, uniqueString } = req.params;
         UserVeritification.find({ userId })
             .then(data => {
@@ -45,36 +45,24 @@ class VerificationController {
                                                     const message = 'Tài khoản của bạn đã được kích hoạt thành công!';
                                                     res.render('notification', { message });
                                                 })
-                                                .catch(err => {
-                                                    console.log(err);
-                                                    const message = 'Có lỗi khi xóa dữ liệu!';
-                                                    res.render('notification', { message });
-                                                })
+                                                .catch(next);
                                         })
-                                        .catch(err => {
-                                            console.log(err);
-                                            const message = 'Có lỗi khi cập nhật dữ liệu!';
-                                            res.render('notification', { message });
-                                        })
+                                        .catch(next);
                                 } else {
-                                    const message = 'Mã xác nhận không đúng!';
+                                    const message = 'Tài khoản đã được kích hoạt hoặc liên kết kích hoạt tài khoản đã hết hạn!';
                                     res.render('notification', { message });
                                 }
                             })
-                            .catch(err => {
-                                console.log(err);
-                                const message = 'Có lỗi khi so sánh uniqueString!';
-                                res.render('notification', { message });
-                            })
+                            .catch(next);
                     }
                 } else {
-                    const message = 'Không tìm thấy dữ liệu người dùng cần xác minh!';
+                    const message = 'Tài khoản đã được kích hoạt hoặc liên kết kích hoạt tài khoản đã hết hạn!';
                     res.render('notification', { message });
                 }
             })
             .catch(err => {
                 console.log(err);
-                const message = 'Không tìm thấy dữ liệu người dùng cần xác minh!';
+                const message = 'Tài khoản đã được kích hoạt hoặc liên kết kích hoạt tài khoản đã hết hạn!';
                 res.render('notification', { message });
             })
     }

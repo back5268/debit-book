@@ -5,9 +5,11 @@ var perPage = Number(document.getElementById('perPage').value);
 function showDebtor(data, count, page) {
     document.querySelector('#cards').innerHTML = '';
     if (!data.length) {
-        document.querySelector('#cards').innerHTML = '<h3>Chưa có người nợ nào được tạo!</h3>';
+        document.querySelector('.center').style.display = 'block';
+        document.querySelector('#cards').innerHTML = '<h5 class="center">Chưa có người nợ nào được tạo!</h5>';
     };
     for (let [index, { fullname, createAt, updateAt, email, phone, address, totalDebts, slug }] of data.entries()) {
+        document.querySelector('.center').style.display = 'none';
         createAt = dateTimeHelper(createAt);
         updateAt = dateTimeHelper(updateAt);
         totalDebts = formatMonney(totalDebts);

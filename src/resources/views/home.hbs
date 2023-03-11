@@ -1,80 +1,134 @@
 <div class="home">
-    <div id="calendar">
-        <div class="card-group">
-            <div class="card">
-                <div class="card-header">
-                    <div>
-                        <h5>My Calendar</h5>
-                        <p>Preview monthly events</p>
-                    </div>
-                    <button type="button" class="btn btn-info">
-                        Manage Calendar
-                    </button>
-                </div>
-                <div class="card-body">
-                    <div class="header-calendar">
-                        <div class="today">
-                            <div class="arrows">
-                                <i class="fa-solid fa-angle-left arrow prev"></i>
-                                <i class="fa-solid fa-angle-right arrow next"></i>
-                            </div>
-                            <a href="#today">
-                                <div class="title-today">Today</div>
-                            </a>
-                        </div>
-                        <div class="months"><span></span></div>
-                        <div class="view-mode">
-                            <a href="#">
-                                <div class="mode choose">Month</div>
-                            </a>
-                            <a href="#">
-                                <div class="mode">Week</div>
-                            </a>
-                            <a href="#">
-                                <div class="mode">List</div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="body-calendar">
-                        <div class="week-days">
-                            <div class="week-day">Sun</div>
-                            <div class="week-day">Mon</div>
-                            <div class="week-day">Tue</div>
-                            <div class="week-day">Wed</div>
-                            <div class="week-day">Thu</div>
-                            <div class="week-day">Fri</div>
-                            <div class="week-day">Sat</div>
-                        </div>
-                        <div class="days"></div>
-                    </div>
-                </div>
-            </div>
+  <div id="calendar">
+    <div class="card-group">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h5>My Calendar</h5>
+            <p>Preview monthly events</p>
+          </div>
+          <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addEvent">
+            <i class="fa-solid fa-plus"></i>
+            Thêm sự kiện
+          </button>
         </div>
+        <div class="card-body">
+          <div class="header-calendar">
+            <div class="today">
+              <div class="arrows">
+                <i class="fa-solid fa-angle-left arrow prev"></i>
+                <i class="fa-solid fa-angle-right arrow next"></i>
+              </div>
+              <a href="#today">
+                <div class="title-today">Today</div>
+              </a>
+            </div>
+            <div class="months"><span></span></div>
+            <div class="view-mode">
+              <a href="#">
+                <div class="mode choose">Month</div>
+              </a>
+              <a href="#">
+                <div class="mode">Week</div>
+              </a>
+              <a href="#">
+                <div class="mode">List</div>
+              </a>
+            </div>
+          </div>
+          <div class="body-calendar">
+            <div class="week-days">
+              <div class="week-day">Sun</div>
+              <div class="week-day">Mon</div>
+              <div class="week-day">Tue</div>
+              <div class="week-day">Wed</div>
+              <div class="week-day">Thu</div>
+              <div class="week-day">Fri</div>
+              <div class="week-day">Sat</div>
+            </div>
+            <div class="days"></div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
-<div class="modal fade" id="addNote">
+<div class="modal fade" id="showEvent">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-body">
         <div class="card-group">
           <div class="card">
             <div class="card-header">
-              <h5>Ghi chú ngày: </h5>
+              <div>
+                <h5></h5>
+                <p> Total: <span id="totalRecord"></span> Record(s)</p>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="showEvents">
+                <div id="accordion">
+                    <h5 class="center"></h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="addEvent">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="card-group">
+          <div class="card">
+            <div class="card-header">
+              <h5>Thông tin sự kiện</h5>
             </div>
             <div class="card-body">
               <form>
                 <div class="form-group row">
-                  <label class="col-sm-3 col-form-label">Chi chú</label>
+                  <label class="col-sm-3 col-form-label">Tiêu đề (*)</label>
                   <div class="col-sm-9">
-                    <textarea type="text" class="form-control" id="note"></textarea>
+                    <input type="text" class="form-control" id="titleEvent">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-3 col-form-label">Thời gian</label>
+                  <div class="col-sm-9">
+                    <input type="datetime-local" class="form-control" id="time">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-3 col-form-label">Thông báo</label>
+                  <select id="notice">
+                    <option value="1">Trước 5 phút</option>
+                    <option value="2">Trước 10 phút</option>
+                    <option value="3">Trước 30 phút</option>
+                    <option value="4">Trước 1 tiếng</option>
+                    <option value="5">Trước 3 tiếng</option>
+                    <option value="6">Trước 9 tiếng</option>
+                    <option value="7">Trước 1 ngày</option>
+                  </select>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-3 col-form-label">Mô tả </label>
+                  <div class="col-sm-9">
+                    <textarea type="text" class="form-control" id="description"> </textarea>
                   </div>
                 </div>
                 <div class="form-group row">
                   <div class="col-sm-3"></div>
                   <div class="col-sm-9">
-                    <button type="submit" class="btn btn-info" id="addNewDebtor">
-                      Thêm ghi chú
+                    <button type="submit" class="btn btn-info" id="addEventBtn">
+                      Thêm sự kiện
                     </button>
                   </div>
                 </div>
@@ -90,102 +144,37 @@
   </div>
 </div>
 
-<div class="drag-element">
-    <div class="drag-handle">
-        <span>Note title</span>
-    </div>
-    <div class="drag-content">
-    </div>
-</div>
+<script src="/js/calendar.js"></script>
+{{!-- <script>
+  const element = document.querySelector('.drag-element'); let pos1 = 0, pos2 =
+    0, pos3 = 0, pos4 = 0;
+  element.querySelector('.drag-handle').addEventListener('mousedown',
+    dragMouseDown); function dragMouseDown(e) {
+      e = e || window.event;
+      e.preventDefault(); pos3 = e.clientX; pos4 = e.clientY; document.onmouseup =
+        closeDragElement; document.onmousemove = elementDrag;
+    } function
+    elementDrag(e) {
+    e = e || window.event; e.preventDefault(); pos1 = pos3 -
+      e.clientX; pos2 = pos4 - e.clientY; pos3 = e.clientX; pos4 = e.clientY;
+    element.style.top = (element.offsetTop - pos2) + "px"; element.style.left =
+      (element.offsetLeft - pos1) + "px";
+  } function closeDragElement() {
+    document.onmouseup = null; document.onmousemove = null;
+  }
+
+</script> --}}
 
 <script>
-    const element = document.querySelector('.drag-element');
-    let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-
-    element.querySelector('.drag-handle').addEventListener('mousedown', dragMouseDown);
-
-    function dragMouseDown(e) {
-      e = e || window.event;
-      e.preventDefault();
-      pos3 = e.clientX;
-      pos4 = e.clientY;
-      document.onmouseup = closeDragElement;
-      document.onmousemove = elementDrag;
-    }
-
-    function elementDrag(e) {
-      e = e || window.event;
-      e.preventDefault();
-      pos1 = pos3 - e.clientX;
-      pos2 = pos4 - e.clientY;
-      pos3 = e.clientX;
-      pos4 = e.clientY;
-      element.style.top = (element.offsetTop - pos2) + "px";
-      element.style.left = (element.offsetLeft - pos1) + "px";
-    }
-
-    function closeDragElement() {
-      document.onmouseup = null;
-      document.onmousemove = null;
-    }
-
-
-  </script>
-
-<script>
-    var date = new Date();
-    function calendar() {
-        date.setDate(1);
-        const monthDays = document.querySelector(".days");
-        const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-        const prevLastDay = new Date(date.getFullYear(), date.getMonth(), 0).getDate();
-        var prevDays = date.getDay();
-        var nextDays = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDay();
-        const months = [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December",
-        ];
-
-        if ((prevDays + 7 - nextDays - 1) < 11) nextDays = nextDays - 7;
-
-        document.querySelector(".months span").innerHTML = months[date.getMonth()] + "  " + date.getFullYear();
-        let days = "";
-        for (let x = prevDays; x > 0; x--) {
-            days += `<div class="day"><button type="button" class="prev-date">${prevLastDay - x + 1}</button></div>`;
-        }
-
-        for (let i = 1; i <= lastDay; i++) {
-            if (i === new Date().getDate() && date.getMonth() === new Date().getMonth()) {
-                days += `<div class="day"><button type="button" data-toggle="modal" data-target="#addNote" id="today">${i}</button></div>`;
-            } else {
-                days += `<div class="day"><button type="button" data-toggle="modal" data-target="#addNote">${i}</button></div>`;
-            }
-        }
-
-        for (let j = 1; j <= 7 - nextDays - 1; j++) {
-            days += `<div class="day"><button type="button" class="next-date">${j}</button></div>`;
-            monthDays.innerHTML = days;
-        }
-    };
-
-    document.querySelector(".prev").addEventListener("click", () => {
-        date.setMonth(date.getMonth() - 1);
-        calendar();
-    });
-
-    document.querySelector(".next").addEventListener("click", () => {
-        date.setMonth(date.getMonth() + 1);
-        calendar();
-    });
+  document.addEventListener('DOMContentLoaded', function () {
     calendar();
+    document.querySelector(".prev").addEventListener("click", () => {
+      date.setMonth(date.getMonth() - 1); calendar();
+    });
+    document.querySelector(".next").addEventListener("click", () => {
+      date.setMonth(date.getMonth() + 1); calendar();
+    });
+    addEvent();
+    showEvent();
+  });
 </script>
