@@ -6,7 +6,8 @@
   left: 224px;
   width: calc(100% - 224px);
   transition: all 0.5s ease;
-  height: 95vh;
+  height: fit-content;
+  min-height: calc(100vh - 50px);
 }
 
 .sidebar.closes ~ .app-content {

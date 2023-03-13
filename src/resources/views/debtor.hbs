@@ -13,131 +13,131 @@
       </div>
     </div>
     <div class="card-body">
-      <div class="body">
-        <div class="row">
-          <div class="col-lg-3">
-            <div class="filterDebtor">
-              <div class="row mt-3">
-                <button type="button" class="btn btn-info" onclick="clearFilterDebtor()">Clear filter</button>
-              </div>
-              <div class="row mt-3">
-                <label class="col-6 col-form-label">
-                  Name
-                  <div class="sortDebtor">
-                    <i class="fa-solid fa-play" onclick="sortByNameAsc()"></i>
-                    <i class="fa-solid fa-play" onclick="sortByNameDesc()"></i>
-                  </div>
-                </label>
-                <div class="col-6">
-                  <input type="text" class="form-control" id="nameFilter" oninput="handleFilterDebtor()" />
-                </div>
-              </div>
-              <div class="row mt-3">
-                <label class="col-6 col-form-label">
-                  Address
-                  <div class="sortDebtor">
-                    <i class="fa-solid fa-play" onclick="sortByAddressAsc()"></i>
-                    <i class="fa-solid fa-play" onclick="sortByAddressDesc()"></i>
-                  </div>
-                </label>
-                <div class="col-6">
-                  <input type="text" class="form-control" id="addressFilter" oninput="handleFilterDebtor()" />
-                </div>
-              </div>
-              <div class="row mt-3">
-                <label class="col-6 col-form-label">
-                  Phone
-                  <div class="sortDebtor">
-                    <i class="fa-solid fa-play" onclick="sortByPhoneAsc()"></i>
-                    <i class="fa-solid fa-play" onclick="sortByPhoneDesc()"></i>
-                  </div>
-                </label>
-                <div class="col-6">
-                  <input type="number" class="form-control" id="phoneFilter" oninput="handleFilterDebtor()" />
-                </div>
-              </div>
-              <div class="row mt-3">
-                <label class="col-6 col-form-label">
-                  Email
-                  <div class="sortDebtor">
-                    <i class="fa-solid fa-play" onclick="sortByEmailAsc()"></i>
-                    <i class="fa-solid fa-play" onclick="sortByEmailDesc()"></i>
-                  </div>
-                </label>
-                <div class="col-6">
-                  <input type="number" class="form-control" id="emailFilter" oninput="handleFilterDebtor()" />
-                </div>
-              </div>
-              <div class="row mt-3">
-                <label class="col-6 col-form-label">
-                  TotalDebt
-                  <div class="sortDebtor">
-                    <i class="fa-solid fa-play" onclick="sortByTotalDebtsAsc()"></i>
-                    <i class="fa-solid fa-play" onclick="sortByTotalDebtsDesc()"></i>
-                  </div>
-                </label>
-                <div class="col-6">
-                  <input type="number" class="form-control" placeholder="from" id="minMonney"
-                    oninput="handleFilterDebtor()" />
-                  <input type="number" class="form-control" placeholder="to" id="maxMonney"
-                    oninput="handleFilterDebtor()" />
-                </div>
-              </div>
-              <div class="row mt-3">
-                <label class="col-6 col-form-label">
-                  CreateAt
-                  <div class="sortDebtor">
-                    <i class="fa-solid fa-play" onclick="sortByCreateAtAsc()"></i>
-                    <i class="fa-solid fa-play chooseSortDebtor" onclick="sortByCreateAtDesc()"></i>
-                  </div>
-                </label>
-                <div class="col-6">
-                  <input type="datetime-local" class="form-control" id="minCreateAt" onchange="handleFilterDebtor()" />
-                  <input type="datetime-local" class="form-control" id="maxCreateAt" onchange="handleFilterDebtor()" />
-                </div>
-              </div>
-              <div class="row mt-3">
-                <label class="col-6 col-form-label">
-                  updateAt
-                  <div class="sortDebtor">
-                    <i class="fa-solid fa-play" onclick="sortByUpdateAtAsc()"></i>
-                    <i class="fa-solid fa-play" onclick="sortByUpdateAtDesc()"></i>
-                  </div>
-                </label>
-                <div class="col-6">
-                  <input type="datetime-local" class="form-control" id="minUpdateAt" onchange="handleFilterDebtor()" />
-                  <input type="datetime-local" class="form-control" id="maxUpdateAt" onchange="handleFilterDebtor()" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-9">
-            <div class="card-links">
-              <h5 class="center"></h5>
-              <div class="row" id="cards">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="card-footer">
       <div class="row">
-        <div class="col-sm-4 justify-content-center">
-          <button class="btn btn-light" onclick="prevPageDebtor()" id="prevPage" disabled>Previous</button>
+        <div class="col-lg-3">
+          <div class="filterDebtor">
+            <div>
+              <button type="button" class="btn btn-info" onclick="clearFilterDebtor()">Clear filter</button>
+            </div>
+            <div class="row mt-3">
+              <label class="col-6 col-form-label">
+                Name
+                <div class="sortDebtor">
+                  <i class="fa-solid fa-play" onclick="sortByNameAsc()"></i>
+                  <i class="fa-solid fa-play" onclick="sortByNameDesc()"></i>
+                </div>
+              </label>
+              <div class="col-6">
+                <input type="text" class="form-control" id="nameFilter" oninput="handleFilterDebtor()" />
+              </div>
+            </div>
+            <div class="row mt-3">
+              <label class="col-6 col-form-label">
+                Address
+                <div class="sortDebtor">
+                  <i class="fa-solid fa-play" onclick="sortByAddressAsc()"></i>
+                  <i class="fa-solid fa-play" onclick="sortByAddressDesc()"></i>
+                </div>
+              </label>
+              <div class="col-6">
+                <input type="text" class="form-control" id="addressFilter" oninput="handleFilterDebtor()" />
+              </div>
+            </div>
+            <div class="row mt-3">
+              <label class="col-6 col-form-label">
+                Phone
+                <div class="sortDebtor">
+                  <i class="fa-solid fa-play" onclick="sortByPhoneAsc()"></i>
+                  <i class="fa-solid fa-play" onclick="sortByPhoneDesc()"></i>
+                </div>
+              </label>
+              <div class="col-6">
+                <input type="number" class="form-control" id="phoneFilter" oninput="handleFilterDebtor()" />
+              </div>
+            </div>
+            <div class="row mt-3">
+              <label class="col-6 col-form-label">
+                Email
+                <div class="sortDebtor">
+                  <i class="fa-solid fa-play" onclick="sortByEmailAsc()"></i>
+                  <i class="fa-solid fa-play" onclick="sortByEmailDesc()"></i>
+                </div>
+              </label>
+              <div class="col-6">
+                <input type="number" class="form-control" id="emailFilter" oninput="handleFilterDebtor()" />
+              </div>
+            </div>
+            <div class="row mt-3">
+              <label class="col-6 col-form-label">
+                TotalDebt
+                <div class="sortDebtor">
+                  <i class="fa-solid fa-play" onclick="sortByTotalDebtsAsc()"></i>
+                  <i class="fa-solid fa-play" onclick="sortByTotalDebtsDesc()"></i>
+                </div>
+              </label>
+              <div class="col-6">
+                <input type="number" class="form-control" placeholder="from" id="minMonney"
+                  oninput="handleFilterDebtor()" />
+                <input type="number" class="form-control" placeholder="to" id="maxMonney"
+                  oninput="handleFilterDebtor()" />
+              </div>
+            </div>
+            <div class="row mt-3">
+              <label class="col-6 col-form-label">
+                CreateAt
+                <div class="sortDebtor">
+                  <i class="fa-solid fa-play" onclick="sortByCreateAtAsc()"></i>
+                  <i class="fa-solid fa-play chooseSortDebtor" onclick="sortByCreateAtDesc()"></i>
+                </div>
+              </label>
+              <div class="col-6">
+                <input type="datetime-local" class="form-control" id="minCreateAt" onchange="handleFilterDebtor()" />
+                <input type="datetime-local" class="form-control" id="maxCreateAt" onchange="handleFilterDebtor()" />
+              </div>
+            </div>
+            <div class="row mt-3">
+              <label class="col-6 col-form-label">
+                updateAt
+                <div class="sortDebtor">
+                  <i class="fa-solid fa-play" onclick="sortByUpdateAtAsc()"></i>
+                  <i class="fa-solid fa-play" onclick="sortByUpdateAtDesc()"></i>
+                </div>
+              </label>
+              <div class="col-6">
+                <input type="datetime-local" class="form-control" id="minUpdateAt" onchange="handleFilterDebtor()" />
+                <input type="datetime-local" class="form-control" id="maxUpdateAt" onchange="handleFilterDebtor()" />
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="col justify-content-center">
-          <span>Page
-            <input type="number" id="currentPage" value="1" onchange="choosePageDebtor()" />/<span id="pages"></span>
-          </span>
-          <select id="perPage" onchange="handleFilterDebtor()">
-            <option value="6">6 record</option>
-            <option value="12">12 record</option>
-            <option value="60">60 record</option>
-          </select>
-        </div>
-        <div class="col-sm-4 justify-content-center">
-          <button class="btn btn-light" onclick="nextPageDebtor()" id="nextPage">Next</button>
+        <div class="col-lg-9">
+          <div class="body" style="min-height: 525px; max-height: 525px;">
+            <div class="card-links">
+              <div class="row cards"> <h5 class="center"></h5>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="row">
+              <div class="col justify-content-center">
+                <button class="btn btn-light" onclick="prevPageDebtor()" id="prevPage" disabled>Previous</button>
+              </div>
+              <div class="col-5 justify-content-center">
+                <span>Page
+                  <input type="number" id="currentPage" value="1" onchange="choosePageDebtor()" />/<span
+                    id="pages"></span>
+                </span>
+                <select id="perPage" onchange="handleFilterDebtor()">
+                  <option value="6">6 record</option>
+                  <option value="12">12 record</option>
+                  <option value="60">60 record</option>
+                </select>
+              </div>
+              <div class="col justify-content-center">
+                <button class="btn btn-light" onclick="nextPageDebtor()" id="nextPage">Next</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -157,7 +157,7 @@
               <div class="form-group row">
                 <label class="col-sm-3 col-form-label">Full name (*)</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="fullname">
+                  <input type="text" class="form-control" id="name">
                 </div>
               </div>
               <div class="form-group row">

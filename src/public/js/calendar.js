@@ -18,12 +18,14 @@ function calendarMonth() {
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `${window.location.origin}/calendar/showAll`);
     xhr.onload = function () {
+      var response = JSON.parse(xhr.responseText);
       if (xhr.status === 200) {
-        var response = JSON.parse(xhr.responseText);
         let data = response.data;
         showCalendar(data, date);
         showEventDetail();
-      }
+      } else {
+        handleNotification(response.message);
+      };
     };
     xhr.send();
   }
@@ -163,12 +165,14 @@ function calendarMonth() {
       xhr.open("POST", `${window.location.origin}/calendar/add`, true);
       xhr.setRequestHeader("Content-Type", "application/json");
       xhr.onload = function () {
+        var response = JSON.parse(xhr.responseText);
         if (xhr.status === 200) {
           handleNotification("Thêm thông tin sự kiện thành công!");
-          var response = JSON.parse(xhr.responseText);
           let data = response.data;
           showCalendar(data, date);
           showEventDetail();
+        } else {
+          handleNotification(response.message);
         };
       };
       xhr.send(JSON.stringify(data));

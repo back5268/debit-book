@@ -37,10 +37,11 @@ function showTrash(res, next, slug, options, perPage, page, sort) {
                 .catch(next);
         })
         .catch(next);
-}
+};
 
 class TrashController {
 
+    // [GET] /finance/trash
     render(req, res, next) {
         if (req.session.user) {
             const user = req.session.user;
@@ -53,8 +54,9 @@ class TrashController {
         } else {
             res.render('form/login');
         }
-    }
+    };
 
+    // [GET] /finance/trash/:slug
     show(req, res, next) {
         let options = {};
         options.note = req.query.note;
@@ -75,20 +77,22 @@ class TrashController {
         let sort = req.query.sort || 12;
         const { slug } = req.params;
         showTrash(res, next, slug, options, perPage, page, sort);
-    }
+    };
 
+    // [POST] /finance/trash/restore
     restore(req, res, next) {
         let options = {};
         let perPage = req.query.perPage || 5;
         let page = req.query.page || 1;
-        let sort = req.query.sort || 10;
+        let sort = req.query.sort || 12;
         Debt.findOneAndUpdate({ _id: req.body.debtId }, { isDelete: false, deleteAt: null })
             .then(data => {
                 let debt = data;
                 Debtor.find({ _id: debt.debtorId })
                     .then(data => {
                         let totalDebts = totalDebt(debt, data[0].totalDebts);
-                        Debtor.findOneAndUpdate({ _id: debt.debtorId }, { totalDebts, updateAt: Date.now() })
+                        let updateDescription = 'Khôi phục khoản nợ';
+                        Debtor.findOneAndUpdate({ _id: debt.debtorId }, { totalDebts, updateAt: Date.now(), updateDescription })
                             .then(() => {
                                 showTrash(res, next, data[0].slug, options, perPage, page, sort);
                             })
@@ -97,8 +101,8 @@ class TrashController {
                     .catch(next);
             })
             .catch(next);
-    }
+    };
 
-}
+};
 
 module.exports = new TrashController;

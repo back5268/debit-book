@@ -3,6 +3,7 @@ const { sortUser, formatOptionsUser } = require('../../util/handleUser');
 
 class SystemController {
 
+    // [GET] /control
     render(req, res) {
         if (req.session.user) {
             const user = req.session.user;
@@ -16,6 +17,7 @@ class SystemController {
         }
     };
 
+    // [GET] /control/show
     show(req, res, next) {
         let options = {};
         options.account = req.query.account;

@@ -3,7 +3,7 @@
         <div class="card-header">
             <div class="header">
                 <div>
-                    <h5>{{debtor.fullname}}</h5>
+                    <h5>{{debtor.name}}</h5>
                     <p>Total: <span id="totalRecord"></span> Record(s)</p>
                 </div>
                 <ul class="nav nav-tabs">
@@ -59,8 +59,8 @@
                                         Ngày lập phiếu
                                     </th>
                                     <th scope="col" class="sortDebt">
-                                        <div class="sortDebtAsc chooseSortAsc" onclick="sortByCreateAtAsc()"></div>
-                                        <div class="sortDebtDesc" onclick="sortByCreateAtDesc()"></div>
+                                        <div class="sortDebtAsc" onclick="sortByCreateAtAsc()"></div>
+                                        <div class="sortDebtDesc chooseSortDesc" onclick="sortByCreateAtDesc()"></div>
                                         Thời gian tạo
                                     </th>
                                     <th scope="col" colspan="2" class="actionTableHeader">Action</th>
@@ -130,7 +130,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Full name (*)</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" id="fullname" disabled />
+                                <input type="text" class="form-control" id="name" disabled />
                             </div>
                         </div>
                         <div class="form-group row">
@@ -160,7 +160,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Cập nhật </label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" id="updateAt" disabled />
+                                <input type="text" class="form-control" id="update" disabled />
                             </div>
                         </div>
                         <div class="form-group row">

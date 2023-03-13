@@ -1,4 +1,4 @@
-var sort = 9;
+var sort = 12;
 var page = Number(document.querySelector('#currentPage').value);
 
 function showTrash(data, count, page) {
@@ -47,12 +47,14 @@ function trash() {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `${window.location.origin}/finance/trash/${slug}`);
     xhr.onload = function () {
+        var response = JSON.parse(xhr.responseText);
         if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
             let data = response.data;
             let count = response.count;
             let page = response.page;
             showTrash(data, count, page);
+        } else {
+            handleNotification(response.message);
         };
     };
     xhr.send();
@@ -68,12 +70,14 @@ function filterTrash(page, sort) {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `${window.location.origin}/finance/trash/${slug}/?note=${note}&type=${type}&minMonney=${minMonney}&maxMonney=${maxMonney}&minTimeDebt=${minTimeDebt}&maxTimeDebt=${maxTimeDebt}&minCreateAt=${minCreateAt}&maxCreateAt=${maxCreateAt}&minDeleteAt=${minDeleteAt}&maxDeleteAt=${maxDeleteAt}&page=${page}&perPage=${perPage}&sort=${sort}`);
     xhr.onload = function () {
+        var response = JSON.parse(xhr.responseText);
         if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
             let data = response.data;
             let count = response.count;
             let page = response.page;
             showTrash(data, count, page);
+        } else {
+            handleNotification(response.message);
         };
     };
     xhr.send();
@@ -127,13 +131,15 @@ function restoreDebt() {
         xhr.open('POST', `${window.location.origin}/finance/trash/restore/?page=${page}&perPage=${perPage}&sort=${sort}`, true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onload = function () {
+            var response = JSON.parse(xhr.responseText);
             if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
                 handleNotification('Khôi phục khoản nợ thành công!');
                 let data = response.data;
                 let count = response.count;
                 let page = response.page;
                 showTrash(data, count, page);
+            } else {
+                handleNotification(response.message);
             };
         };
         xhr.send(JSON.stringify(data));

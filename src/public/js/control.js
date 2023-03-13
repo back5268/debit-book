@@ -14,7 +14,7 @@ function showControl(data, count, page) {
         row.insertCell().innerHTML = dateTimeHelper(lastLogin);
         let actionTable =  row.insertCell(); 
         actionTable.classList.add('actionTable');
-        actionTable.innerHTML = '';
+        actionTable.innerHTML = `<button type="button" style="width: 100%;" class="btn btn-info">Chi tiết</button>`;
     };
     formatPage(count, page);
 };
@@ -33,12 +33,14 @@ function control() {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `${window.location.origin}/control/show`);
     xhr.onload = function () {
+        var response = JSON.parse(xhr.responseText);
         if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
             let data = response.data;
             let count = response.count;
             let page = response.page;
             showControl(data, count, page);
+        } else {
+            handleNotification(response.message);
         };
     };
     xhr.send();
@@ -50,12 +52,14 @@ function filterControl(page, sort) {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `${window.location.origin}/control/show/?account=${account}&email=${email}&minCreateAt=${minCreateAt}&maxCreateAt=${maxCreateAt}&minLastLogin=${minLastLogin}&maxLastLogin=${maxLastLogin}&page=${page}&perPage=${perPage}&sort=${sort}`);
     xhr.onload = function () {
+        var response = JSON.parse(xhr.responseText);
         if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
             let data = response.data;
             let count = response.count;
             let page = response.page;
             showControl(data, count, page);
+        } else {
+            handleNotification(response.message);
         };
     };
     xhr.send();

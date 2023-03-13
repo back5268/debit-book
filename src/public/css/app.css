@@ -308,7 +308,8 @@
   left: 224px;
   width: calc(100% - 224px);
   transition: all 0.5s ease;
-  height: 95vh; }
+  height: fit-content;
+  min-height: calc(100vh - 50px); }
 
 .sidebar.closes ~ .app-content {
   left: 60px;
@@ -360,43 +361,17 @@
   width: 100%;
   min-height: 70vh;
   border-radius: 32px; }
+  .home #calendar .card-header {
+    height: 68px; }
   .home #calendar button {
     min-height: 40px; }
   .home #calendar a {
     text-decoration: none; }
-  .home #calendar .view-mode {
-    width: 270px;
-    height: 40px;
-    border-radius: 6px;
-    display: flex;
-    background-color: #3a4060; }
-    .home #calendar .view-mode .nav {
-      border: none;
-      width: 100%; }
-      .home #calendar .view-mode .nav .nav-item {
-        width: 33%;
-        background-color: #3a4060;
-        height: 40px;
-        color: #fff;
-        border-radius: 6px; }
-        .home #calendar .view-mode .nav .nav-item a {
-          color: #fff;
-          height: 100%;
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center; }
-      .home #calendar .view-mode .nav .active {
-        background-color: #5a6085;
-        color: #fff;
-        border-color: #5a6085;
-        height: 40px;
-        border-radius: 6px; }
-    .home #calendar .view-mode .choose {
-      background-color: #5a6085; }
+  .home #calendar .nav-link {
+    margin-bottom: -4px;
+    padding: 12px; }
   .home #calendar .card-body {
     padding: 16px;
-    padding-bottom: 24px;
     height: fit-content; }
     .home #calendar .card-body .header-calendar {
       display: flex;
@@ -452,20 +427,20 @@
       display: flex; }
       .home #calendar .body-calendar .week-days .week-day {
         width: calc(100% / 7);
-        height: 60px;
+        height: 52px;
         border: 1px solid #c7d5e6;
         display: flex;
         justify-content: center;
         align-items: center;
         font-size: 16px;
-        font-weight: 600; }
+        font-weight: 800; }
     .home #calendar .body-calendar .days {
       display: flex;
       flex-wrap: wrap;
-      height: 480px; }
+      height: 420px; }
       .home #calendar .body-calendar .days .day {
         width: calc(100% / 7);
-        height: 80px;
+        height: 70px;
         border: 1px solid #c7d5e6;
         text-align: right; }
         .home #calendar .body-calendar .days .day button {
@@ -476,12 +451,11 @@
           border: none;
           cursor: pointer;
           text-align: right;
-          padding-bottom: 60px;
+          padding-bottom: 40px;
           padding-top: 4px;
           padding-right: 8px; }
         .home #calendar .body-calendar .days .day button:focus {
-          border: none;
-          box-shadow: rgba(3, 102, 214, 0.5) 5px 5px 5px 5px; }
+          border: none; }
       .home #calendar .body-calendar .days .next-date,
       .home #calendar .body-calendar .days .prev-date {
         color: #c7d5e6;
@@ -494,7 +468,7 @@
     height: 100%;
     width: calc(100%/8); }
     .home #calendar #week .times .time {
-      height: 45px;
+      height: 48px;
       width: 100%;
       border: 1px solid #c7d5e6;
       align-items: center;
@@ -504,8 +478,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 25%;
-    margin: 16px;
+    padding: 0 25%;
+    height: 40px;
+    padding-top: 8px;
+    margin-bottom: 24px;
     margin-top: 0; }
     .home #calendar #week .header i {
       color: #1e1e2d;
@@ -525,7 +501,7 @@
     flex-wrap: wrap; }
   .home #calendar #week .weekDay {
     width: calc(100% / 7);
-    height: 45px;
+    height: 48px;
     padding: 10px;
     box-sizing: border-box;
     text-align: center;
@@ -534,8 +510,7 @@
     justify-content: center;
     border: 1px solid #c7d5e6; }
   .home #calendar #week .current-day {
-    background-color: #008cba;
-    color: #fff; }
+    background-color: #c7d5e6 !important; }
   .home #calendar #week .events {
     margin-top: 10px;
     font-size: 14px;
@@ -565,7 +540,7 @@
         display: block; }
 
 .event {
-  border-bottom: 20px solid #008cba !important; }
+  border-bottom: 12px solid #17a2b8 !important; }
 
 .card-group .card-header {
   display: flex;
@@ -607,6 +582,34 @@
 .card-group .card-body {
   padding: 12px;
   padding-bottom: 0; }
+  .card-group .card-body .filterDebtor {
+    border: 1px solid #c7d5e6;
+    padding: 16px;
+    border-radius: 8px;
+    height: fit-content;
+    background-color: #f5f5f5; }
+    .card-group .card-body .filterDebtor button {
+      width: 100%;
+      min-height: 40px; }
+    .card-group .card-body .filterDebtor .row {
+      align-items: center; }
+    .card-group .card-body .filterDebtor label {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: end; }
+      .card-group .card-body .filterDebtor label .sortDebtor {
+        display: flex;
+        flex-direction: column; }
+        .card-group .card-body .filterDebtor label .sortDebtor i {
+          color: #9196b1;
+          cursor: pointer;
+          font-size: 12px;
+          transform: rotate(90deg); }
+        .card-group .card-body .filterDebtor label .sortDebtor i:first-child {
+          transform: rotate(-90deg); }
+        .card-group .card-body .filterDebtor label .sortDebtor .chooseSortDebtor {
+          color: #17a2b8; }
   .card-group .card-body table {
     width: 100%; }
     .card-group .card-body table thead {
@@ -616,7 +619,8 @@
       top: 0;
       z-index: 10;
       box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px; }
-    .card-group .card-body table .actionTable, .card-group .card-body table .actionTableHeader {
+    .card-group .card-body table .actionTable,
+    .card-group .card-body table .actionTableHeader {
       position: sticky;
       right: 0;
       z-index: 5;
@@ -624,7 +628,8 @@
     .card-group .card-body table .actionTable {
       background-color: #fff;
       display: flex;
-      gap: 16px; }
+      gap: 16px;
+      align-items: center; }
     .card-group .card-body table th,
     .card-group .card-body table td {
       min-width: 100px;
@@ -663,31 +668,12 @@
     .card-group .card-body table .chooseSortDesc {
       border-bottom: 4px solid #17a2b8; }
   .card-group .card-body .body {
-    min-height: 70vh;
-    max-height: 70vh;
+    min-height: 510px;
+    max-height: 510px;
     position: relative;
     display: flex;
     flex-direction: column;
     overflow-y: scroll; }
-    .card-group .card-body .body .filterDebtor .row {
-      align-items: center; }
-    .card-group .card-body .body .filterDebtor label {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      justify-content: end; }
-      .card-group .card-body .body .filterDebtor label .sortDebtor {
-        display: flex;
-        flex-direction: column; }
-        .card-group .card-body .body .filterDebtor label .sortDebtor i {
-          color: #9196b1;
-          cursor: pointer;
-          font-size: 12px;
-          transform: rotate(90deg); }
-        .card-group .card-body .body .filterDebtor label .sortDebtor i:first-child {
-          transform: rotate(-90deg); }
-        .card-group .card-body .body .filterDebtor label .sortDebtor .chooseSortDebtor {
-          color: #17a2b8; }
   .card-group .card-body .center {
     height: 100%;
     width: 100%;
@@ -713,7 +699,8 @@
         max-height: 180px;
         color: #fff; }
         .card-group .card-body .card-links .card-link .card-body .card-text {
-          color: #fff; }
+          color: #fff;
+          font-size: 14px; }
       .card-group .card-body .card-links .card-link .card-footer {
         display: flex;
         justify-content: space-between;
@@ -733,18 +720,6 @@
       display: none; }
     .card-group .card-body .card-links .card-link:hover a {
       text-decoration: none; }
-  .card-group .card-body .filterDebtor {
-    width: 100%;
-    border: 1px solid #c7d5e6;
-    min-height: 68vh;
-    max-height: 68vh;
-    padding: 0 16px;
-    border-radius: 8px;
-    min-height: 70vh; }
-    .card-group .card-body .filterDebtor button {
-      width: 100%;
-      margin: 0 16px;
-      min-height: 40px; }
   .card-group .card-body label {
     text-align: right;
     font-weight: 500; }
@@ -761,7 +736,7 @@
 
 .card-group .card-footer {
   padding: 4px 8px;
-  box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px; }
+  border: 1px solid #c7d5e6; }
   .card-group .card-footer .justify-content-center {
     display: flex;
     align-items: center; }
@@ -779,24 +754,10 @@
   color: #fff;
   margin-right: 4px; }
 
-.modal-dialog {
-  width: 60vw;
-  margin: 16px; }
-  .modal-dialog label {
-    width: 100%; }
-    .modal-dialog label .debt {
-      text-align: center;
-      background-color: #c8ced3;
-      color: #fff; }
-    .modal-dialog label .debts {
-      cursor: pointer; }
-    .modal-dialog label .choose {
-      background-color: #17a2b8; }
-
-@media (min-width: 576px) {
-  .modal-dialog {
-    max-width: none;
-    margin: 32px auto; } }
+.nameDebtor {
+  margin: 0;
+  margin-bottom: 12px;
+  margin-left: 16px; }
 
 .icon {
   font-size: 20px; }
@@ -876,3 +837,22 @@
 .drag-content {
   padding: 10px;
   color: #fff; }
+
+.modal-dialog {
+  width: 60vw;
+  margin: 16px; }
+  .modal-dialog label {
+    width: 100%; }
+    .modal-dialog label .debt {
+      text-align: center;
+      background-color: #c8ced3;
+      color: #fff; }
+    .modal-dialog label .debts {
+      cursor: pointer; }
+    .modal-dialog label .choose {
+      background-color: #17a2b8; }
+
+@media (min-width: 576px) {
+  .modal-dialog {
+    max-width: none;
+    margin: 32px auto; } }

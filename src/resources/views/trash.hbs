@@ -20,12 +20,12 @@
           <label for="#nameDebtor">Tên người nợ</label>
           <select id="nameDebtor" onchange="handlefilterTrash()">
             {{#each data}}
-            <option value="{{ this.slug }}"> {{ this.fullname }} </option>
+            <option value="{{ this.slug }}"> {{ this.name }} </option>
             {{/each}}
           </select>
         </div>
       </div>
-      <div class="body">
+      <div class="body" style="min-height: 470px; max-height: 470px;">
         <table class="table table-bordered">
           <thead>
             <tr>
@@ -56,8 +56,8 @@
                 Thời gian tạo
               </th>
               <th scope="col" class="sortDebt">
-                <div class="sortDebtAsc chooseSortAsc" onclick="sortByDeleteAtAsc()"></div>
-                <div class="sortDebtDesc" onclick="sortByDeleteAtDesc()"></div>
+                <div class="sortDebtAsc" onclick="sortByDeleteAtAsc()"></div>
+                <div class="sortDebtDesc chooseSortDesc" onclick="sortByDeleteAtDesc()"></div>
                 Thời gian xóa
               </th>
               <th scope="col" class="actionTableHeader">Action</th>

@@ -8,7 +8,7 @@ function showDebtor(res, next, user, options, perPage, page, sort) {
     page = Number(page);
     let sortCriteria = sortDebtor(Number(sort));
     Debtor.find({
-        createBy: user._id, fullname: { $regex: options.name }, address: { $regex: options.address },
+        createBy: user._id, name: { $regex: options.name }, address: { $regex: options.address },
         email: { $regex: options.email }, phone: { $regex: options.phone },
         totalDebts: { $gte: options.minMonney, $lte: options.maxMonney },
         createAt: { $gte: options.minCreateAt, $lte: options.maxCreateAt },
@@ -20,7 +20,7 @@ function showDebtor(res, next, user, options, perPage, page, sort) {
         .then(data => {
             data = data.map(d => d.toObject());
             Debtor.countDocuments({
-                createBy: user._id, fullname: { $regex: options.name }, address: { $regex: options.address },
+                createBy: user._id, name: { $regex: options.name }, address: { $regex: options.address },
                 email: { $regex: options.email }, phone: { $regex: options.phone },
                 totalDebts: { $gte: options.minMonney, $lte: options.maxMonney },
                 createAt: { $gte: options.minCreateAt, $lte: options.maxCreateAt },
@@ -36,6 +36,7 @@ function showDebtor(res, next, user, options, perPage, page, sort) {
 
 class DebtorController {
 
+    // [GET] /finance/debtor
     render(req, res) {
         if (req.session.user) {
             const user = req.session.user;
@@ -45,6 +46,7 @@ class DebtorController {
         };
     };
 
+    // [GET] /finance/debtor/show
     show(req, res, next) {
         let options = {};
         options.name = req.query.name;
@@ -64,6 +66,7 @@ class DebtorController {
         showDebtor(res, next, user, options, perPage, page, sort);
     };
 
+    // [POST] /finance/debtor/add
     add(req, res, next) {
         const user = req.session.user;
         let debtor = req.body;
@@ -73,8 +76,8 @@ class DebtorController {
         let perPage = req.query.perPage || 6;
         let page = req.query.page || 1;
         let sort = req.query.sort || 12;
-        if (debtor.fullname != '') {
-            Debtor.find({ fullname: debtor.fullname, createBy: user._id })
+        if (debtor.name != '') {
+            Debtor.find({ name: debtor.name, createBy: user._id })
                 .then(data => {
                     if (data[0]) {
                         res.status(403).json({ message: 'Tên người nợ đã tồn tại!' });
@@ -93,6 +96,7 @@ class DebtorController {
         }
     }
 
+    // [GET] /finance/debtor/:slug
     info(req, res, next) {
         const { slug } = req.params;
         Debtor.find({ slug })
@@ -103,6 +107,7 @@ class DebtorController {
             .catch(next);
     }
 
+    // [POST] /finance/debtor/update
     update(req, res, next) {
         let { debtorId, email, phone, address } = req.body;
         Debtor.findByIdAndUpdate({ _id: debtorId }, { email, phone, address })

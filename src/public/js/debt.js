@@ -1,4 +1,4 @@
-var sort = 9;
+var sort = 10;
 var page = Number(document.querySelector('#currentPage').value);
 var perPage = Number(document.getElementById('perPage').value);
 
@@ -46,12 +46,14 @@ function debt() {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `${window.location.origin}/finance/debt/show/${slug}`);
     xhr.onload = function () {
+        var response = JSON.parse(xhr.responseText);
         if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
             let data = response.data;
             let count = response.count;
             let page = response.page;
             showDebt(data, count, page);
+        } else {
+            handleNotification(response.message);
         };
     };
     xhr.send();
@@ -67,12 +69,14 @@ function filterDebt(page, sort) {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `${window.location.origin}/finance/debt/show/${slug}/?note=${note}&type=${type}&minMonney=${minMonney}&maxMonney=${maxMonney}&minTimeDebt=${minTimeDebt}&maxTimeDebt=${maxTimeDebt}&minCreateAt=${minCreateAt}&maxCreateAt=${maxCreateAt}&perPage=${perPage}&page=${page}&sort=${sort}`);
     xhr.onload = function () {
+        var response = JSON.parse(xhr.responseText);
         if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
             let data = response.data;
             let count = response.count;
             let page = response.page;
             showDebt(data, count, page);
+        } else {
+            handleNotification(response.message);
         };
     };
     xhr.send();
@@ -171,13 +175,15 @@ function addDebt() {
     xhr.open('POST', `${window.location.origin}/finance/debt/add/?page=${page}&perPage=${perPage}&sort=${sort}`, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function () {
+        var response = JSON.parse(xhr.responseText);
         if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
             handleNotification('Thêm thông tin khoản nợ thành công!');
             let data = response.data;
             let count = response.count;
             let page = response.page;
             showDebt(data, count, page);
+        } else {
+            handleNotification(response.message);
         };
     };
     xhr.send(JSON.stringify(data));
@@ -195,14 +201,16 @@ function deleteDebt() {
         xhr.open('POST', `${window.location.origin}/finance/debt/delete/?page=${page}&perPage=${perPage}&sort=${sort}`, true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onload = function () {
+            var response = JSON.parse(xhr.responseText);
             if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
                 handleNotification('Xóa thông tin khoản nợ thành công!');
                 let data = response.data;
                 let count = response.count;
                 let page = response.page;
                 showDebt(data, count, page);
-            }
+            } else {
+                handleNotification(response.message);
+            };
         };
         xhr.send(JSON.stringify(data));
     });
@@ -239,17 +247,23 @@ function formatInfo() {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `${window.location.origin}/finance/debtor/${slug}`);
     xhr.onload = function () {
+        var response = JSON.parse(xhr.responseText);
         if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
             let data = response.data;
-            document.querySelector('#fullname').value = data.fullname;
+            let update = dateTimeHelper(data.updateAt);
+            if (data.updateDescription.length > 1) {
+                update = data.updateDescription + ' vào ' + update;
+            }
+            document.querySelector('#name').value = data.name;
             document.querySelector('#email').value = data.email;
             document.querySelector('#phone').value = data.phone;
             document.querySelector('#address').value = data.address;
             document.querySelector('#createAt').value = dateTimeHelper(data.createAt);
-            document.querySelector('#updateAt').value = dateTimeHelper(data.updateAt);
+            document.querySelector('#update').value = update;
             document.querySelector('#totalDebts').value = formatMonney(data.totalDebts);
-            document.querySelector('#textTotalDebts').innerHTML = convertMoneyToString(Math.abs(data.totalDebts));
+            document.querySelector('#textTotalDebts').innerHTML = convertMoneyToString(data.totalDebts);
+        } else {
+            handleNotification(response.message);
         };
     };
     xhr.send();
@@ -266,10 +280,8 @@ function updateDebtor() {
     xhr.open('POST', `${window.location.origin}/finance/debtor/update`, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function () {
-        if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
-            handleNotification(response.message);
-        };
+        var response = JSON.parse(xhr.responseText);
+        handleNotification(response.message);
     };
     xhr.send(JSON.stringify(data));
 };

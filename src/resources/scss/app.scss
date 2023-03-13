@@ -142,3 +142,33 @@
   padding: 10px;
   color: #fff;
 }
+
+.modal-dialog {
+  width: 60vw;
+  margin: 16px;
+
+  label {
+    width: 100%;
+
+    .debt {
+      text-align: center;
+      background-color: #c8ced3;
+      color: #fff;
+    }
+
+    .debts {
+      cursor: pointer;
+    }
+
+    .choose {
+      background-color: #17a2b8;
+    }
+  }
+}
+
+@media (min-width: 576px) {
+  .modal-dialog {
+    max-width: none;
+    margin: 32px auto;
+  }
+}

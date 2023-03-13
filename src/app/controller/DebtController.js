@@ -36,10 +36,11 @@ function showDebt(res, next, slug, options, perPage, page, sort) {
                 .catch(next);
         })
         .catch(next);
-}
+};
 
 class DebtController {
 
+    // [GET] /finance/debt/:slug
     render(req, res, next) {
         if (req.session.user) {
             const user = req.session.user;
@@ -52,9 +53,10 @@ class DebtController {
                 .catch(next);
         } else {
             res.render('form/login');
-        }
-    }
+        };
+    };
 
+    // [GET] /finance/debt/show/:slug
     show(req, res, next) {
         let options = {};
         options.note = req.query.note;
@@ -73,8 +75,9 @@ class DebtController {
         let sort = req.query.sort || 10;
         const { slug } = req.params;
         showDebt(res, next, slug, options, perPage, page, sort);
-    }
+    };
 
+    // [POST] /finance/debt/add
     add(req, res, next) {
         let debt = req.body;
         let options = {};
@@ -93,7 +96,8 @@ class DebtController {
                     Debtor.find({ _id: debt.debtorId })
                         .then(data => {
                             let totalDebts = totalDebt(debt, data[0].totalDebts);
-                            Debtor.findOneAndUpdate({ _id: debt.debtorId }, { totalDebts, updateAt: Date.now() })
+                            let updateDescription = 'Thêm khoản nợ';
+                            Debtor.findOneAndUpdate({ _id: debt.debtorId }, { totalDebts, updateAt: Date.now(), updateDescription })
                                 .then(() => {
                                     showDebt(res, next, data[0].slug, options, perPage, page, sort);
                                 })
@@ -104,9 +108,10 @@ class DebtController {
                 .catch(next);
         } else {
             res.status(403).json({ message: 'Vui lòng nhập giá trị lớn hơn 0!' });
-        }
-    }
+        };
+    };
 
+    // [POST] /finance/debt/delete
     delete(req, res, next) {
         let options = {};
         let perPage = req.query.perPage || 5;
@@ -119,7 +124,8 @@ class DebtController {
                 Debtor.find({ _id: debt.debtorId })
                     .then(data => {
                         let totalDebts = totalDebt(debt, data[0].totalDebts);
-                        Debtor.findOneAndUpdate({ _id: debt.debtorId }, { totalDebts, updateAt: Date.now() })
+                        let updateDescription = 'Xóa khoản nợ';
+                        Debtor.findOneAndUpdate({ _id: debt.debtorId }, { totalDebts, updateAt: Date.now(), updateDescription })
                             .then(() => {
                                 showDebt(res, next, data[0].slug, options, perPage, page, sort);
                             })
@@ -128,8 +134,8 @@ class DebtController {
                     .catch(next);
             })
             .catch(next);
-    }
+    };
 
-}
+};
 
 module.exports = new DebtController;

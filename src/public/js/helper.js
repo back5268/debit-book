@@ -52,8 +52,13 @@ function convertMoneyToString(amount) {
 
         words = words.charAt(0).toUpperCase() + words.slice(1);
         words = words.trim() + ' đồng.';
-    } else {
-        words = 'Undefined'
+    };
+    if (amount == 0) {
+        words = 'Không đồng'
+    };
+    if (amount < 0) {
+        words = convertMoneyToString(Math.abs(amount));
+        words = 'Âm ' + words;
     };
     return words;
 };
@@ -72,7 +77,7 @@ function dateTimeHelper(time) {
     let seconds = date.getSeconds();
     seconds = seconds < 10 ? '0' + seconds : seconds;
 
-    return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 };
 
 function formatMonney(num) {

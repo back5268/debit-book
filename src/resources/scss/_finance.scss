@@ -57,6 +57,44 @@
     padding: 12px;
     padding-bottom: 0;
 
+    .filterDebtor {
+      border: 1px solid #c7d5e6;
+      padding: 16px;
+      border-radius: 8px;
+      height: fit-content;
+      background-color: #f5f5f5;
+
+      button {
+        width: 100%;
+        min-height: 40px;
+      }
+      .row {
+        align-items: center;
+      }
+      label {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        justify-content: end;
+        .sortDebtor {
+          display: flex;
+          flex-direction: column;
+          i {
+            color: #9196b1;
+            cursor: pointer;
+            font-size: 12px;
+            transform: rotate(90deg);
+          }
+          i:first-child {
+            transform: rotate(-90deg);
+          }
+          .chooseSortDebtor {
+            color: #17a2b8;
+          }
+        }
+      }
+    }
+
     table {
       width: 100%;
 
@@ -69,7 +107,8 @@
         box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
       }
 
-      .actionTable, .actionTableHeader {
+      .actionTable,
+      .actionTableHeader {
         position: sticky;
         right: 0;
         z-index: 5;
@@ -80,6 +119,7 @@
         background-color: #fff;
         display: flex;
         gap: 16px;
+        align-items: center;
       }
 
       th,
@@ -139,40 +179,12 @@
     }
 
     .body {
-      min-height: 70vh;
-      max-height: 70vh;
+      min-height: 510px;
+      max-height: 510px;
       position: relative;
       display: flex;
       flex-direction: column;
       overflow-y: scroll;
-
-      .filterDebtor {
-        .row {
-          align-items: center;
-        }
-        label {
-          display: flex;
-          gap: 12px;
-          align-items: center;
-          justify-content: end;
-          .sortDebtor {
-            display: flex;
-            flex-direction: column;
-            i {
-              color: #9196b1;
-              cursor: pointer;
-              font-size: 12px;
-              transform: rotate(90deg);
-            }
-            i:first-child {
-              transform: rotate(-90deg);
-            }
-            .chooseSortDebtor {
-              color: #17a2b8;
-            }
-          }
-        }
-      }
     }
 
     .center {
@@ -208,6 +220,7 @@
 
           .card-text {
             color: #fff;
+            font-size: 14px;
           }
         }
 
@@ -248,23 +261,7 @@
         }
       }
     }
-
-    .filterDebtor {
-      width: 100%;
-      border: 1px solid #c7d5e6;
-      min-height: 68vh;
-      max-height: 68vh;
-      padding: 0 16px;
-      border-radius: 8px;
-      min-height: 70vh;
-
-      button {
-        width: 100%;
-        margin: 0 16px;
-        min-height: 40px;
-      }
-    }
-
+    
     label {
       text-align: right;
       font-weight: 500;
@@ -286,8 +283,7 @@
 
   .card-footer {
     padding: 4px 8px;
-    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px,
-      rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    border: 1px solid #c7d5e6;
 
     .justify-content-center {
       display: flex;
@@ -314,32 +310,8 @@
   }
 }
 
-.modal-dialog {
-  width: 60vw;
-  margin: 16px;
-
-  label {
-    width: 100%;
-
-    .debt {
-      text-align: center;
-      background-color: #c8ced3;
-      color: #fff;
-    }
-
-    .debts {
-      cursor: pointer;
-    }
-
-    .choose {
-      background-color: #17a2b8;
-    }
-  }
-}
-
-@media (min-width: 576px) {
-  .modal-dialog {
-    max-width: none;
-    margin: 32px auto;
-  }
+.nameDebtor {
+  margin: 0;
+  margin-bottom: 12px;
+  margin-left: 16px;
 }
