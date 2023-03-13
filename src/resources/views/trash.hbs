@@ -18,7 +18,7 @@
       <div class="row">
         <div class="nameDebtor">
           <label for="#nameDebtor">Tên người nợ</label>
-          <select id="nameDebtor" onchange="handleTrash()">
+          <select id="nameDebtor" onchange="handlefilterTrash()">
             {{#each data}}
             <option value="{{ this.slug }}"> {{ this.fullname }} </option>
             {{/each}}
@@ -148,32 +148,6 @@
   document.addEventListener('DOMContentLoaded', function () {
     trash();
     restoreDebt();
+    handleSort();
   });
-</script>
-
-<script>
-  const sortDebtAsc = document.querySelectorAll('.sortDebtAsc');
-  const sortDebtDesc = document.querySelectorAll('.sortDebtDesc');
-  sortDebtAsc.forEach(sa => {
-    sa.addEventListener('click', e => {
-      sortDebtAsc.forEach(sa => {
-        sa.classList.remove('chooseSortAsc');
-      })
-      sortDebtDesc.forEach(sd => {
-        sd.classList.remove('chooseSortDesc');
-      })
-      e.target.classList.add('chooseSortAsc');
-    })
-  })
-  sortDebtDesc.forEach(sd => {
-    sd.addEventListener('click', e => {
-      sortDebtAsc.forEach(sa => {
-        sa.classList.remove('chooseSortAsc');
-      })
-      sortDebtDesc.forEach(sd => {
-        sd.classList.remove('chooseSortDesc');
-      })
-      e.target.classList.add('chooseSortDesc');
-    })
-  })
 </script>

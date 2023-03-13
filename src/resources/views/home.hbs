@@ -7,46 +7,90 @@
             <h5>My Calendar</h5>
             <p>Preview monthly events</p>
           </div>
-          <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addEvent">
-            <i class="fa-solid fa-plus"></i>
-            Thêm sự kiện
-          </button>
+          <div class="view-mode">
+            <ul class="nav nav-tabs">
+              <li class="nav-item" class="mode choose">
+                <a class="active" data-toggle="tab" href="#month">Month</a>
+              </li>
+              <li class="nav-item" class="mode">
+                <a data-toggle="tab" href="#week">Week</a>
+              </li>
+              <li class="nav-item" class="mode">
+                <a data-toggle="tab" href="#list">List</a>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div class="card-body">
-          <div class="header-calendar">
-            <div class="today">
-              <div class="arrows">
-                <i class="fa-solid fa-angle-left arrow prev"></i>
-                <i class="fa-solid fa-angle-right arrow next"></i>
+        <div class="tab-content">
+          <div id="month" class="tab-pane active">
+            <div class="card-body">
+              <div class="header-calendar">
+                <div class="today">
+                  <div class="arrows">
+                    <i class="fa-solid fa-angle-left arrow prev"></i>
+                    <i class="fa-solid fa-angle-right arrow next"></i>
+                  </div>
+                  <a href="#today">
+                    <div class="title-today">Today</div>
+                  </a>
+                </div>
+                <div class="months"><span></span></div>
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addEvent">
+                  <i class="fa-solid fa-plus"></i>
+                  Thêm sự kiện
+                </button>
               </div>
-              <a href="#today">
-                <div class="title-today">Today</div>
-              </a>
-            </div>
-            <div class="months"><span></span></div>
-            <div class="view-mode">
-              <a href="#">
-                <div class="mode choose">Month</div>
-              </a>
-              <a href="#">
-                <div class="mode">Week</div>
-              </a>
-              <a href="#">
-                <div class="mode">List</div>
-              </a>
+              <div class="body-calendar">
+                <div class="week-days">
+                  <div class="week-day">Sun</div>
+                  <div class="week-day">Mon</div>
+                  <div class="week-day">Tue</div>
+                  <div class="week-day">Wed</div>
+                  <div class="week-day">Thu</div>
+                  <div class="week-day">Fri</div>
+                  <div class="week-day">Sat</div>
+                </div>
+                <div class="days"></div>
+              </div>
             </div>
           </div>
-          <div class="body-calendar">
-            <div class="week-days">
-              <div class="week-day">Sun</div>
-              <div class="week-day">Mon</div>
-              <div class="week-day">Tue</div>
-              <div class="week-day">Wed</div>
-              <div class="week-day">Thu</div>
-              <div class="week-day">Fri</div>
-              <div class="week-day">Sat</div>
+          <div id="week" class="tab-pane fade">
+            <div class="card-body">
+              <div class="header">
+                <div class="prevWeek"><i class="bx bx-chevron-left"></i></div>
+                <h2 class="titleWeek"></h2>
+                <div class="nextWeek"><i class="bx bx-chevron-right"></i></div>
+              </div>
+              <div class="body-calendar">
+                <div class="weekView">
+                  <div class="times">
+                    <div class="time"></div>
+                    <div class="time"></div>
+                    <div class="time">06:00 - 08:00</div>
+                    <div class="time">08:00 - 10:00</div>
+                    <div class="time">10:00 - 12:00</div>
+                    <div class="time">12:00 - 14:00</div>
+                    <div class="time">14:00 - 16:00</div>
+                    <div class="time">16:00 - 18:00</div>
+                    <div class="time">18:00 - 20:00</div>
+                    <div class="time">20:00 - 22:00</div>
+                  </div>
+                  <div style="width: 100%;">
+                    <div class="weekDays">
+                      <div class="weekDay">Sun</div>
+                      <div class="weekDay">Mon</div>
+                      <div class="weekDay">Tue</div>
+                      <div class="weekDay">Wed</div>
+                      <div class="weekDay">Thu</div>
+                      <div class="weekDay">Fri</div>
+                      <div class="weekDay">Sat</div>
+                    </div>
+                    <div class="weekDays"></div>
+                    <div class="weekDays"></div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="days"></div>
           </div>
         </div>
       </div>
@@ -68,8 +112,8 @@
             </div>
             <div class="card-body">
               <div class="showEvents">
+                <h5 class="center"></h5>
                 <div id="accordion">
-                    <h5 class="center"></h5>
                 </div>
               </div>
             </div>
@@ -145,36 +189,68 @@
 </div>
 
 <script src="/js/calendar.js"></script>
-{{!-- <script>
-  const element = document.querySelector('.drag-element'); let pos1 = 0, pos2 =
-    0, pos3 = 0, pos4 = 0;
-  element.querySelector('.drag-handle').addEventListener('mousedown',
-    dragMouseDown); function dragMouseDown(e) {
-      e = e || window.event;
-      e.preventDefault(); pos3 = e.clientX; pos4 = e.clientY; document.onmouseup =
-        closeDragElement; document.onmousemove = elementDrag;
-    } function
-    elementDrag(e) {
-    e = e || window.event; e.preventDefault(); pos1 = pos3 -
-      e.clientX; pos2 = pos4 - e.clientY; pos3 = e.clientX; pos4 = e.clientY;
-    element.style.top = (element.offsetTop - pos2) + "px"; element.style.left =
-      (element.offsetLeft - pos1) + "px";
-  } function closeDragElement() {
-    document.onmouseup = null; document.onmousemove = null;
-  }
-
-</script> --}}
-
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    calendar();
-    document.querySelector(".prev").addEventListener("click", () => {
-      date.setMonth(date.getMonth() - 1); calendar();
-    });
-    document.querySelector(".next").addEventListener("click", () => {
-      date.setMonth(date.getMonth() + 1); calendar();
-    });
-    addEvent();
-    showEvent();
+    calendarMonth();
+  });
+</script>
+
+<script>
+  const titleWeek = document.querySelector('.titleWeek');
+  const days = document.querySelectorAll('.weekDays')[1];
+  const eventWeeks = document.querySelectorAll('.weekDays')[2];
+
+  // Get current date
+  const currentDate = new Date();
+
+  function weekView() {
+    // Set titleWeek to current week range
+    const firstDayOfWeek = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - currentDate.getDay());
+    const lastDayOfWeek = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - currentDate.getDay() + 6);
+    titleWeek.textContent = `${firstDayOfWeek.toLocaleDateString()} - ${lastDayOfWeek.toLocaleDateString()}`;
+
+    // Remove existing days
+    days.innerHTML = '';
+    eventWeeks.innerHTML = '';
+
+    for (let j = 0; j < 56; j++) {
+      const eventWeek = document.createElement('div');
+      eventWeek.classList.add('weekDay');
+      eventWeek.textContent = '';
+      eventWeeks.appendChild(eventWeek);
+    };
+
+    // Generate days of the week
+    for (let i = 0; i < 7; i++) {
+      const day = document.createElement('div');
+      day.classList.add('weekDay');
+      const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - currentDate.getDay() + i);
+      if (date.getDate() === (new Date()).getDate() && currentDate.getMonth() === (new Date()).getMonth() && currentDate.getFullYear() === (new Date()).getFullYear()) {
+        day.classList.add('current-day');
+      }
+
+      days.appendChild(day);
+      day.textContent = date.getDate();
+
+      const events = document.createElement('ul');
+      events.classList.add('events');
+      day.appendChild(events);
+    };
+  }
+
+  weekView();
+
+  // Add event listener to prev button
+  const prevBtn = document.querySelector('.prevWeek');
+  prevBtn.addEventListener('click', () => {
+    currentDate.setDate(currentDate.getDate() - 7);
+    weekView();
+  });
+
+  // Add event listener to next button
+  const nextBtn = document.querySelector('.nextWeek');
+  nextBtn.addEventListener('click', () => {
+    currentDate.setDate(currentDate.getDate() + 7);
+    weekView();
   });
 </script>

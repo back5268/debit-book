@@ -364,9 +364,40 @@
     min-height: 40px; }
   .home #calendar a {
     text-decoration: none; }
+  .home #calendar .view-mode {
+    width: 270px;
+    height: 40px;
+    border-radius: 6px;
+    display: flex;
+    background-color: #3a4060; }
+    .home #calendar .view-mode .nav {
+      border: none;
+      width: 100%; }
+      .home #calendar .view-mode .nav .nav-item {
+        width: 33%;
+        background-color: #3a4060;
+        height: 40px;
+        color: #fff;
+        border-radius: 6px; }
+        .home #calendar .view-mode .nav .nav-item a {
+          color: #fff;
+          height: 100%;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center; }
+      .home #calendar .view-mode .nav .active {
+        background-color: #5a6085;
+        color: #fff;
+        border-color: #5a6085;
+        height: 40px;
+        border-radius: 6px; }
+    .home #calendar .view-mode .choose {
+      background-color: #5a6085; }
   .home #calendar .card-body {
     padding: 16px;
-    padding-bottom: 24px; }
+    padding-bottom: 24px;
+    height: fit-content; }
     .home #calendar .card-body .header-calendar {
       display: flex;
       justify-content: space-between;
@@ -413,65 +444,104 @@
         color: #1e1e2d;
         font-size: 24px;
         font-weight: 600; }
-      .home #calendar .card-body .header-calendar .view-mode {
-        width: 270px;
-        height: 40px;
-        border-radius: 6px;
+  .home #calendar .body-calendar {
+    border: 1px solid #c7d5e6;
+    border-radius: 6px;
+    text-align: center; }
+    .home #calendar .body-calendar .week-days {
+      display: flex; }
+      .home #calendar .body-calendar .week-days .week-day {
+        width: calc(100% / 7);
+        height: 60px;
+        border: 1px solid #c7d5e6;
         display: flex;
-        background-color: #3a4060; }
-        .home #calendar .card-body .header-calendar .view-mode .mode {
-          width: 90px;
-          height: 40px;
-          border-radius: 6px;
-          background-color: #3a4060;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          color: #fff; }
-        .home #calendar .card-body .header-calendar .view-mode .choose {
-          background-color: #5a6085; }
-    .home #calendar .card-body .body-calendar {
+        justify-content: center;
+        align-items: center;
+        font-size: 16px;
+        font-weight: 600; }
+    .home #calendar .body-calendar .days {
+      display: flex;
+      flex-wrap: wrap;
+      height: 480px; }
+      .home #calendar .body-calendar .days .day {
+        width: calc(100% / 7);
+        height: 80px;
+        border: 1px solid #c7d5e6;
+        text-align: right; }
+        .home #calendar .body-calendar .days .day button {
+          outline: none;
+          height: 100%;
+          width: 100%;
+          background-color: #fff;
+          border: none;
+          cursor: pointer;
+          text-align: right;
+          padding-bottom: 60px;
+          padding-top: 4px;
+          padding-right: 8px; }
+        .home #calendar .body-calendar .days .day button:focus {
+          border: none;
+          box-shadow: rgba(3, 102, 214, 0.5) 5px 5px 5px 5px; }
+      .home #calendar .body-calendar .days .next-date,
+      .home #calendar .body-calendar .days .prev-date {
+        color: #c7d5e6;
+        cursor: cell; }
+      .home #calendar .body-calendar .days #today {
+        background-color: #c7d5e6 !important; }
+  .home #calendar #week .weekView {
+    display: flex; }
+  .home #calendar #week .times {
+    height: 100%;
+    width: calc(100%/8); }
+    .home #calendar #week .times .time {
+      height: 45px;
+      width: 100%;
       border: 1px solid #c7d5e6;
-      border-radius: 6px; }
-      .home #calendar .card-body .body-calendar .week-days {
-        display: flex; }
-        .home #calendar .card-body .body-calendar .week-days .week-day {
-          width: calc(100% / 7);
-          height: 56px;
-          border: 1px solid #c7d5e6;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          font-size: 16px;
-          font-weight: 600; }
-      .home #calendar .card-body .body-calendar .days {
-        display: flex;
-        flex-wrap: wrap; }
-        .home #calendar .card-body .body-calendar .days .day {
-          width: calc(100% / 7);
-          height: 80px;
-          border: 1px solid #c7d5e6;
-          text-align: right; }
-          .home #calendar .card-body .body-calendar .days .day button {
-            outline: none;
-            height: 100%;
-            width: 100%;
-            background-color: #fff;
-            border: none;
-            cursor: pointer;
-            text-align: right;
-            padding-bottom: 60px;
-            padding-top: 4px;
-            padding-right: 8px; }
-          .home #calendar .card-body .body-calendar .days .day button:focus {
-            border: none;
-            box-shadow: rgba(3, 102, 214, 0.5) 5px 5px 5px 5px; }
-        .home #calendar .card-body .body-calendar .days .next-date,
-        .home #calendar .card-body .body-calendar .days .prev-date {
-          color: #c7d5e6;
-          cursor: cell; }
-        .home #calendar .card-body .body-calendar .days #today {
-          background-color: #c7d5e6 !important; }
+      align-items: center;
+      display: flex;
+      justify-content: center; }
+  .home #calendar #week .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 25%;
+    margin: 16px;
+    margin-top: 0; }
+    .home #calendar #week .header i {
+      color: #1e1e2d;
+      font-size: 32px;
+      cursor: pointer; }
+  .home #calendar #week .header button {
+    background-color: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer; }
+  .home #calendar #week .titleWeek {
+    margin: 0;
+    font-size: 24px;
+    padding: 0; }
+  .home #calendar #week .weekDays {
+    display: flex;
+    flex-wrap: wrap; }
+  .home #calendar #week .weekDay {
+    width: calc(100% / 7);
+    height: 45px;
+    padding: 10px;
+    box-sizing: border-box;
+    text-align: center;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    border: 1px solid #c7d5e6; }
+  .home #calendar #week .current-day {
+    background-color: #008cba;
+    color: #fff; }
+  .home #calendar #week .events {
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: left; }
+  .home #calendar #week .events li {
+    margin-bottom: 5px; }
 
 .showEvents {
   width: 100%;
@@ -495,10 +565,7 @@
         display: block; }
 
 .event {
-  height: 20px;
-  width: calc(100% + 8px);
-  background-color: aqua;
-  margin-top: 20px; }
+  border-bottom: 20px solid #008cba !important; }
 
 .card-group .card-header {
   display: flex;

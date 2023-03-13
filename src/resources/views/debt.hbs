@@ -104,7 +104,8 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="col-sm-4 justify-content-center">
-                            <button class="btn btn-light" onclick="prevPageDebt()" id="prevPage" disabled>Previous</button>
+                            <button class="btn btn-light" onclick="prevPageDebt()" id="prevPage"
+                                disabled>Previous</button>
                         </div>
                         <div class="col justify-content-center">
                             <span>Page
@@ -376,6 +377,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         debt();
         deleteDebt();
+        handleSort();
     });
 </script>
 
@@ -387,31 +389,4 @@
             textMonney.innerText = convertMoneyToString(Number(monney.value));
         }, 1000);
     }
-</script>
-
-<script>
-    const sortDebtAsc = document.querySelectorAll('.sortDebtAsc');
-    const sortDebtDesc = document.querySelectorAll('.sortDebtDesc');
-    sortDebtAsc.forEach(sa => {
-        sa.addEventListener('click', e => {
-            sortDebtAsc.forEach(sa => {
-                sa.classList.remove('chooseSortAsc');
-            })
-            sortDebtDesc.forEach(sd => {
-                sd.classList.remove('chooseSortDesc');
-            })
-            e.target.classList.add('chooseSortAsc');
-        })
-    })
-    sortDebtDesc.forEach(sd => {
-        sd.addEventListener('click', e => {
-            sortDebtAsc.forEach(sa => {
-                sa.classList.remove('chooseSortAsc');
-            })
-            sortDebtDesc.forEach(sd => {
-                sd.classList.remove('chooseSortDesc');
-            })
-            e.target.classList.add('chooseSortDesc');
-        })
-    })
 </script>

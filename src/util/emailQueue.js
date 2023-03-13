@@ -48,9 +48,6 @@ function sendEmails() {
     }, 4000);
 };
 
-// Call sendEmails function to start email processing
-// sendEmails();
-
 function addEmailToQueue(mailOptions) {
     emailQueue.push(mailOptions);
 };

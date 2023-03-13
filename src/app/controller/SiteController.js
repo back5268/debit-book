@@ -16,7 +16,7 @@ class SiteController {
     showEvent(req, res, next) {
         let date = req.params.date;
         const user = req.session.user;
-        Event.find({ createBy: user._id ,date })
+        Event.find({ createBy: user._id, date })
             .then(data => {
                 data = data.map(d => d.toObject());
                 Event.countDocuments({ date })
@@ -56,10 +56,16 @@ class SiteController {
 
         }
         event.createBy = user._id;
+        event.date = event.dates;
         const newEvent = new Event(event);
         newEvent.save()
             .then(() => {
-                res.json('success');
+                Event.find({ createBy: user._id })
+                    .then(data => {
+                        data = data.map(d => d.toObject());
+                        res.status(200).json({ data });
+                    })
+                    .catch(next);
             })
             .catch(next);
     }

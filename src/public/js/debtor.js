@@ -6,7 +6,7 @@ function showDebtor(data, count, page) {
     document.querySelector('#cards').innerHTML = '';
     if (!data.length) {
         document.querySelector('.center').style.display = 'block';
-        document.querySelector('#cards').innerHTML = '<h5 class="center">Chưa có người nợ nào được tạo!</h5>';
+        document.querySelector('.card-links').innerHTML = '<h5 class="center">Chưa có người nợ nào được tạo!</h5>';
     };
     for (let [index, { fullname, createAt, updateAt, email, phone, address, totalDebts, slug }] of data.entries()) {
         document.querySelector('.center').style.display = 'none';

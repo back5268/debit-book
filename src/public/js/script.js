@@ -209,3 +209,30 @@ function choosePage() {
     if (page <= 1) page = 1;
     return page;
 };
+
+function handleSort() {
+    const sortDebtAsc = document.querySelectorAll('.sortDebtAsc');
+    const sortDebtDesc = document.querySelectorAll('.sortDebtDesc');
+    sortDebtAsc.forEach(sa => {
+        sa.addEventListener('click', e => {
+            sortDebtAsc.forEach(sa => {
+                sa.classList.remove('chooseSortAsc');
+            })
+            sortDebtDesc.forEach(sd => {
+                sd.classList.remove('chooseSortDesc');
+            })
+            e.target.classList.add('chooseSortAsc');
+        })
+    });
+    sortDebtDesc.forEach(sd => {
+        sd.addEventListener('click', e => {
+            sortDebtAsc.forEach(sa => {
+                sa.classList.remove('chooseSortAsc');
+            })
+            sortDebtDesc.forEach(sd => {
+                sd.classList.remove('chooseSortDesc');
+            })
+            e.target.classList.add('chooseSortDesc');
+        })
+    });
+}
