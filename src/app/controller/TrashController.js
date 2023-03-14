@@ -85,10 +85,11 @@ class TrashController {
         let perPage = req.query.perPage || 5;
         let page = req.query.page || 1;
         let sort = req.query.sort || 12;
-        Debt.findOneAndUpdate({ _id: req.body.debtId }, { isDelete: false, deleteAt: null })
+        const user = req.session.user;
+        Debt.findOneAndUpdate({ _id: req.body.debtId, createBy: user._id }, { isDelete: false, deleteAt: null })
             .then(data => {
                 let debt = data;
-                Debtor.find({ _id: debt.debtorId })
+                Debtor.find({ _id: debt.debtorId, createBy: user._id })
                     .then(data => {
                         let totalDebts = totalDebt(debt, data[0].totalDebts);
                         let updateDescription = 'Khôi phục khoản nợ';

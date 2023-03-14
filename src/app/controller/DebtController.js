@@ -45,7 +45,7 @@ class DebtController {
         if (req.session.user) {
             const user = req.session.user;
             const { slug } = req.params;
-            Debtor.find({ slug })
+            Debtor.find({ slug, createBy: user._id })
                 .then(data => {
                     let debtor = data[0].toObject();
                     res.render('debt', { user, title: 'Finance', title2: '/ Detail', debtor });
@@ -93,7 +93,7 @@ class DebtController {
             const newDebt = new Debt(debt);
             newDebt.save()
                 .then(() => {
-                    Debtor.find({ _id: debt.debtorId })
+                    Debtor.find({ _id: debt.debtorId, createBy: user._id })
                         .then(data => {
                             let totalDebts = totalDebt(debt, data[0].totalDebts);
                             let updateDescription = 'Thêm khoản nợ';
@@ -117,11 +117,12 @@ class DebtController {
         let perPage = req.query.perPage || 5;
         let page = req.query.page || 1;
         let sort = req.query.sort || 10;
+        const user = req.session.user;
         Debt.findOneAndUpdate({ _id: req.body.debtId }, { isDelete: true, deleteAt: Date.now() })
             .then(data => {
                 let debt = data;
                 debt.monney = -debt.monney;
-                Debtor.find({ _id: debt.debtorId })
+                Debtor.find({ _id: debt.debtorId, createBy: user._id })
                     .then(data => {
                         let totalDebts = totalDebt(debt, data[0].totalDebts);
                         let updateDescription = 'Xóa khoản nợ';

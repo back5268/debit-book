@@ -98,8 +98,9 @@ class DebtorController {
 
     // [GET] /finance/debtor/:slug
     info(req, res, next) {
+        const user = req.session.user;
         const { slug } = req.params;
-        Debtor.find({ slug })
+        Debtor.find({ slug, createBy: user._id })
             .then(data => {
                 data = data[0].toObject();
                 res.json({ data });
@@ -110,7 +111,8 @@ class DebtorController {
     // [POST] /finance/debtor/update
     update(req, res, next) {
         let { debtorId, email, phone, address } = req.body;
-        Debtor.findByIdAndUpdate({ _id: debtorId }, { email, phone, address })
+        const user = req.session.user;
+        Debtor.findOneAndUpdate({ _id: debtorId, createBy: user._id }, { email, phone, address })
             .then(() => {
                 res.status(200).json({ message: 'Update successful!' });
             })
