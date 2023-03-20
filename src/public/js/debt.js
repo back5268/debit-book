@@ -256,7 +256,7 @@ function formatInfo() {
             }
             document.querySelector('#name').value = data.name;
             document.querySelector('#email').value = data.email;
-            document.querySelector('#phone').value = data.phone;
+            document.querySelector('#phone').value = Number(data.phone);
             document.querySelector('#address').value = data.address;
             document.querySelector('#createAt').value = dateTimeHelper(data.createAt);
             document.querySelector('#update').value = update;
