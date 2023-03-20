@@ -35,21 +35,21 @@
                             <th scope="col" class="actionTableHeader">Action</th>
                         </tr>
                         <tr>
-                            <td></td>
-                            <td><input type="text" id="accountFilter" oninput="handlefilterControl()" /></td>
-                            <td><input type="text" id="emailFilter" oninput="handlefilterControl()" /></td>
-                            <td>
+                            <th></th>
+                            <th><input type="text" id="accountFilter" oninput="handlefilterControl()" /></th>
+                            <th><input type="text" id="emailFilter" oninput="handlefilterControl()" /></th>
+                            <th>
                                 <input type="datetime-local" id="minCreateAt" onchange="handlefilterControl()" />
                                 <input type="datetime-local" id="maxCreateAt" onchange="handlefilterControl()" />
-                            </td>
-                            <td>
+                            </th>
+                            <th>
                                 <input type="datetime-local" id="minLastLogin" onchange="handlefilterControl()" />
                                 <input type="datetime-local" id="maxLastLogin" onchange="handlefilterControl()" />
-                            </td>
-                            <td class="actionTableHeader">
+                            </th>
+                            <th class="actionTableHeader">
                                 <button type="button" class="btn btn-info" onclick="clearFilter()">
                                     Clear filter</button>
-                            </td>
+                            </th>
                         </tr>
                     </thead>
                     <tbody></tbody>

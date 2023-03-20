@@ -66,34 +66,34 @@
                                     <th scope="col" colspan="2" class="actionTableHeader">Action</th>
                                 </tr>
                                 <tr>
-                                    <td></td>
-                                    <td><input type="text" id="noteFilter" oninput="handleFilterDebt()" /></td>
-                                    <td>
+                                    <th></th>
+                                    <th><input type="text" id="noteFilter" oninput="handleFilterDebt()" /></th>
+                                    <th>
                                         <select id="typeFilter" onchange="handleFilterDebt()">
                                             <option value="all">All</option>
                                             <option value="+">+</option>
                                             <option value="-">-</option>
                                         </select>
-                                    </td>
-                                    <td>
+                                    </th>
+                                    <th>
                                         <input type="number" id="minMonney" placeholder="from"
                                             oninput="handleFilterDebt()" />
                                         <input type="number" id="maxMonney" placeholder="to"
                                             oninput="handleFilterDebt()" />
-                                    </td>
-                                    <td>
+                                    </th>
+                                    <th>
                                         <input type="datetime-local" id="minTimeDebt" onchange="handleFilterDebt()" />
                                         <input type="datetime-local" id="maxTimeDebt" onchange="handleFilterDebt()" />
-                                    </td>
-                                    <td>
+                                    </th>
+                                    <th>
                                         <input type="datetime-local" id="minCreateAt" onchange="handleFilterDebt()" />
                                         <input type="datetime-local" id="maxCreateAt" onchange="handleFilterDebt()" />
-                                    </td>
-                                    <td colspan="2" class="actionTableHeader">
+                                    </th>
+                                    <th colspan="2" class="actionTableHeader">
                                         <button type="button" class="btn btn-info" id="filterDebt"
                                             onclick="clearFilter()">
                                             Clear filter</button>
-                                    </td>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody></tbody>

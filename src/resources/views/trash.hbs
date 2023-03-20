@@ -63,35 +63,35 @@
               <th scope="col" class="actionTableHeader">Action</th>
             </tr>
             <tr>
-              <td></td>
-              <td><input type="text" id="noteFilter" oninput="handlefilterTrash()" /></td>
-              <td>
+              <th></th>
+              <th><input type="text" id="noteFilter" oninput="handlefilterTrash()" /></th>
+              <th>
                 <select id="typeFilter" onchange="handlefilterTrash()">
                   <option value="all">All</option>
                   <option value="+">+</option>
                   <option value="-">-</option>
                 </select>
-              </td>
-              <td>
+              </th>
+              <th>
                 <input type="number" id="minMonney" placeholder="from" oninput="handlefilterTrash()" />
                 <input type="number" id="maxMonney" placeholder="to" oninput="handlefilterTrash()" />
-              </td>
-              <td>
+              </th>
+              <th>
                 <input type="datetime-local" id="minTimeDebt" onchange="handlefilterTrash()" />
                 <input type="datetime-local" id="maxTimeDebt" onchange="handlefilterTrash()" />
-              </td>
-              <td>
+              </th>
+              <th>
                 <input type="datetime-local" id="minCreateAt" onchange="handlefilterTrash()" />
                 <input type="datetime-local" id="maxCreateAt" onchange="handlefilterTrash()" />
-              </td>
-              <td>
+              </th>
+              <th>
                 <input type="datetime-local" id="minDeleteAt" onchange="handlefilterTrash()" />
                 <input type="datetime-local" id="maxDeleteAt" onchange="handlefilterTrash()" />
-              </td>
-              <td class="actionTableHeader">
+              </th>
+              <th class="actionTableHeader">
                 <button type="button" class="btn btn-info" onclick="clearFilter()">
                   Clear filter</button>
-              </td>
+              </th>
             </tr>
           </thead>
           <tbody></tbody>

@@ -124,8 +124,11 @@
 
       th,
       td {
-        min-width: 100px;
+        // min-width: 100px;
         font-size: 14px;
+        vertical-align: middle;
+        text-align: center;
+        align-items: center;
       }
 
       tr {
@@ -134,17 +137,17 @@
       }
 
       td {
-        vertical-align: middle;
-        text-align: center;
-        align-items: center;
+        max-width: 200px;
+        white-space: nowrap;
+        overflow-x: hidden;
+      }
 
-        input {
-          padding: 6px 12px;
-          border-radius: 4px;
-          outline: none;
-          border: 1px solid #c7d5e6;
-          max-width: 148px;
-        }
+      input {
+        padding: 6px 12px;
+        border-radius: 4px;
+        outline: none;
+        border: 1px solid #c7d5e6;
+        max-width: 148px;
       }
 
       .sortDebt {
@@ -261,7 +264,7 @@
         }
       }
     }
-    
+
     label {
       text-align: right;
       font-weight: 500;
